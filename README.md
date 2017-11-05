@@ -1,8 +1,10 @@
 # HtmlMonkey
 
-HTML/XML parser.
+HtmlMonkey is an HTML/XML parser written in C#. It allows you to parse an HTML or XML string into a hierarchy of node objects, which can then be traversed or otherwise examined from code. In addition, the node objects can be modified or even built from scratch using code. Finally, the classes can generate the HTML or XML from the data.
 
+The code also include a WinForms application to display the parsed data nodes. This was mostly done for testing the parser, but offers some functionality that may be useful for inspecting the original markup.
 
+At this point, the public interface is rather small. Here are a few starter examples.
 
 #### Parse an HTML String
 
@@ -44,3 +46,6 @@ HTML/XML parser.
         }
     }
 
+## Enhancing the Library
+
+This is my intial attempt at this library and I would appreciate any efforts by others to contribute. I want to keep the library small but would like to see more testing done on a wide variety of input markup. What sort of scenarios does the library not handle correctly? This is the type of information I'd be curious about.
