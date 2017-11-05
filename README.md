@@ -46,8 +46,7 @@ foreach (var node in tags)
         if (Uri.TryCreate(href.Value, UriKind.Absolute, out Uri uri))
         {
             // Note: May need to test for variations such as "www.github.com"
-            var host = uri.Host;
-            if (host.Equals("github.com", StringComparison.OrdinalIgnoreCase))
+            if (uri.Host.Equals("github.com", StringComparison.OrdinalIgnoreCase))
             {
                 // Found a match!
             }
