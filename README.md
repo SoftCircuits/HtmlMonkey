@@ -12,7 +12,7 @@ At this point, the public interface is rather small. Here are a few starter exam
 // Note: We specify the HtmlDocument namespace below because .NET also has
 // an HtmlDocument class
 string html = "...";
-HtmlMonkey.HtmlDocument document = HtmlDocument.FromHtml(html);
+HtmlMonkey.HtmlDocument document = HtmlMonkey.HtmlDocument.FromHtml(html);
 ```
 
 #### Find All Anchor Tag Nodes
