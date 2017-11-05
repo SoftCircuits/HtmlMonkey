@@ -88,22 +88,6 @@ namespace HtmlMonkey
                 Cursor = Cursors.Default;
                 ex.ShowError();
             }
-
-
-            ////document.RootNodes.OfType<HtmlElementNode>().Where(n => n.Attributes.Any());
-
-            //var x = document.FindTags("a");
-            ////var x = document.FindTags("a").Where(n => n.Attributes.ContainsKey("id"));
-            ////var x = document.RootNodes.FindOfType<HtmlElementNode>(n => n.TagName.Equals("a", StringComparison.CurrentCultureIgnoreCase));
-            //foreach (var z in x)
-            //{
-            //    HtmlAttribute href = z.Attributes["href"];
-            //    if (z.Attributes.TryGetValue("no-exists", out HtmlAttribute xxx))
-            //    {
-
-            //    }
-            //}
-
         }
     }
 }

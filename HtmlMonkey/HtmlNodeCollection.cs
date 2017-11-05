@@ -27,8 +27,8 @@ namespace HtmlMonkey
             {
                 HtmlNode lastNode = Nodes[Nodes.Count - 1];
 
+                // Note: We must detect the derived type and not a base type here
                 if (node.GetType() == typeof(HtmlTextNode) && lastNode.GetType() == typeof(HtmlTextNode))
-                //if (node is HtmlTextNode && lastNode is HtmlTextNode)
                 {
                     // Combine if two consecutive HtmlTextNodes
                     lastNode.Html += node.Html;
@@ -40,6 +40,7 @@ namespace HtmlMonkey
                     node.PrevNode = lastNode;
                 }
             }
+            else node.PrevNode = null;
             node.NextNode = null;
             node.ParentNode = ParentNode;
 
@@ -94,7 +95,7 @@ namespace HtmlMonkey
         /// </summary>
         public IEnumerable<T> FindOfType<T>()
         {
-            foreach (object obj in Find(n => n is T))
+            foreach (object obj in Find(n => n.GetType() == typeof(T)))
                 yield return (T)obj;
         }
 
@@ -104,7 +105,7 @@ namespace HtmlMonkey
         /// <param name="predicate">A function that determines if the item should be included in the results.</param>
         public IEnumerable<T> FindOfType<T>(Func<T, bool> predicate) where T : HtmlNode
         {
-            foreach (object obj in Find(n => n is T && predicate((T)n)))
+            foreach (object obj in Find(n => n.GetType() == typeof(T) && predicate((T)n)))
                 yield return (T)obj;
         }
 
