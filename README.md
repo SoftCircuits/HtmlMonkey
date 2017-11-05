@@ -22,7 +22,7 @@ HtmlMonkey.HtmlDocument document = HtmlMonkey.HtmlDocument.FromHtml(html);
 var nodes = document.FindTags("a");
 ```
 
-#### Find All Anchor Tag Nodes with an ID
+#### Find All Anchor Tag Nodes with an ID Attribute
 
 ```cs
 var nodes = document.FindTags("a").Where(n => n.Attributes.ContainsKey("id"));
