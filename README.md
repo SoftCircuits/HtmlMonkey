@@ -34,22 +34,20 @@ var nodes = document.FindTags("a").Where(n => n.Attributes.ContainsKey("id"));
 var nodes = document.FindOfType<HtmlTextNode>(n => n.Html.Length > 100);
 ```
 
-##### Find All Anchor Tag Nodes that Link to github.com
+##### Find All Anchor Tag Nodes that Link to blackbeltcoder.com
 
 ```cs
 HtmlMonkey.HtmlDocument document = HtmlDocument.FromHtml(txtHtml.Text);
 var tags = document.FindTags("a");
 foreach (var node in tags)
 {
-    if (node.Attributes.TryGetValue("href", out HtmlAttribute href))
+    if (node.Attributes.TryGetValue("href", out HtmlAttribute href) &&
+        Uri.TryCreate(href.Value, UriKind.Absolute, out Uri uri))
     {
-        if (Uri.TryCreate(href.Value, UriKind.Absolute, out Uri uri))
+        string host = uri.Host.ToLower();
+        if (host == "blackbeltcoder.com" || host == "www.blackbeltcoder.com")
         {
-            // Note: May need to test for variations such as "www.github.com"
-            if (uri.Host.Equals("github.com", StringComparison.OrdinalIgnoreCase))
-            {
-                // Found a match!
-            }
+            // Found a match!
         }
     }
 }
