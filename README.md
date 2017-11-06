@@ -9,8 +9,8 @@ At this point, the public interface is rather small. Here are a few starter exam
 ##### Parse an HTML String
 
 ```cs
-// Note: We specify the HtmlDocument namespace below because .NET also has
-// an HtmlDocument class
+// Note: We specify the HtmlMonkey namespace below because
+// .NET also has an HtmlDocument class
 string html = "...";
 HtmlMonkey.HtmlDocument document = HtmlMonkey.HtmlDocument.FromHtml(html);
 ```
@@ -34,22 +34,19 @@ var nodes = document.FindTags("a").Where(n => n.Attributes.ContainsKey("id"));
 var nodes = document.FindOfType<HtmlTextNode>(n => n.Html.Length > 100);
 ```
 
-##### Find All Anchor Tag Nodes that Link to github.com
+##### Find All Anchor Tag Nodes that Link to blackbeltcoder.com
 
 ```cs
 HtmlMonkey.HtmlDocument document = HtmlDocument.FromHtml(txtHtml.Text);
-var tags = document.FindTags("a");
-foreach (var node in tags)
+foreach (var node in document.FindTags("a"))
 {
-    if (node.Attributes.TryGetValue("href", out HtmlAttribute href))
+    if (node.Attributes.TryGetValue("href", out HtmlAttribute href) &&
+        Uri.TryCreate(href.Value, UriKind.Absolute, out Uri uri))
     {
-        if (Uri.TryCreate(href.Value, UriKind.Absolute, out Uri uri))
+        string host = uri.Host.ToLower();
+        if (host == "blackbeltcoder.com" || host == "www.blackbeltcoder.com")
         {
-            // Note: May need to test for variations such as "www.github.com"
-            if (uri.Host.Equals("github.com", StringComparison.OrdinalIgnoreCase))
-            {
-                // Found a match!
-            }
+            // Found a match!
         }
     }
 }
@@ -57,4 +54,4 @@ foreach (var node in tags)
 
 ## Enhancing the Library
 
-This is my intial attempt at this library and I would appreciate any efforts by others to contribute. I want to keep the library small but would like to see more testing done on a wide variety of input markup. What sort of scenarios does the library not handle correctly? This is the type of information I'd be curious about.
+This is my initial attempt at this library and I would appreciate any efforts by others to contribute. I want to keep the library small but would like to see more testing done on a wide variety of input markup. What sort of scenarios does the library not handle correctly? This is the type of information I'd be curious about.
