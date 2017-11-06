@@ -4,6 +4,10 @@ using System.IO;
 
 namespace HtmlMonkey
 {
+    /// <summary>
+    /// HtmlDocument class. Contains static methods to create an instance.
+    /// Document nodes can be found in the <c>RootNodes</c> member.
+    /// </summary>
     public class HtmlDocument
     {
         public string Title { get; set; }

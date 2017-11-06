@@ -58,6 +58,10 @@ namespace HtmlMonkey
         public bool IgnoreCase { get; set; }
     }
 
+    /// <summary>
+    /// Defines constants and rules that are used to parse and interpret
+    /// HTML and XML.
+    /// </summary>
     internal class HtmlRules
     {
 

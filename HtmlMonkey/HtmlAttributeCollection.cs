@@ -4,6 +4,10 @@ using System.Text;
 
 namespace HtmlMonkey
 {
+    /// <summary>
+    /// Dictionary class to represent a collection of element attributes.
+    /// Keys are not case-sensitive.
+    /// </summary>
     public class HtmlAttributeCollection : Dictionary<string, HtmlAttribute>
     {
         public HtmlAttributeCollection()

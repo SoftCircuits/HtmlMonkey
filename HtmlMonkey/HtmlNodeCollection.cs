@@ -5,6 +5,10 @@ using System.Diagnostics;
 
 namespace HtmlMonkey
 {
+    /// <summary>
+    /// Represents a IEnumerable collection of nodes. Includes methods
+    /// for recursively finding nodes.
+    /// </summary>
     public class HtmlNodeCollection : IEnumerable<HtmlNode>
     {
         private HtmlElementNode ParentNode;

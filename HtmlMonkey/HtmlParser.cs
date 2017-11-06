@@ -3,6 +3,9 @@ using System.Diagnostics;
 
 namespace HtmlMonkey
 {
+    /// <summary>
+    /// Class to parse HTML or XML.
+    /// </summary>
     internal class HtmlParser
     {
         /// <summary>

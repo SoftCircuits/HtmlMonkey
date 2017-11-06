@@ -35,6 +35,9 @@ namespace HtmlMonkey
         }
     }
 
+    /// <summary>
+    /// Represents an HTML header (!DOCTYPE) node.
+    /// </summary>
     public class HtmlHeaderNode : HtmlNode
     {
         public List<string> Parameters { get; private set; }
@@ -56,6 +59,9 @@ namespace HtmlMonkey
         }
     }
 
+    /// <summary>
+    /// Represents an XML header (?xml) node.
+    /// </summary>
     public class XmlHeaderNode : HtmlNode
     {
         public HtmlAttributeCollection Attributes { get; private set; }
@@ -76,6 +82,9 @@ namespace HtmlMonkey
         }
     }
 
+    /// <summary>
+    /// Represents an HTML element (tag) node.
+    /// </summary>
     public class HtmlElementNode : HtmlNode
     {
         public string TagName { get; set; }

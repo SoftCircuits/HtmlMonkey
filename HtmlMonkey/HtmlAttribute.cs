@@ -1,5 +1,8 @@
 ﻿namespace HtmlMonkey
 {
+    /// <summary>
+    /// Class that represents a single element attribute.
+    /// </summary>
     public class HtmlAttribute
     {
         /// <summary>
