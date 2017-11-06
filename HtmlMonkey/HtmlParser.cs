@@ -53,7 +53,7 @@ namespace HtmlMonkey
                     {
                         if (parentNode.TagName.Equals(tag, HtmlRules.TagStringComparison))
                         {
-                            // Should never match parent if it's the top-level node
+                            // Should never have matched parent if the top-level node
                             Debug.Assert(!parentNode.IsTopLevelNode);
                             parentNode = parentNode.ParentNode;
                         }
@@ -181,6 +181,10 @@ namespace HtmlMonkey
             return false;
         }
 
+        /// <summary>
+        /// Parses the attributes of an element tag. When finished, the parser
+        /// position is at the next non-space character that follows the attributes.
+        /// </summary>
         private HtmlAttributeCollection ParseAttributes(TextParser parser)
         {
             HtmlAttributeCollection attributes = new HtmlAttributeCollection();

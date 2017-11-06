@@ -221,9 +221,7 @@ namespace HtmlMonkey
         /// </summary>
         public static int GetTagPriority(string tag)
         {
-            if (TagPriority.TryGetValue(tag, out int priority))
-                return priority;
-            return 100;
+            return (TagPriority.TryGetValue(tag, out int priority)) ? priority : 100;
         }
 
         #endregion
@@ -248,6 +246,9 @@ namespace HtmlMonkey
             if (parentFlags.HasFlag(HtmlTagFlag.NoChildren))
                 return false;
             if (parentFlags.HasFlag(HtmlTagFlag.NoNested) && parentTag.Equals(childTag, StringComparison.OrdinalIgnoreCase))
+                return false;
+            // Attempt to catch some obviously invalid HTML structure
+            if (GetTagPriority(childTag) > GetTagPriority(parentTag))
                 return false;
             return true;
         }
