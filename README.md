@@ -38,8 +38,7 @@ var nodes = document.FindOfType<HtmlTextNode>(n => n.Html.Length > 100);
 
 ```cs
 HtmlMonkey.HtmlDocument document = HtmlDocument.FromHtml(txtHtml.Text);
-var tags = document.FindTags("a");
-foreach (var node in tags)
+foreach (var node in document.FindTags("a"))
 {
     if (node.Attributes.TryGetValue("href", out HtmlAttribute href) &&
         Uri.TryCreate(href.Value, UriKind.Absolute, out Uri uri))
