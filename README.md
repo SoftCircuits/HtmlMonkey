@@ -9,8 +9,8 @@ At this point, the public interface is rather small. Here are a few starter exam
 ##### Parse an HTML String
 
 ```cs
-// Note: We specify the HtmlDocument namespace below because .NET also has
-// an HtmlDocument class
+// Note: We specify the HtmlMonkey namespace below because
+// .NET also has an HtmlDocument class
 string html = "...";
 HtmlMonkey.HtmlDocument document = HtmlMonkey.HtmlDocument.FromHtml(html);
 ```
