@@ -6,35 +6,35 @@ The code also include a WinForms application to display the parsed data nodes. T
 
 At this point, the public interface is rather small. Here are a few starter examples.
 
-#### Parse an HTML String
+##### Parse an HTML String
 
 ```cs
 // Note: We specify the HtmlDocument namespace below because .NET also has
 // an HtmlDocument class
 string html = "...";
-HtmlMonkey.HtmlDocument document = HtmlDocument.FromHtml(html);
+HtmlMonkey.HtmlDocument document = HtmlMonkey.HtmlDocument.FromHtml(html);
 ```
 
-#### Find All Anchor Tag Nodes
+##### Find All Anchor Tag Nodes
 
 ```cs
 // Note: This method uses case-insensitive comparisons
 var nodes = document.FindTags("a");
 ```
 
-#### Find All Anchor Tag Nodes with an ID
+##### Find All Anchor Tag Nodes with an ID Attribute
 
 ```cs
 var nodes = document.FindTags("a").Where(n => n.Attributes.ContainsKey("id"));
 ```
 
-#### Find All Text Nodes with Text Longer than 100 Characters
+##### Find All Text Nodes with Text Longer than 100 Characters
 
 ```cs
 var nodes = document.FindOfType<HtmlTextNode>(n => n.Html.Length > 100);
 ```
 
-#### Find All Anchor Tag Nodes that Link to github.com
+##### Find All Anchor Tag Nodes that Link to github.com
 
 ```cs
 HtmlMonkey.HtmlDocument document = HtmlDocument.FromHtml(txtHtml.Text);
@@ -46,8 +46,7 @@ foreach (var node in tags)
         if (Uri.TryCreate(href.Value, UriKind.Absolute, out Uri uri))
         {
             // Note: May need to test for variations such as "www.github.com"
-            var host = uri.Host;
-            if (host.Equals("github.com", StringComparison.OrdinalIgnoreCase))
+            if (uri.Host.Equals("github.com", StringComparison.OrdinalIgnoreCase))
             {
                 // Found a match!
             }
