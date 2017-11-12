@@ -77,6 +77,7 @@ namespace HtmlMonkey
             builder.Append(HtmlRules.TagStart);
             builder.Append(HtmlRules.XmlHeaderTag);
             builder.Append(Attributes.ToString());
+            builder.Append(" ?");
             builder.Append(HtmlRules.TagEnd);
             return builder.ToString();
         }
