@@ -28,7 +28,7 @@ var nodes = document.FindTags("a");
 
 ```cs
 // Note: This method uses case-insensitive comparisons for both the tag and attribute
-var nodes = document.FindTags("a").Where(n => n.Attributes.ContainsKey("id"));
+var nodes = document.FindTags("a", n => n.Attributes.ContainsKey("id"));
 ```
 
 ##### Find All Text Nodes
