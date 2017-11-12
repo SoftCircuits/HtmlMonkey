@@ -3,7 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Windows.Forms;
 
-namespace TestHtmlParse
+namespace TestHtmlMonkey
 {
     public partial class HtmlVisualizer : UserControl
     {
@@ -37,7 +37,8 @@ namespace TestHtmlParse
         public void LoadDocument(HtmlMonkey.HtmlDocument document)
         {
             tvwNodes.Nodes.Clear();
-            TreeNode root = tvwNodes.Nodes.Add($"[HtmlDocument]");
+            TreeNode root = tvwNodes.Nodes.Add("[HtmlDocument]");
+            root.ImageIndex = root.SelectedImageIndex = 0;
             LoadNodes(document.RootNodes, root);
             tvwNodes.ExpandAll();
             root.EnsureVisible();
@@ -57,6 +58,7 @@ namespace TestHtmlParse
                 Debug.Assert(visualizer != null);
                 TreeNode treeNode = parent.Nodes.Add(visualizer.ShortDescription(node));
                 treeNode.Tag = node;
+                treeNode.ImageIndex = treeNode.SelectedImageIndex = GetImageIndex(node);
                 if (node is HtmlElementNode elementNode)
                     LoadNodes(elementNode.Children, treeNode);
             }
@@ -96,6 +98,22 @@ namespace TestHtmlParse
                     txtText.Text = string.Empty;
                 }
             }
+        }
+
+        public int GetImageIndex(HtmlNode node)
+        {
+            Type type = node.GetType();
+            if (type == typeof(HtmlCDataNode))
+                return 5;
+            if (type == typeof(HtmlTextNode))
+                return 4;
+            if (type == typeof(HtmlElementNode))
+                return 3;
+            if (type == typeof(XmlHeaderNode))
+                return 2;
+            if (type == typeof(HtmlHeaderNode))
+                return 1;
+            return -1;
         }
     }
 }

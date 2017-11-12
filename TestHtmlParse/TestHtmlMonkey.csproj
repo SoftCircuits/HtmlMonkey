@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{64783291-E6BE-464A-B289-2F75B5CC994C}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>TestHtmlParse</RootNamespace>
-    <AssemblyName>TestHtmlParse</AssemblyName>
+    <RootNamespace>TestHtmlMonkey</RootNamespace>
+    <AssemblyName>TestHtmlMonkey</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.27102.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestHtmlParse", "TestHtmlParse\TestHtmlParse.csproj", "{64783291-E6BE-464A-B289-2F75B5CC994C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestHtmlMonkey", "TestHtmlParse\TestHtmlMonkey.csproj", "{64783291-E6BE-464A-B289-2F75B5CC994C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HtmlMonkey", "HtmlMonkey\HtmlMonkey.csproj", "{C883DB82-1D3C-468C-85B0-E2E1E1431A4E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HtmlMonkey", "HtmlMonkey\HtmlMonkey.csproj", "{C883DB82-1D3C-468C-85B0-E2E1E1431A4E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,5 +24,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C23C298F-E802-4E6B-8A46-079EC80C5C74}
 	EndGlobalSection
 EndGlobal

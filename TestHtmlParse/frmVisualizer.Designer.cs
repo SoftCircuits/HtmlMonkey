@@ -1,4 +1,4 @@
-﻿namespace TestHtmlParse
+﻿namespace TestHtmlMonkey
 {
     partial class frmVisualizer
     {
@@ -37,7 +37,7 @@
             this.collapseAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.nodeDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.htmlVisualizer1 = new TestHtmlParse.HtmlVisualizer();
+            this.htmlVisualizer1 = new TestHtmlMonkey.HtmlVisualizer();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
             this.toolStripContainer1.SuspendLayout();

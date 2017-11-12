@@ -1,4 +1,4 @@
-﻿namespace TestHtmlParse
+﻿namespace TestHtmlMonkey
 {
     partial class HtmlVisualizer
     {
@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HtmlVisualizer));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tvwNodes = new System.Windows.Forms.TreeView();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
@@ -37,6 +38,7 @@
             this.lvwProperties = new System.Windows.Forms.ListView();
             this.txtText = new System.Windows.Forms.TextBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -72,8 +74,11 @@
             // 
             this.tvwNodes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tvwNodes.HideSelection = false;
+            this.tvwNodes.ImageIndex = 0;
+            this.tvwNodes.ImageList = this.imageList1;
             this.tvwNodes.Location = new System.Drawing.Point(0, 0);
             this.tvwNodes.Name = "tvwNodes";
+            this.tvwNodes.SelectedImageIndex = 0;
             this.tvwNodes.Size = new System.Drawing.Size(295, 632);
             this.tvwNodes.TabIndex = 0;
             this.tvwNodes.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvwNodes_AfterSelect);
@@ -153,6 +158,17 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "DocumentNode.png");
+            this.imageList1.Images.SetKeyName(1, "HtmlHeaderNode.png");
+            this.imageList1.Images.SetKeyName(2, "XmlHeaderNode.png");
+            this.imageList1.Images.SetKeyName(3, "ElementNode.png");
+            this.imageList1.Images.SetKeyName(4, "TextNode.png");
+            this.imageList1.Images.SetKeyName(5, "CDataNode.png");
+            // 
             // HtmlVisualizer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -187,5 +203,6 @@
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.Label lblType;
         private System.Windows.Forms.SplitContainer splitContainer3;
+        private System.Windows.Forms.ImageList imageList1;
     }
 }

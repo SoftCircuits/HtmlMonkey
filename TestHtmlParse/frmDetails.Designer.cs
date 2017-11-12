@@ -1,4 +1,4 @@
-﻿namespace TestHtmlParse
+﻿namespace TestHtmlMonkey
 {
     partial class frmDetails
     {

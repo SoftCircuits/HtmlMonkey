@@ -104,27 +104,26 @@ namespace HtmlMonkey
                         parser.MoveTo(HtmlRules.TagEnd);
                         parser.MoveAhead();
 
+                        // Add node
+                        HtmlElementNode node = new HtmlElementNode(tag, attributes);
+                        while (!HtmlRules.TagMayContain(parentNode.TagName, tag) && !parentNode.IsTopLevelNode)
+                        {
+                            Debug.Assert(parentNode.ParentNode != null);
+                            parentNode = parentNode.ParentNode;
+                        }
+                        parentNode.Children.Add(node);
+
                         if (flags.HasFlag(HtmlTagFlag.CData))
                         {
                             // CDATA tags are treated as elements but we store and do not parse the inner content
-                            HtmlElementNode node = new HtmlElementNode(tag, attributes);
                             if (!selfClosing)
                             {
                                 if (ParseToClosingTag(parser, tag, out string content) && content.Length > 0)
                                     node.Children.Add(new HtmlCDataNode(string.Empty, string.Empty, content));
                             }
-                            parentNode.Children.Add(node);
                         }
                         else
                         {
-                            HtmlElementNode node = new HtmlElementNode(tag, attributes);
-                            if (!HtmlRules.TagMayContain(parentNode.TagName, tag))
-                            {
-                                // Close current parent node
-                                if (parentNode.ParentNode != null)
-                                    parentNode = parentNode.ParentNode;
-                            }
-                            parentNode.Children.Add(node);
                             if (selfClosing && flags.HasFlag(HtmlTagFlag.NoSelfClosing))
                                 selfClosing = false;
                             if (!selfClosing && !flags.HasFlag(HtmlTagFlag.NoChildren))

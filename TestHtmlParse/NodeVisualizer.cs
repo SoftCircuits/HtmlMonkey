@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
 
-namespace TestHtmlParse
+namespace TestHtmlMonkey
 {
     /// <summary>
     /// Class that provides visualization data for a particular node type.

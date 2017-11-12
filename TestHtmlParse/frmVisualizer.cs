@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace TestHtmlParse
+namespace TestHtmlMonkey
 {
     public partial class frmVisualizer : Form
     {
