@@ -31,6 +31,12 @@ var nodes = document.FindTags("a");
 var nodes = document.FindTags("a").Where(n => n.Attributes.ContainsKey("id"));
 ```
 
+##### Find All Text Nodes
+
+```cs
+var nodes = document.FindOfType<HtmlTextNode>();
+```
+
 ##### Find All Text Nodes with Text Longer than 100 Characters
 
 ```cs
