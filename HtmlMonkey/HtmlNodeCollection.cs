@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace HtmlMonkey
 {
@@ -84,23 +85,11 @@ namespace HtmlMonkey
         #region Find nodes
 
         /// <summary>
-        /// Recursively finds all HtmlNodes filtered by the given predicate.
-        /// </summary>
-        /// <param name="predicate">A function that determines if the item should be included in the results.</param>
-        public IEnumerable<HtmlNode> Find(Func<HtmlNode, bool> predicate)
-        {
-            List<HtmlNode> results = new List<HtmlNode>();
-            FindRecursive(this, predicate, results);
-            return results;
-        }
-
-        /// <summary>
         /// Recursively finds all nodes of the specified type.
         /// </summary>
         public IEnumerable<T> FindOfType<T>()
         {
-            foreach (object obj in Find(n => n.GetType() == typeof(T)))
-                yield return (T)obj;
+            return Find(n => n.GetType() == typeof(T)).Cast<T>();
         }
 
         /// <summary>
@@ -109,8 +98,18 @@ namespace HtmlMonkey
         /// <param name="predicate">A function that determines if the item should be included in the results.</param>
         public IEnumerable<T> FindOfType<T>(Func<T, bool> predicate) where T : HtmlNode
         {
-            foreach (object obj in Find(n => n.GetType() == typeof(T) && predicate((T)n)))
-                yield return (T)obj;
+            return Find(n => n.GetType() == typeof(T) && predicate((T)n)).Cast<T>();
+        }
+
+        /// <summary>
+        /// Recursively finds all HtmlNodes filtered by the given predicate.
+        /// </summary>
+        /// <param name="predicate">A function that determines if the item should be included in the results.</param>
+        public IEnumerable<HtmlNode> Find(Func<HtmlNode, bool> predicate)
+        {
+            List<HtmlNode> results = new List<HtmlNode>();
+            FindRecursive(this, predicate, results);
+            return results;
         }
 
         private void FindRecursive(HtmlNodeCollection nodes, Func<HtmlNode, bool> predicate, List<HtmlNode> results)

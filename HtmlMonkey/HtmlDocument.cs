@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace HtmlMonkey
 {
@@ -31,6 +32,8 @@ namespace HtmlMonkey
             return parser.Parse(File.ReadAllText(path));
         }
 
+        #region Find nodes
+
         /// <summary>
         /// Recursively finds all the element tags with the given tag name. The tag comparison is not case sensitive.
         /// </summary>
@@ -38,6 +41,18 @@ namespace HtmlMonkey
         public IEnumerable<HtmlElementNode> FindTags(string tagName)
         {
             return RootNodes.FindOfType<HtmlElementNode>(n => n.TagName.Equals(tagName, HtmlRules.TagStringComparison));
+        }
+
+        /// <summary>
+        /// Recursively finds all the element tags with the given tag name and matching the specified predicate.
+        /// The tag comparison is not case sensitive.
+        /// </summary>
+        /// <param name="tagName">Tag name to match.</param>
+        /// <param name="predicate">A function that determines if the item should be included in the results.</param>
+        public IEnumerable<HtmlElementNode> FindTags(string tagName, Func<HtmlElementNode, bool> predicate)
+        {
+            return RootNodes.FindOfType<HtmlElementNode>(n => n.TagName.Equals(tagName, HtmlRules.TagStringComparison))
+                .Where(n => predicate(n));
         }
 
         /// <summary>
@@ -65,5 +80,8 @@ namespace HtmlMonkey
         {
             return RootNodes.FindOfType<T>(predicate);
         }
+
+        #endregion
+
     }
 }
