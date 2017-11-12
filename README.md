@@ -27,6 +27,7 @@ var nodes = document.FindTags("a");
 ##### Find All Anchor Tag Nodes with an ID Attribute
 
 ```cs
+// Note: This method uses case-insensitive comparisons for both the tag and attribute
 var nodes = document.FindTags("a").Where(n => n.Attributes.ContainsKey("id"));
 ```
 
