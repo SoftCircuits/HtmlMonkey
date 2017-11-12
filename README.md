@@ -1,6 +1,6 @@
 # HtmlMonkey
 
-**NOTE: Current code was built using Visual Studio 2017 15.4.0 Preview 1.0**
+**NOTE: Current code was built using Visual Studio 2017 15.5.0 Preview 1.0**
 
 HtmlMonkey is a lightweight HTML/XML parser written in C#. It allows you to parse an HTML or XML string into a hierarchy of node objects, which can then be traversed or otherwise examined from code. In addition, the node objects can be modified or even built from scratch using code. Finally, the classes can generate the HTML or XML from the data.
 
@@ -27,6 +27,7 @@ var nodes = document.FindTags("a");
 ##### Find All Anchor Tag Nodes with an ID Attribute
 
 ```cs
+// Note: This method uses case-insensitive comparisons for both the tag and attribute
 var nodes = document.FindTags("a").Where(n => n.Attributes.ContainsKey("id"));
 ```
 
