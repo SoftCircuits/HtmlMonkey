@@ -37,6 +37,8 @@ namespace HtmlMonkey
                 // Test for CDATA segments, which we store but do not parse. This includes comments.
                 foreach (CDataDefinition definition in HtmlRules.CDataDefinitions)
                 {
+                    Debug.Assert(!string.IsNullOrEmpty(definition.StartText));
+                    Debug.Assert(definition.StartText[0] == HtmlRules.TagStart);
                     if (parser.MatchesCurrentPosition(definition.StartText, definition.IgnoreCase))
                     {
                         parentNode.Children.Add(ParseCDataNode(parser, definition));

@@ -46,6 +46,10 @@ namespace HtmlMonkey
     /// but we do not parse the contents. Examples include comments, CDATA
     /// and the content of tags with CData attribute.
     /// </summary>
+    /// <remarks>
+    /// For all entries, the StartText member must start with HtmlRules.TagStart
+    /// or else the parser can miss the segment.
+    /// </remarks>
     internal class CDataDefinition
     {
         public string StartText { get; set; }
