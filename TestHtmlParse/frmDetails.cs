@@ -15,12 +15,16 @@ namespace TestHtmlMonkey
     public partial class frmDetails : Form
     {
         private HtmlNode Node;
+        private HtmlMonkey.HtmlDocument Document;
 
-        public frmDetails(HtmlNode node)
+        public frmDetails(object node)
         {
             InitializeComponent();
             Debug.Assert(node != null);
-            Node = node;
+            if (node is HtmlNode)
+                Node = node as HtmlNode;
+            else if (node is HtmlMonkey.HtmlDocument)
+                Document = node as HtmlMonkey.HtmlDocument;
         }
 
         private void frmDetails_Load(object sender, EventArgs e)
@@ -35,14 +39,30 @@ namespace TestHtmlMonkey
             {
                 if (int.TryParse(button.Tag as string, out int value))
                 {
-                    if (value == 1)
-                        txtText.Text = Node.ToString();
-                    else if (value == 2)
-                        txtText.Text = Node.Html;
-                    else if (value == 3)
-                        txtText.Text = Node.Text;
-                    else
-                        txtText.Text = string.Empty;
+                    if (Node != null)
+                    {
+                        if (value == 1)
+                            txtText.Text = Node.ToString();
+                        else if (value == 2)
+                            txtText.Text = Node.Html;
+                        else if (value == 3)
+                            txtText.Text = Node.Text;
+                        else
+                            txtText.Text = string.Empty;
+                    }
+                    else if (Document != null)
+                    {
+                        IEnumerable<string> values;
+                        if (value == 1)
+                            values = Document.RootNodes.Select(n => n.ToString());
+                        else if (value == 2)
+                            values = Document.RootNodes.Select(n => n.Html);
+                        else if (value == 3)
+                            values = Document.RootNodes.Select(n => n.Text);
+                        else
+                            values = Enumerable.Empty<string>();
+                        txtText.Text = string.Join(string.Empty, values);
+                    }
                 }
             }
         }

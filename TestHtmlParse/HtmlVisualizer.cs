@@ -1,5 +1,6 @@
 ﻿using HtmlMonkey;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
 
@@ -12,16 +13,6 @@ namespace TestHtmlMonkey
         public HtmlVisualizer()
         {
             InitializeComponent();
-        }
-
-        public void ShowDetails()
-        {
-            TreeNode treeNode = tvwNodes.SelectedNode;
-            if (treeNode.Tag is HtmlNode node)
-            {
-                frmDetails frm = new frmDetails(node);
-                frm.ShowDialog();
-            }
         }
 
         public void ExpandAll()
@@ -37,11 +28,12 @@ namespace TestHtmlMonkey
         public void LoadDocument(HtmlMonkey.HtmlDocument document)
         {
             tvwNodes.Nodes.Clear();
-            TreeNode root = tvwNodes.Nodes.Add("[HtmlDocument]");
-            root.ImageIndex = root.SelectedImageIndex = 0;
-            LoadNodes(document.RootNodes, root);
+            TreeNode treeNode = tvwNodes.Nodes.Add("Document");
+            treeNode.Tag = document;
+            treeNode.ImageIndex = treeNode.SelectedImageIndex = GetImageIndex(document);
+            LoadNodes(document.RootNodes, treeNode);
             tvwNodes.ExpandAll();
-            root.EnsureVisible();
+            treeNode.EnsureVisible();
         }
 
         /// <summary>
@@ -82,7 +74,7 @@ namespace TestHtmlMonkey
             TreeNode treeNode = tvwNodes.SelectedNode;
             if (DisplayedNode != treeNode)
             {
-                if (treeNode?.Tag is HtmlNode node)
+                if (treeNode?.Tag is object node)
                 {
                     Visualizer visualizer = NodeVisualizer.GetVisualizer(node);
                     Debug.Assert(visualizer != null);
@@ -100,20 +92,37 @@ namespace TestHtmlMonkey
             }
         }
 
-        public int GetImageIndex(HtmlNode node)
+        private static Dictionary<Type, int> ImageIndexLookup = new Dictionary<Type, int>
         {
-            Type type = node.GetType();
-            if (type == typeof(HtmlCDataNode))
-                return 5;
-            if (type == typeof(HtmlTextNode))
-                return 4;
-            if (type == typeof(HtmlElementNode))
-                return 3;
-            if (type == typeof(XmlHeaderNode))
-                return 2;
-            if (type == typeof(HtmlHeaderNode))
-                return 1;
+            [typeof(HtmlCDataNode)] = 5,
+            [typeof(HtmlTextNode)] = 4,
+            [typeof(HtmlElementNode)] = 3,
+            [typeof(XmlHeaderNode)] = 2,
+            [typeof(HtmlHeaderNode)] = 1,
+            [typeof(HtmlMonkey.HtmlDocument)] = 0
+        };
+
+        public int GetImageIndex(object node)
+        {
+            if (ImageIndexLookup.TryGetValue(node.GetType(), out int index))
+                return index;
             return -1;
+        }
+
+        private void tvwNodes_MouseDown(object sender, MouseEventArgs e)
+        {
+            var info = tvwNodes.HitTest(e.Location);
+            tvwNodes.SelectedNode = info.Node;
+        }
+
+        private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TreeNode treeNode = tvwNodes.SelectedNode;
+            if (treeNode.Tag is object node)
+            {
+                frmDetails frm = new frmDetails(node);
+                frm.ShowDialog();
+            }
         }
     }
 }

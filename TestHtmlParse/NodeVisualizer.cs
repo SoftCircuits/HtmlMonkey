@@ -12,9 +12,9 @@ namespace TestHtmlMonkey
     /// </summary>
     public class Visualizer
     {
-        public Func<HtmlNode, string> ShortDescription { get; set; }
-        public Func<HtmlNode, string> LongDescription { get; set; }
-        public Action<HtmlNode, ListView> PopulateProperties { get; set; }
+        public Func<object, string> ShortDescription { get; set; }
+        public Func<object, string> LongDescription { get; set; }
+        public Action<object, ListView> PopulateProperties { get; set; }
     }
 
     /// <summary>
@@ -26,10 +26,17 @@ namespace TestHtmlMonkey
         private static string[] AttributeColumns = { "Attribute", "Value" };
         private static string[] ParameterColumns = { "Parameter" };
         private static string[] CDataColumns = { "Delimiter", "Value" };
+        private static string[] DocumentColumns = { "Property", "Value" };
 
         // Note: To work correctly, derived types must appear before base types.
         private static Dictionary<Type, Visualizer> VisualizerLookup = new Dictionary<Type, Visualizer>
         {
+            [typeof(HtmlMonkey.HtmlDocument)] = new Visualizer
+            {
+                ShortDescription = n => ShortDescriptionDocument(n as HtmlMonkey.HtmlDocument),
+                LongDescription = n => LongDescriptionDocument(n as HtmlMonkey.HtmlDocument),
+                PopulateProperties = (n, lvw) => PopulatePropertiesDocument(n as HtmlMonkey.HtmlDocument, lvw)
+            },
             [typeof(HtmlCDataNode)] = new Visualizer
             {
                 ShortDescription = n => ShortDescriptionCData(n as HtmlCDataNode),
@@ -66,7 +73,7 @@ namespace TestHtmlMonkey
         /// Returns a visualizer for the given node. Returns node if node is not a valid node.
         /// </summary>
         /// <param name="node">Node for which to return a visualizer.</param>
-        public static Visualizer GetVisualizer(HtmlNode node)
+        public static Visualizer GetVisualizer(object node)
         {
             if (VisualizerLookup.TryGetValue(node.GetType(), out Visualizer visualizer))
                 return visualizer;
@@ -74,17 +81,25 @@ namespace TestHtmlMonkey
             return null;
         }
 
+        private static string ShortDescriptionDocument(HtmlMonkey.HtmlDocument document) => $"[{document.GetType().ToString()}]";
         private static string ShortDescriptionDocTypeHeader(HtmlHeaderNode node) => "<!doctype>";
         private static string ShortDescriptionXmlHeader(XmlHeaderNode node) => "<?xml>";
         private static string ShortDescriptionElement(HtmlElementNode node) => $"<{node.TagName}>";
         private static string ShortDescriptionText(HtmlTextNode node) => $"\"{TruncateEncoded(node.Text, 32)}\"";
         private static string ShortDescriptionCData(HtmlCDataNode node) => $"\"{TruncateEncoded(node.Html, 32)}\"";
 
+        private static string LongDescriptionDocument(HtmlMonkey.HtmlDocument document) => $"[{document.GetType().ToString()}]";
         private static string LongDescriptionDocTypeHeader(HtmlHeaderNode node) => string.Empty;
         private static string LongDescriptionXmlHeader(XmlHeaderNode node) => string.Empty;
         private static string LongDescriptionElement(HtmlElementNode node) => string.Empty;
         private static string LongDescriptionText(HtmlTextNode node) => node.Html;
         private static string LongDescriptionCData(HtmlCDataNode node) => node.Html;
+
+        private static void PopulatePropertiesDocument(HtmlMonkey.HtmlDocument document, ListView listView)
+        {
+            InitializeListView(DocumentColumns, listView);
+            listView.Items.Add("Title").SubItems.Add(document.Title);
+        }
 
         private static void PopulatePropertiesDocTypeHeader(HtmlHeaderNode node, ListView listView)
         {

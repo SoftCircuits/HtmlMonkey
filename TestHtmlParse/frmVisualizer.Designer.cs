@@ -29,15 +29,13 @@
         private void InitializeComponent()
         {
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
+            this.htmlVisualizer1 = new TestHtmlMonkey.HtmlVisualizer();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.expandAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.collapseAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.nodeDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.htmlVisualizer1 = new TestHtmlMonkey.HtmlVisualizer();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
             this.toolStripContainer1.SuspendLayout();
@@ -61,6 +59,14 @@
             // toolStripContainer1.TopToolStripPanel
             // 
             this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.menuStrip1);
+            // 
+            // htmlVisualizer1
+            // 
+            this.htmlVisualizer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.htmlVisualizer1.Location = new System.Drawing.Point(0, 0);
+            this.htmlVisualizer1.Name = "htmlVisualizer1";
+            this.htmlVisualizer1.Size = new System.Drawing.Size(769, 515);
+            this.htmlVisualizer1.TabIndex = 0;
             // 
             // menuStrip1
             // 
@@ -93,8 +99,6 @@
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.nodeDetailsToolStripMenuItem,
-            this.toolStripMenuItem1,
             this.expandAllToolStripMenuItem,
             this.collapseAllToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
@@ -105,7 +109,7 @@
             // 
             this.expandAllToolStripMenuItem.Name = "expandAllToolStripMenuItem";
             this.expandAllToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.expandAllToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.expandAllToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.expandAllToolStripMenuItem.Text = "E&xpand All";
             this.expandAllToolStripMenuItem.Click += new System.EventHandler(this.expandAllToolStripMenuItem_Click);
             // 
@@ -113,30 +117,9 @@
             // 
             this.collapseAllToolStripMenuItem.Name = "collapseAllToolStripMenuItem";
             this.collapseAllToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F6;
-            this.collapseAllToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.collapseAllToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.collapseAllToolStripMenuItem.Text = "&Collapse All";
             this.collapseAllToolStripMenuItem.Click += new System.EventHandler(this.collapseAllToolStripMenuItem_Click);
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(163, 6);
-            // 
-            // nodeDetailsToolStripMenuItem
-            // 
-            this.nodeDetailsToolStripMenuItem.Name = "nodeDetailsToolStripMenuItem";
-            this.nodeDetailsToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F12;
-            this.nodeDetailsToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
-            this.nodeDetailsToolStripMenuItem.Text = "&Node Details";
-            this.nodeDetailsToolStripMenuItem.Click += new System.EventHandler(this.nodeDetailsToolStripMenuItem_Click);
-            // 
-            // htmlVisualizer1
-            // 
-            this.htmlVisualizer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.htmlVisualizer1.Location = new System.Drawing.Point(0, 0);
-            this.htmlVisualizer1.Name = "htmlVisualizer1";
-            this.htmlVisualizer1.Size = new System.Drawing.Size(769, 515);
-            this.htmlVisualizer1.TabIndex = 0;
             // 
             // frmVisualizer
             // 
@@ -169,7 +152,5 @@
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem expandAllToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem collapseAllToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem nodeDetailsToolStripMenuItem;
     }
 }

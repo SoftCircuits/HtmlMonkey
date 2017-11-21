@@ -23,11 +23,6 @@ namespace TestHtmlMonkey
             Close();
         }
 
-        private void nodeDetailsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            htmlVisualizer1.ShowDetails();
-        }
-
         private void expandAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
             htmlVisualizer1.ExpandAll();

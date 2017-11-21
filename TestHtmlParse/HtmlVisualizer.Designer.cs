@@ -32,13 +32,15 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HtmlVisualizer));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tvwNodes = new System.Windows.Forms.TreeView();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.lblType = new System.Windows.Forms.Label();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.lvwProperties = new System.Windows.Forms.ListView();
             this.txtText = new System.Windows.Forms.TextBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -51,6 +53,7 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -72,6 +75,7 @@
             // 
             // tvwNodes
             // 
+            this.tvwNodes.ContextMenuStrip = this.contextMenuStrip1;
             this.tvwNodes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tvwNodes.HideSelection = false;
             this.tvwNodes.ImageIndex = 0;
@@ -82,6 +86,18 @@
             this.tvwNodes.Size = new System.Drawing.Size(295, 632);
             this.tvwNodes.TabIndex = 0;
             this.tvwNodes.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvwNodes_AfterSelect);
+            this.tvwNodes.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tvwNodes_MouseDown);
+            // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "DocumentNode.png");
+            this.imageList1.Images.SetKeyName(1, "HtmlHeaderNode.png");
+            this.imageList1.Images.SetKeyName(2, "XmlHeaderNode.png");
+            this.imageList1.Images.SetKeyName(3, "ElementNode.png");
+            this.imageList1.Images.SetKeyName(4, "TextNode.png");
+            this.imageList1.Images.SetKeyName(5, "CDataNode.png");
             // 
             // splitContainer3
             // 
@@ -158,16 +174,19 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // imageList1
+            // contextMenuStrip1
             // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "DocumentNode.png");
-            this.imageList1.Images.SetKeyName(1, "HtmlHeaderNode.png");
-            this.imageList1.Images.SetKeyName(2, "XmlHeaderNode.png");
-            this.imageList1.Images.SetKeyName(3, "ElementNode.png");
-            this.imageList1.Images.SetKeyName(4, "TextNode.png");
-            this.imageList1.Images.SetKeyName(5, "CDataNode.png");
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.propertiesToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(128, 26);
+            // 
+            // propertiesToolStripMenuItem
+            // 
+            this.propertiesToolStripMenuItem.Name = "propertiesToolStripMenuItem";
+            this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.propertiesToolStripMenuItem.Text = "&Properties";
+            this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.propertiesToolStripMenuItem_Click);
             // 
             // HtmlVisualizer
             // 
@@ -189,6 +208,7 @@
             this.splitContainer2.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -204,5 +224,7 @@
         private System.Windows.Forms.Label lblType;
         private System.Windows.Forms.SplitContainer splitContainer3;
         private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem propertiesToolStripMenuItem;
     }
 }
