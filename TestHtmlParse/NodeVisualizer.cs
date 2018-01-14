@@ -88,7 +88,7 @@ namespace TestHtmlMonkey
         private static string ShortDescriptionText(HtmlTextNode node) => $"\"{TruncateEncoded(node.Text, 32)}\"";
         private static string ShortDescriptionCData(HtmlCDataNode node) => $"\"{TruncateEncoded(node.Html, 32)}\"";
 
-        private static string LongDescriptionDocument(HtmlMonkey.HtmlDocument document) => $"[{document.GetType().ToString()}]";
+        private static string LongDescriptionDocument(HtmlMonkey.HtmlDocument document) => string.Empty;
         private static string LongDescriptionDocTypeHeader(HtmlHeaderNode node) => string.Empty;
         private static string LongDescriptionXmlHeader(XmlHeaderNode node) => string.Empty;
         private static string LongDescriptionElement(HtmlElementNode node) => string.Empty;

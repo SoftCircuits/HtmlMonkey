@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace HtmlMonkey
 {
@@ -34,113 +35,115 @@ namespace HtmlMonkey
             // Loop until end of input
             while (!parser.EndOfText)
             {
-                // Test for CDATA segments, which we store but do not parse. This includes comments.
-                foreach (CDataDefinition definition in HtmlRules.CDataDefinitions)
+                if (parser.Peek() == HtmlRules.TagStart)
                 {
-                    Debug.Assert(!string.IsNullOrEmpty(definition.StartText));
-                    Debug.Assert(definition.StartText[0] == HtmlRules.TagStart);
-                    if (parser.MatchesCurrentPosition(definition.StartText, definition.IgnoreCase))
+                    // Test for CDATA segments, which we store but do not parse. This includes comments.
+                    CDataDefinition definition = HtmlRules.CDataDefinitions.FirstOrDefault(dd => parser.MatchesCurrentPosition(dd.StartText, dd.IgnoreCase));
+                    if (definition != null)
                     {
                         parentNode.Children.Add(ParseCDataNode(parser, definition));
                         continue;
                     }
-                }
 
-                if (parser.Peek() == HtmlRules.TagStart && parser.Peek(1) == HtmlRules.ForwardSlash)
-                {
                     // Closing tag
-                    parser.MoveAhead(2);
-                    tag = parser.ParseWhile(c => HtmlRules.IsTagCharacter(c));
-                    if (tag.Length > 0)
+                    if (parser.Peek(1) == HtmlRules.ForwardSlash)
                     {
-                        if (parentNode.TagName.Equals(tag, HtmlRules.TagStringComparison))
+                        parser.MoveAhead(2);
+                        tag = parser.ParseWhile(c => HtmlRules.IsTagCharacter(c));
+                        if (tag.Length > 0)
                         {
-                            // Should never have matched parent if the top-level node
-                            Debug.Assert(!parentNode.IsTopLevelNode);
-                            parentNode = parentNode.ParentNode;
-                        }
-                        else
-                        {
-                            // Handle mismatched closing tag
-                            int tagPriority = HtmlRules.GetTagPriority(tag);
-                            while (!parentNode.IsTopLevelNode && tagPriority > HtmlRules.GetTagPriority(parentNode.TagName))
-                                parentNode = parentNode.ParentNode;
                             if (parentNode.TagName.Equals(tag, HtmlRules.TagStringComparison))
                             {
+                                // Should never have matched parent if the top-level node
                                 Debug.Assert(!parentNode.IsTopLevelNode);
                                 parentNode = parentNode.ParentNode;
                             }
-                        }
-                    }
-                    parser.MoveTo(HtmlRules.TagEnd);
-                    parser.MoveAhead();
-                }
-                else if (ParseTag(parser, out tag))
-                {
-                    // Open tag
-                    HtmlTagFlag flags = HtmlRules.GetTagFlags(tag);
-                    if (flags.HasFlag(HtmlTagFlag.HtmlHeader))
-                    {
-                        parentNode.Children.Add(ParseHtmlHeader(parser));
-                    }
-                    else if (flags.HasFlag(HtmlTagFlag.XmlHeader))
-                    {
-                        parentNode.Children.Add(ParseXmlHeader(parser));
-                    }
-                    else
-                    {
-                        // Parse attributes
-                        HtmlAttributeCollection attributes = ParseAttributes(parser);
-
-                        // Parse rest of tag
-                        if (parser.Peek() == HtmlRules.ForwardSlash)
-                        {
-                            parser.MoveAhead();
-                            parser.MovePastWhitespace();
-                            selfClosing = true;
-                        }
-                        else
-                        {
-                            selfClosing = false;
+                            else
+                            {
+                                // Handle mismatched closing tag
+                                int tagPriority = HtmlRules.GetTagPriority(tag);
+                                while (!parentNode.IsTopLevelNode && tagPriority > HtmlRules.GetTagPriority(parentNode.TagName))
+                                    parentNode = parentNode.ParentNode;
+                                if (parentNode.TagName.Equals(tag, HtmlRules.TagStringComparison))
+                                {
+                                    Debug.Assert(!parentNode.IsTopLevelNode);
+                                    parentNode = parentNode.ParentNode;
+                                }
+                            }
                         }
                         parser.MoveTo(HtmlRules.TagEnd);
                         parser.MoveAhead();
+                        continue;
+                    }
 
-                        // Add node
-                        HtmlElementNode node = new HtmlElementNode(tag, attributes);
-                        while (!HtmlRules.TagMayContain(parentNode.TagName, tag) && !parentNode.IsTopLevelNode)
+                    // Open tag
+                    if (ParseTag(parser, out tag))
+                    {
+                        HtmlTagFlag flags = HtmlRules.GetTagFlags(tag);
+                        if (flags.HasFlag(HtmlTagFlag.HtmlHeader))
                         {
-                            Debug.Assert(parentNode.ParentNode != null);
-                            parentNode = parentNode.ParentNode;
+                            parentNode.Children.Add(ParseHtmlHeader(parser));
                         }
-                        parentNode.Children.Add(node);
-
-                        if (flags.HasFlag(HtmlTagFlag.CData))
+                        else if (flags.HasFlag(HtmlTagFlag.XmlHeader))
                         {
-                            // CDATA tags are treated as elements but we store and do not parse the inner content
-                            if (!selfClosing)
-                            {
-                                if (ParseToClosingTag(parser, tag, out string content) && content.Length > 0)
-                                    node.Children.Add(new HtmlCDataNode(string.Empty, string.Empty, content));
-                            }
+                            parentNode.Children.Add(ParseXmlHeader(parser));
                         }
                         else
                         {
-                            if (selfClosing && flags.HasFlag(HtmlTagFlag.NoSelfClosing))
+                            // Parse attributes
+                            HtmlAttributeCollection attributes = ParseAttributes(parser);
+
+                            // Parse rest of tag
+                            if (parser.Peek() == HtmlRules.ForwardSlash)
+                            {
+                                parser.MoveAhead();
+                                parser.MovePastWhitespace();
+                                selfClosing = true;
+                            }
+                            else
+                            {
                                 selfClosing = false;
-                            if (!selfClosing && !flags.HasFlag(HtmlTagFlag.NoChildren))
-                                parentNode = node;  // Node becomes new parent
+                            }
+                            parser.MoveTo(HtmlRules.TagEnd);
+                            parser.MoveAhead();
+
+                            // Add node
+                            HtmlElementNode node = new HtmlElementNode(tag, attributes);
+                            while (!HtmlRules.TagMayContain(parentNode.TagName, tag) && !parentNode.IsTopLevelNode)
+                            {
+                                Debug.Assert(parentNode.ParentNode != null);
+                                parentNode = parentNode.ParentNode;
+                            }
+                            parentNode.Children.Add(node);
+
+                            if (flags.HasFlag(HtmlTagFlag.CData))
+                            {
+                                // CDATA tags are treated as elements but we store and do not parse the inner content
+                                if (!selfClosing)
+                                {
+                                    if (ParseToClosingTag(parser, tag, out string content) && content.Length > 0)
+                                        node.Children.Add(new HtmlCDataNode(string.Empty, string.Empty, content));
+                                }
+                            }
+                            else
+                            {
+                                if (selfClosing && flags.HasFlag(HtmlTagFlag.NoSelfClosing))
+                                    selfClosing = false;
+                                if (!selfClosing && !flags.HasFlag(HtmlTagFlag.NoChildren))
+                                    parentNode = node;  // Node becomes new parent
+                            }
                         }
+                        continue;
                     }
                 }
-                else
-                {
-                    // Add text node
-                    int start = parser.Position;
-                    parser.MoveTo(HtmlRules.TagStart);
-                    Debug.Assert(parser.Position > start);
-                    parentNode.Children.Add(new HtmlTextNode(parser.Extract(start, parser.Position)));
-                }
+
+                // Text node
+                int start = parser.Position;
+                // Text must be at least 1 character (handle '<' that is not part of a tag)
+                parser.MoveAhead();
+                parser.MoveTo(HtmlRules.TagStart);
+                Debug.Assert(parser.Position > start);
+                parentNode.Children.Add(new HtmlTextNode(parser.Extract(start, parser.Position)));
             }
 
             //
@@ -157,11 +160,9 @@ namespace HtmlMonkey
         private bool ParseTag(TextParser parser, out string tag)
         {
             tag = null;
-
-            if (parser.Peek() != HtmlRules.TagStart)
-                return false;
-
             int pos = 0;
+
+            Debug.Assert(parser.Peek() == HtmlRules.TagStart);
             char c = parser.Peek(++pos);
             if (c == '!' || c == '?')
                 c = parser.Peek(++pos);

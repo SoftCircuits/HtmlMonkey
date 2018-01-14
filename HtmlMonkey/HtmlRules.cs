@@ -106,6 +106,10 @@ namespace HtmlMonkey
         {
             // Characters that are not valid within tag and attribute names (excluding whitespace and control characters)
             InvalidChars = new HashSet<char>();
+
+            InvalidChars.Add('-');
+            InvalidChars.Add('<');
+
             InvalidChars.Add(' ');
             InvalidChars.Add('"');
             InvalidChars.Add('\'');
