@@ -23,12 +23,39 @@ namespace HtmlMonkey
         public override string ToString()
         {
             StringBuilder builder = new StringBuilder();
-            foreach (var value in Values)
+            foreach (HtmlAttribute attribute in Values)
             {
                 builder.Append(' ');
-                builder.Append(value.ToString());
+                builder.Append(attribute.ToString());
             }
             return builder.ToString();
+        }
+
+        public new HtmlAttribute this[string key]
+        {
+            get
+            {
+                return TryGetValue(key, out HtmlAttribute value) ? value : null;
+            }
+            set
+            {
+                base[key] = value;
+            }
+        }
+
+        /// <summary>
+        /// Adds an attribute to the collection. If the attribute
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        public new void Add(string key, HtmlAttribute value)
+        {
+            if (key == null)
+                throw new ArgumentNullException(nameof(key));
+
+            // Ignore duplicate attributes
+            if (!ContainsKey(key))
+                base.Add(key, value);
         }
     }
 }
