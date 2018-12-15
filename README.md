@@ -1,10 +1,23 @@
 # HtmlMonkey
 
-**NOTE: Current code was built using Visual Studio 2017 15.5.0 Preview 1.0**
-
 HtmlMonkey is a lightweight HTML/XML parser written in C#. It allows you to parse an HTML or XML string into a hierarchy of node objects, which can then be traversed or otherwise examined from code. In addition, the node objects can be modified or even built from scratch using code. Finally, the classes can generate the HTML or XML from the data.
 
 The code also include a WinForms application to display the parsed data nodes. This was mostly done for testing the parser, but offers some functionality that may be useful for inspecting the original markup.
+
+##### Parse an HTML String
+
+```cs
+// Note: We specify the HtmlMonkey namespace below because
+// .NET also has an HtmlDocument class
+string html = "...";
+HtmlMonkey.HtmlDocument document = HtmlMonkey.HtmlDocument.FromHtml(html);
+```
+
+## Using Selectors
+
+HtmlMonkey now supports a modified subset of jQuery selectors to find nodes.
+
+
 
 At this point, the public interface is rather small. Here are a few starter examples.
 
