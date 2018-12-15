@@ -22,7 +22,7 @@ HtmlMonkey.HtmlDocument document = HtmlMonkey.HtmlDocument.FromHtml(html);
 
 HtmlMonkey now supports a modified subset of jQuery selectors to find nodes.
 
-##### Tag Names
+##### Specifying Tag Names
 
 You can specify a tag name to return all the nodes with that tag.
 
@@ -30,14 +30,25 @@ You can specify a tag name to return all the nodes with that tag.
 ```cs
 // Get all <p> tags in the document. Search is not case-sensitive.
 IEnumerable<HtmlElementNode> nodes = document.Find("p");
+
 // Get all nodes that are either <p>, <div> or <a> tags in the document.
 nodes = document.Find("p, div, a");
+
 // Get all nodes in the document.
 // Same as not specifying a tag name
 nodes = document.Find("*");
 ```
 
-#### Ids, Classes
+#### Specifying Attributes
+
+There are several ways to search for nodes with specific attributes. You can use the pound (#), period (.) or colon (:) to specify a value for the `id`, `class` or `type` attribute.
+
+**Example 3**
+```cs
+IEnumerable<HtmlElementNode> nodes = document.Find("#");
+```
+
+
 At this point, the public interface is rather small. Here are a few starter examples.
 
 ##### Parse an HTML String
