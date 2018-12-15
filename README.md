@@ -80,6 +80,22 @@ nodes = document.Find("div span");
 nodes = document.Find("div > span");
 ```
 
+#### Selector Performance
+
+Obviously, there is some overhead parsing selectors. If you want to use the same selectors more than once, you can optimize your code by parsing the selectors into data structures and then passing those data structures to find nodes. The following code is further optimized by narrowing the nodes down to some container nodes and search them.
+
+```cs
+// Parse selectors into SelectorCollections
+SelectorCollection containerSelectors = Selector.ParseSelector("div.container");
+SelectorCollection itemSelectors = Selector.ParseSelector("p.item");
+
+// Search document for container nodes
+IEnumerable<HtmlElementNode> containerNodes = containerSelect.Find(document.RootNodes);
+
+// Finally, search container nodes for item nodes
+IEnumerable<HtmlElementNode> itemNodes = itemSelectors.Find(containerNodes);
+```
+
 #### Additional Examples
 
 ```cs
@@ -98,8 +114,8 @@ nodes = document.Find("a[href:=\"^(http:\\/\\/|https:\\/\\/)?(www\\.)?blackbeltc
 `HtmlDocument.Find()` is overloaded to allow a predicate argument instead of a selector.
 
 ```cs
-// Returns all nodes that are the first node 
-IEnumerable<HtmlNode> nodes = document.FindOfType<HtmlTextNode>(n => n.PrevNode == null);
+// Returns all nodes that are the first node of its parent
+IEnumerable<HtmlNode> nodes = document.Find(n => n.PrevNode == null);
 ```
 
 In addition, there is an `HtmlDocument.FindOfType()` method.
