@@ -60,13 +60,14 @@ IEnumerable<HtmlElementNode> nodes = document.Find("p[id=\"center-ad\"]");
 // Quotes within the square brackets are optional if the value contains no whitespace or most punctuation.
 nodes = document.Find("p[id=center-ad][class=align-right]");
 
-// Get any <p> tags with the attribute data-id with a value that matches the regular
-// expression "abc-\d+"
-nodes = document.Find("p[data-id:=\"abc-\\d+\"]");
-
 // Returns all <a> tags that have an href attribute
 // The value of that attribute does not matter
 nodes = document.Find("a[href]");
+
+// Get any <p> tags with the attribute data-id with a value that matches the regular
+// expression "abc-\d+"
+// Note case-sensitive
+nodes = document.Find("p[data-id:=\"abc-\\d+\"]");
 
 // Finds all <a> links that link to blackbeltcoder.com
 // Uses a regular expression to allow optional http:// or https://, and www. prefix
