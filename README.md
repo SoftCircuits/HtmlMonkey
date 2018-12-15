@@ -93,7 +93,7 @@ IEnumerable<HtmlElementNode> nodes = document.Find("a[href]");
 nodes = document.Find("a[href:=\"^(http:\\/\\/|https:\\/\\/)?(www\\.)?blackbeltcoder.com\"]");
 ```
 
-#### Other Ways to Find Nodes
+## Other Ways to Find Nodes
 
 `HtmlDocument.Find()` is overloaded to allow a predicate argument instead.
 
