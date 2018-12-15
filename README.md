@@ -57,6 +57,7 @@ For greater control over attributes, you can use square brackets ([]). This is s
 IEnumerable<HtmlElementNode> nodes = document.Find("p[id=\"center-ad\"]");
 
 // Get any <p> tags that have both attributes id="center-ad" and class="align-right"
+// Quotes within the square brackets are optional if the value contains no whitespace or most punctuation.
 nodes = document.Find("p[id=center-ad][class=align-right]");
 
 // Get any <p> tags with the attribute data-id with a value that matches the regular
@@ -72,8 +73,6 @@ nodes = document.Find("a[href]");
 // This example is also not case-sensitive
 nodes = document.Find("a[href:=\"^(http:\\/\\/|https:\\/\\/)?(www\\.)?blackbeltcoder.com\"]");
 ```
-
-Note that the quotes within the square brackets are optional if the value contains no whitespace or most punctuation.
 
 #### Multiple Selectors
 
