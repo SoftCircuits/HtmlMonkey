@@ -30,19 +30,14 @@ You can specify a tag name to return all the nodes with that tag.
 ```cs
 // Get all <p> tags in the document. Search is not case-sensitive.
 IEnumerable<HtmlElementNode> nodes = document.Find("p");
-```
-**Example 3**
-```cs
 // Get all nodes that are either <p>, <div> or <a> tags in the document.
 nodes = document.Find("p, div, a");
-```
-**Example 4**
-```cs
 // Get all nodes in the document.
 // Same as not specifying a tag name
 nodes = document.Find("*");
 ```
 
+#### Ids, Classes
 At this point, the public interface is rather small. Here are a few starter examples.
 
 ##### Parse an HTML String
