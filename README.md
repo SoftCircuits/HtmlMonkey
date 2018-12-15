@@ -82,7 +82,7 @@ nodes = document.Find("div > span");
 
 #### Selector Performance
 
-Obviously, there is some overhead parsing selectors. If you want to use the same selectors more than once, you can optimize your code by parsing the selectors into data structures and then passing those data structures to find nodes. The following code is further optimized by narrowing the nodes down to some container nodes and search them.
+Obviously, there is some overhead parsing selectors. If you want to use the same selectors more than once, you can optimize your code by parsing the selectors into data structures and then passing those data structures to the find methods. The following code is further optimized by narrowing the nodes down to some container nodes and then searching them.
 
 ```cs
 // Parse selectors into SelectorCollections
