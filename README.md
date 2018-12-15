@@ -12,6 +12,7 @@ The code also include a WinForms application to display the parsed data nodes. T
 string html = "...";   // HTML markup
 HtmlMonkey.HtmlDocument document = HtmlMonkey.HtmlDocument.FromHtml(html);
 ```
+**Example 1**
 
 ## Using Selectors
 
@@ -25,11 +26,12 @@ You can specify a tag name to return all the nodes with that tag.
 // Get all <p> tags in the document. Search is not case-sensitive.
 IEnumerable<HtmlElementNode> nodes = document.Find("p");
 ```
+**Example 2**
 ```cs
 // Get all nodes that are either <p>, <div> or <a> tags in the document.
 nodes = document.Find("p, div, a");
-
-
+```
+**Example 3**
 
 At this point, the public interface is rather small. Here are a few starter examples.
 
