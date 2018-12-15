@@ -10,7 +10,6 @@ Once you have aquired an HTML file, you can use either of the static methods `Ht
 
 ##### Parse an HTML String
 
-**Example 1**
 ```cs
 // Note: We specify the HtmlMonkey namespace below because
 // .NET also has an HtmlDocument class
@@ -26,7 +25,6 @@ HtmlMonkey now supports a modified subset of jQuery selectors to find nodes.
 
 You can specify a tag name to return all the nodes with that tag.
 
-**Example 2**
 ```cs
 // Get all <p> tags in the document. Search is not case-sensitive
 IEnumerable<HtmlElementNode> nodes = document.Find("p");
@@ -40,7 +38,6 @@ nodes = document.Find("*");
 
 There are several ways to search for nodes with specific attributes. You can use the pound (#), period (.) or colon (:) to specify a value for the `id`, `class` or `type` attribute.
 
-**Example 3**
 ```cs
 // Get any nodes with the attribute id="center-ad"
 IEnumerable<HtmlElementNode> nodes = document.Find("#center-ad");
@@ -54,7 +51,6 @@ nodes = document.Find("input:button");
 
 For greater control over attributes, you can use square brackets ([]). This is similar to specifying attributes in jQuery, but there are some differences. The first difference is that all the variations for finding a match at the start, middle or end are not supported by HtmlMonkey. However, to make up for this limitation, you can use the `:=` operator to specify that the value is a regular expression and the code will match if the attribute value matches that regular expression.
 
-**Example 4**
 ```cd
 // Get any <p> tags with the attribute id="center-ad"
 IEnumerable<HtmlElementNode> nodes = document.Find("p[id="center-ad"]);
@@ -86,10 +82,17 @@ nodes = document.Find("div > span");
 
 #### Additional Examples
 
+```cs
+// Returns all <a> tags that have an href attribute
+IEnumerable<HtmlElementNode> nodes = document.Find("a[href]");
+```
+```cs
+// Finds all <a> links that link to blackbeltcoder.com
+// Uses regular expressions to allow optional http, https, or www prefix
+nodes = document.Find("a[href:=\"^(http:\\/\\/|https:\\/\\/)?(www\\.)?blackbeltcoder.com\"]");
+```
 
-
-
-
+----------
 
 At this point, the public interface is rather small. Here are a few starter examples.
 
