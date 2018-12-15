@@ -8,7 +8,7 @@ The code also include a WinForms application to display the parsed data nodes. T
 
 Once you have aquired an HTML file, you can use either of the static methods `HtmlDocument.FromHtml()` or `HtmlDocument.FromFile()` to parse the HTML and create an `HtmlDocument` object.
 
-##### Parse an HTML String
+#### Parse an HTML String
 
 ```cs
 // Note: We specify the HtmlMonkey namespace below because
@@ -21,7 +21,7 @@ HtmlMonkey.HtmlDocument document = HtmlMonkey.HtmlDocument.FromHtml(html);
 
 HtmlMonkey now supports a modified subset of jQuery selectors to find nodes.
 
-##### Specifying Tag Names
+#### Specifying Tag Names
 
 You can specify a tag name to return all the nodes with that tag.
 
