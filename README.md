@@ -28,11 +28,8 @@ You can specify a tag name to return all the nodes with that tag.
 
 **Example 2**
 ```cs
-// Get all <p> tags in the document. Search is not case-sensitive.
+// Get all <p> tags in the document. Search is not case-sensitive
 IEnumerable<HtmlElementNode> nodes = document.Find("p");
-
-// Get all nodes that are either <p>, <div> or <a> tags in the document.
-nodes = document.Find("p, div, a");
 
 // Get all nodes in the document.
 // Same as not specifying a tag name
@@ -54,6 +51,44 @@ nodes = document.Find("div.align-right");
 // All all <input> tags with the attribute type="button"
 nodes = document.Find("input:button");
 ```
+
+For greater control over attributes, you can use square brackets ([]). This is similar to specifying attributes in jQuery, but there are some differences. The first difference is that all the variations for finding a match at the start, middle or end are not supported by HtmlMonkey. However, to make up for this limitation, you can use the `:=` operator to specify that the value is a regular expression and the code will match if the attribute value matches that regular expression.
+
+**Example 4**
+```cd
+// Get any <p> tags with the attribute id="center-ad"
+IEnumerable<HtmlElementNode> nodes = document.Find("p[id="center-ad"]);
+
+// Get any <p> tags that have both attributes id="center-ad" and class="align-right"
+nodes = document.Find("p[id=center-ad][class=align-right]);
+
+// Get any <p> tags with the attribute data-id with a value that matches the regular
+// expression "abc-\d+"
+nodes = document.Find("p[data-id:="abc-\\d+"]);
+```
+
+The quotes within the square brackets are optional if the value contains no whitespace or most punctuation. In addition, if there is no equal sign within the square brackets, the code simply checks if the attribute exists without regard to its value.
+
+#### Multiple Selectors
+
+There are several cases where you can specify multiple selectors.
+
+```cs
+// Returns all <a>, <div> and <p> tags
+IEnumerable<HtmlElementNode> nodes = document.Find("a, div, p");
+
+// Returns all <span> tags that are descendants of a <div> tag
+nodes = document.Find("div span");
+
+// Returns all <span> tags that are a direct descendant of a <div> tag
+nodes = document.Find("div > span");
+```
+
+#### Additional Examples
+
+
+
+
 
 
 At this point, the public interface is rather small. Here are a few starter examples.
