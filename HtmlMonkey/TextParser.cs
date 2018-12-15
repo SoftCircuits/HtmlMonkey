@@ -1,5 +1,9 @@
-﻿using System;
-using System.Diagnostics;
+﻿/////////////////////////////////////////////////////////////
+// HTML Monkey
+// Copyright (c) 2018 Jonathan Wood
+// http://www.softcircuits.com, http://www.blackbeltcoder.com
+//
+using System;
 using System.Linq;
 using System.Text;
 

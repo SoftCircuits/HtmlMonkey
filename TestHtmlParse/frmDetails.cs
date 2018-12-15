@@ -42,7 +42,7 @@ namespace TestHtmlMonkey
                     if (Node != null)
                     {
                         if (value == 1)
-                            txtText.Text = Node.ToString();
+                            txtText.Text = Node.OuterHtml;
                         else if (value == 2)
                             txtText.Text = Node.Html;
                         else if (value == 3)

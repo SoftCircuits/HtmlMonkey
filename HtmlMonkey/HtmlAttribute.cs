@@ -1,4 +1,10 @@
-﻿namespace HtmlMonkey
+﻿/////////////////////////////////////////////////////////////
+// HTML Monkey
+// Copyright (c) 2018 Jonathan Wood
+// http://www.softcircuits.com, http://www.blackbeltcoder.com
+//
+
+namespace HtmlMonkey
 {
     /// <summary>
     /// Class that represents a single element attribute.
@@ -19,7 +25,10 @@
 
         public override string ToString()
         {
-            return (Value != null) ? $"{Name}=\"{Value}\"" : Name;
+            string name = Name ?? "(null)";
+            return (Value != null) ?
+                string.Format("{0}=\"{1}\"", name, Value) :
+                name;
         }
     }
 }

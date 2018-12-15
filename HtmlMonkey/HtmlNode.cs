@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿/////////////////////////////////////////////////////////////
+// HTML Monkey
+// Copyright (c) 2018 Jonathan Wood
+// http://www.softcircuits.com, http://www.blackbeltcoder.com
+//
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -10,9 +15,10 @@ namespace HtmlMonkey
     /// Base class for all HTML nodes.
     /// </summary>
     /// <remarks>
-    /// Html: Inner HTML markup
-    /// Text: Inner text
-    /// ToString(): HTML markup (including outer tag, if any)
+    /// Html:       Inner HTML markup
+    /// OuterHtml:  Full HTML markup, including tag itself
+    /// Text:       Inner text
+    /// ToString(): Tag HTML
     /// </remarks>
     public abstract class HtmlNode
     {
@@ -26,6 +32,11 @@ namespace HtmlMonkey
         {
             get { return string.Empty; }
             set { }
+        }
+
+        public virtual string OuterHtml
+        {
+            get { return string.Empty; }
         }
 
         public virtual string Text
@@ -47,16 +58,21 @@ namespace HtmlMonkey
             Parameters = new List<string>();
         }
 
-        public override string ToString()
+        public override string OuterHtml
         {
-            StringBuilder builder = new StringBuilder();
-            builder.Append(HtmlRules.TagStart);
-            builder.Append(HtmlRules.HtmlHeaderTag);
-            foreach (string parameter in Parameters)
-                builder.AppendFormat(" {0}", parameter);
-            builder.Append(HtmlRules.TagEnd);
-            return builder.ToString();
+            get
+            {
+                StringBuilder builder = new StringBuilder();
+                builder.Append(HtmlRules.TagStart);
+                builder.Append(HtmlRules.HtmlHeaderTag);
+                foreach (string parameter in Parameters)
+                    builder.AppendFormat(" {0}", parameter);
+                builder.Append(HtmlRules.TagEnd);
+                return builder.ToString();
+            }
         }
+
+        public override string ToString() => OuterHtml;
     }
 
     /// <summary>
@@ -71,16 +87,21 @@ namespace HtmlMonkey
             Attributes = attributes;
         }
 
-        public override string ToString()
+        public override string OuterHtml
         {
-            StringBuilder builder = new StringBuilder();
-            builder.Append(HtmlRules.TagStart);
-            builder.Append(HtmlRules.XmlHeaderTag);
-            builder.Append(Attributes.ToString());
-            builder.Append(" ?");
-            builder.Append(HtmlRules.TagEnd);
-            return builder.ToString();
+            get
+            {
+                StringBuilder builder = new StringBuilder();
+                builder.Append(HtmlRules.TagStart);
+                builder.Append(HtmlRules.XmlHeaderTag);
+                builder.Append(Attributes.ToString());
+                builder.Append(" ?");
+                builder.Append(HtmlRules.TagEnd);
+                return builder.ToString();
+            }
         }
+
+        public override string ToString() => OuterHtml;
     }
 
     /// <summary>
@@ -127,7 +148,7 @@ namespace HtmlMonkey
                 {
                     StringBuilder builder = new StringBuilder();
                     foreach (var node in Children)
-                        builder.Append(node.ToString());
+                        builder.Append(node.OuterHtml);
                     return builder.ToString();
                 }
                 return string.Empty;
@@ -144,6 +165,41 @@ namespace HtmlMonkey
             }
         }
 
+        public override string OuterHtml
+        {
+            get
+            {
+                StringBuilder builder = new StringBuilder();
+
+                // Open tag
+                builder.Append(HtmlRules.TagStart);
+                builder.Append(TagName);
+                // Note: Attributes returned in non-deterministic order ???
+                builder.Append(Attributes.ToString());
+
+                // Finish self-closing tag
+                if (IsSelfClosing)
+                {
+                    Debug.Assert(!Children.Any());
+                    builder.Append(' ');
+                    builder.Append(HtmlRules.ForwardSlash);
+                    builder.Append(HtmlRules.TagEnd);
+                }
+                else
+                {
+                    builder.Append(HtmlRules.TagEnd);
+                    // Inner HTML
+                    builder.Append(Html);
+                    // Closing tag
+                    builder.Append(HtmlRules.TagStart);
+                    builder.Append(HtmlRules.ForwardSlash);
+                    builder.Append(TagName);
+                    builder.Append(HtmlRules.TagEnd);
+                }
+                return builder.ToString();
+            }
+        }
+
         public override string ToString()
         {
             StringBuilder builder = new StringBuilder();
@@ -153,28 +209,9 @@ namespace HtmlMonkey
             builder.Append(TagName);
             // Note: Attributes returned in non-deterministic order ???
             builder.Append(Attributes.ToString());
-
-            // Finish self-closing tag
-            if (IsSelfClosing)
-            {
-                Debug.Assert(!Children.Any());
-                builder.Append(' ');
-                builder.Append(HtmlRules.ForwardSlash);
-                builder.Append(HtmlRules.TagEnd);
-            }
-            else
-            {
-                builder.Append(HtmlRules.TagEnd);
-
-                // Inner HTML
-                builder.Append(Html);
-
-                // Closing tag
-                builder.Append(HtmlRules.TagStart);
-                builder.Append(HtmlRules.ForwardSlash);
-                builder.Append(TagName);
-                builder.Append(HtmlRules.TagEnd);
-            }
+            builder.Append(' ');
+            builder.Append(HtmlRules.ForwardSlash);
+            builder.Append(HtmlRules.TagEnd);
             return builder.ToString();
         }
     }
@@ -195,6 +232,11 @@ namespace HtmlMonkey
         {
             get { return Content; }
             set { Content = value; }
+        }
+
+        public override string OuterHtml
+        {
+            get => Html;
         }
 
         public override string Text
@@ -221,15 +263,6 @@ namespace HtmlMonkey
         {
             Prefix = prefix;
             Suffix = suffix;
-        }
-
-        /// <summary>
-        /// CData displays nothing as text, since we don't know if it's text or not.
-        /// </summary>
-        public override string Text
-        {
-            get { return string.Empty; }
-            set { }
         }
 
         public override string ToString() => $"{Prefix}{base.ToString()}{Suffix}";

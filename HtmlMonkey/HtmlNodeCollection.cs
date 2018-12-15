@@ -1,8 +1,10 @@
-﻿using System;
-using System.Collections;
+﻿/////////////////////////////////////////////////////////////
+// HTML Monkey
+// Copyright (c) 2018 Jonathan Wood
+// http://www.softcircuits.com, http://www.blackbeltcoder.com
+//
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 namespace HtmlMonkey
 {
@@ -10,27 +12,23 @@ namespace HtmlMonkey
     /// Represents a IEnumerable collection of nodes. Includes methods
     /// for recursively finding nodes.
     /// </summary>
-    public class HtmlNodeCollection : IEnumerable<HtmlNode>
+    public class HtmlNodeCollection : List<HtmlNode>
     {
         private HtmlElementNode ParentNode;
-        private List<HtmlNode> Nodes;
 
         public HtmlNodeCollection(HtmlElementNode parentNode)
         {
-            Nodes = new List<HtmlNode>();
             ParentNode = parentNode;
         }
 
-        public HtmlNode this[int index] => Nodes[index];
-
         #region Add/remove nodes
 
-        public void Add(HtmlNode node)
+        public new void Add(HtmlNode node)
         {
-            Debug.Assert(!Nodes.Contains(node));
-            if (Nodes.Count > 0)
+            Debug.Assert(!Contains(node));
+            if (Count > 0)
             {
-                HtmlNode lastNode = Nodes[Nodes.Count - 1];
+                HtmlNode lastNode = this[Count - 1];
 
                 // Note: We must detect the derived type and not a base type here
                 if (node.GetType() == typeof(HtmlTextNode) && lastNode.GetType() == typeof(HtmlTextNode))
@@ -49,87 +47,33 @@ namespace HtmlMonkey
             node.NextNode = null;
             node.ParentNode = ParentNode;
 
-            Nodes.Add(node);
+            base.Add(node);
         }
 
-        public void AddRange(IEnumerable<HtmlNode> nodes)
+        public new void AddRange(IEnumerable<HtmlNode> nodes)
         {
             foreach (HtmlNode node in nodes)
                 Add(node);
         }
 
-        public void Remove(HtmlNode node)
+        public new void Remove(HtmlNode node)
         {
-            Debug.Assert(Nodes.Contains(node));
-            RemoveAt(Nodes.IndexOf(node));
+            Debug.Assert(Contains(node));
+            RemoveAt(IndexOf(node));
         }
 
-        public void RemoveAt(int index)
+        public new void RemoveAt(int index)
         {
-            Debug.Assert(index >= 0 && index < Nodes.Count);
-            HtmlNode node = Nodes[index];
-            if (index > 0)
-                Nodes[index - 1].NextNode = node.NextNode;
-            if (index < (Nodes.Count - 1))
-                Nodes[index + 1].PrevNode = node.PrevNode;
-            Nodes.RemoveAt(index);
-        }
-
-        public void Clear()
-        {
-            Nodes.Clear();
-        }
-
-        #endregion
-
-        #region Find nodes
-
-        /// <summary>
-        /// Recursively finds all nodes of the specified type.
-        /// </summary>
-        public IEnumerable<T> FindOfType<T>()
-        {
-            return Find(n => n.GetType() == typeof(T)).Cast<T>();
-        }
-
-        /// <summary>
-        /// Recursively finds all nodes of the specified type filtered by the given predicate.
-        /// </summary>
-        /// <param name="predicate">A function that determines if the item should be included in the results.</param>
-        public IEnumerable<T> FindOfType<T>(Func<T, bool> predicate) where T : HtmlNode
-        {
-            return Find(n => n.GetType() == typeof(T) && predicate((T)n)).Cast<T>();
-        }
-
-        /// <summary>
-        /// Recursively finds all HtmlNodes filtered by the given predicate.
-        /// </summary>
-        /// <param name="predicate">A function that determines if the item should be included in the results.</param>
-        public IEnumerable<HtmlNode> Find(Func<HtmlNode, bool> predicate)
-        {
-            List<HtmlNode> results = new List<HtmlNode>();
-            FindRecursive(this, predicate, results);
-            return results;
-        }
-
-        private void FindRecursive(HtmlNodeCollection nodes, Func<HtmlNode, bool> predicate, List<HtmlNode> results)
-        {
-            foreach (var node in nodes)
+            if (index >= 0 && index < Count)
             {
-                if (predicate(node))
-                    results.Add(node);
-                if (node is HtmlElementNode elementNode)
-                    FindRecursive(elementNode.Children, predicate, results);
+                HtmlNode node = this[index];
+                if (index > 0)
+                    this[index - 1].NextNode = node.NextNode;
+                if (index < (Count - 1))
+                    this[index + 1].PrevNode = node.PrevNode;
+                base.RemoveAt(index);
             }
         }
-
-        #endregion
-
-        #region IEnumerable interface
-
-        public IEnumerator<HtmlNode> GetEnumerator() => Nodes.GetEnumerator();
-
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         #endregion
 

@@ -1,4 +1,9 @@
-﻿using System;
+﻿/////////////////////////////////////////////////////////////
+// HTML Monkey
+// Copyright (c) 2018 Jonathan Wood
+// http://www.softcircuits.com, http://www.blackbeltcoder.com
+//
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -20,17 +25,29 @@ namespace HtmlMonkey
         {
         }
 
-        public override string ToString()
+        /// <summary>
+        /// Adds an attribute to the collection. If the attribute already exists in the
+        /// collection, this call is ignored.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        public new void Add(string key, HtmlAttribute value)
         {
-            StringBuilder builder = new StringBuilder();
-            foreach (HtmlAttribute attribute in Values)
-            {
-                builder.Append(' ');
-                builder.Append(attribute.ToString());
-            }
-            return builder.ToString();
+            if (key == null)
+                throw new ArgumentNullException(nameof(key));
+
+            // Ignore duplicate attributes
+            if (!ContainsKey(key))
+                base.Add(key, value);
         }
 
+        /// <summary>
+        /// Returns the <see cref="HtmlAttribute"/> with the given name. Unlike
+        /// the standard <c>Dictionary</c>, this returns null rather than throwing
+        /// an exception if the attribute does not exist.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public new HtmlAttribute this[string key]
         {
             get
@@ -43,19 +60,15 @@ namespace HtmlMonkey
             }
         }
 
-        /// <summary>
-        /// Adds an attribute to the collection. If the attribute
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
-        public new void Add(string key, HtmlAttribute value)
+        public override string ToString()
         {
-            if (key == null)
-                throw new ArgumentNullException(nameof(key));
-
-            // Ignore duplicate attributes
-            if (!ContainsKey(key))
-                base.Add(key, value);
+            StringBuilder builder = new StringBuilder();
+            foreach (HtmlAttribute attribute in Values)
+            {
+                builder.Append(' ');
+                builder.Append(attribute.ToString());
+            }
+            return builder.ToString();
         }
     }
 }
