@@ -89,64 +89,31 @@ IEnumerable<HtmlElementNode> nodes = document.Find("a[href]");
 ```cs
 // Finds all <a> links that link to blackbeltcoder.com
 // Uses regular expressions to allow optional http, https, or www prefix
+// This example is also not case-sensitive
 nodes = document.Find("a[href:=\"^(http:\\/\\/|https:\\/\\/)?(www\\.)?blackbeltcoder.com\"]");
 ```
 
-----------
+#### Other Ways to Find Nodes
 
-At this point, the public interface is rather small. Here are a few starter examples.
-
-##### Parse an HTML String
+`HtmlDocument.Find()` is overloaded to allow a predicate argument instead.
 
 ```cs
-// Note: We specify the HtmlMonkey namespace below because
-// .NET also has an HtmlDocument class
-string html = "...";
-HtmlMonkey.HtmlDocument document = HtmlMonkey.HtmlDocument.FromHtml(html);
+// Returns all nodes that are the first node 
+IEnumerable<HtmlNode> nodes = document.FindOfType<HtmlTextNode>(n => n.PrevNode == null);
 ```
 
-##### Find All Anchor Tag Nodes
+In addition, there is an `HtmlDocument.FindOfType()` method.
 
 ```cs
-// Note: This method uses case-insensitive comparisons
-var nodes = document.FindTags("a");
+// Returns all text nodes
+IEnumerable<HtmlTextNode> nodes = document.FindOfType<HtmlTextNode>();
 ```
 
-##### Find All Anchor Tag Nodes with an ID Attribute
+This method is also overloaded to accept an optional predicate argument.
 
 ```cs
-// Note: This method uses case-insensitive comparisons for both the tag and attribute
-var nodes = document.FindTags("a", n => n.Attributes.ContainsKey("id"));
-```
-
-##### Find All Text Nodes
-
-```cs
-var nodes = document.FindOfType<HtmlTextNode>();
-```
-
-##### Find All Text Nodes with Text Longer than 100 Characters
-
-```cs
-var nodes = document.FindOfType<HtmlTextNode>(n => n.Html.Length > 100);
-```
-
-##### Find All Anchor Tag Nodes that Link to blackbeltcoder.com
-
-```cs
-HtmlMonkey.HtmlDocument document = HtmlDocument.FromHtml(txtHtml.Text);
-foreach (var node in document.FindTags("a"))
-{
-    if (node.Attributes.TryGetValue("href", out HtmlAttribute href) &&
-        Uri.TryCreate(href.Value, UriKind.Absolute, out Uri uri))
-    {
-        string host = uri.Host.ToLower();
-        if (host == "blackbeltcoder.com" || host == "www.blackbeltcoder.com")
-        {
-            // Found a match!
-        }
-    }
-}
+// Returns all HtmlElementNodes that have children
+IEnumerable<HtmlElementNode> nodes = document.FindOfType<HtmlElementNode>(n => n.Children.Any());
 ```
 
 ## Enhancing the Library
