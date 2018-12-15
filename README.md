@@ -95,7 +95,7 @@ nodes = document.Find("a[href:=\"^(http:\\/\\/|https:\\/\\/)?(www\\.)?blackbeltc
 
 ## Other Ways to Find Nodes
 
-`HtmlDocument.Find()` is overloaded to allow a predicate argument instead.
+`HtmlDocument.Find()` is overloaded to allow a predicate argument instead of a selector.
 
 ```cs
 // Returns all nodes that are the first node 
