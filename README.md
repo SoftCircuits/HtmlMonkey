@@ -30,7 +30,7 @@ You can specify a tag name to return all the nodes with that tag.
 IEnumerable<HtmlElementNode> nodes = document.Find("p");
 
 // Get all nodes in the document.
-// Same as not specifying a tag name
+// Same result as not specifying the tag name
 nodes = document.Find("*");
 ```
 
