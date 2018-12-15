@@ -9,13 +9,25 @@ The code also include a WinForms application to display the parsed data nodes. T
 ```cs
 // Note: We specify the HtmlMonkey namespace below because
 // .NET also has an HtmlDocument class
-string html = "...";
+string html = "...";   // HTML markup
 HtmlMonkey.HtmlDocument document = HtmlMonkey.HtmlDocument.FromHtml(html);
 ```
 
 ## Using Selectors
 
 HtmlMonkey now supports a modified subset of jQuery selectors to find nodes.
+
+##### Tag Names
+
+You can specify a tag name to return all the nodes with that tag.
+
+```cs
+// Get all <p> tags in the document. Search is not case-sensitive.
+IEnumerable<HtmlElementNode> nodes = document.Find("p");
+```
+```cs
+// Get all nodes that are either <p>, <div> or <a> tags in the document.
+nodes = document.Find("p, div, a");
 
 
 
