@@ -57,7 +57,7 @@ For greater control over attributes, you can use square brackets ([]). This is s
 IEnumerable<HtmlElementNode> nodes = document.Find("p[id=\"center-ad\"]");
 
 // Get any <p> tags that have both attributes id="center-ad" and class="align-right"
-nodes = document.Find("p[id=center-ad][class=align-right]);
+nodes = document.Find("p[id=center-ad][class=align-right]");
 
 // Get any <p> tags with the attribute data-id with a value that matches the regular
 // expression "abc-\d+"
