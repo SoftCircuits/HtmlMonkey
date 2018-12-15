@@ -66,7 +66,7 @@ nodes = document.Find("a[href]");
 
 // Get any <p> tags with the attribute data-id with a value that matches the regular
 // expression "abc-\d+"
-// Note case-sensitive
+// Not case-sensitive
 nodes = document.Find("p[data-id:=\"abc-\\d+\"]");
 
 // Finds all <a> links that link to blackbeltcoder.com
