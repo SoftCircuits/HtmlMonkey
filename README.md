@@ -45,7 +45,7 @@ IEnumerable<HtmlElementNode> nodes = document.Find("#center-ad");
 // Get any <div> tags with the attribute class="align-right"
 nodes = document.Find("div.align-right");
 
-// All all <input> tags with the attribute type="button"
+// Returns all <input> tags with the attribute type="button"
 nodes = document.Find("input:button");
 ```
 
