@@ -53,14 +53,14 @@ For greater control over attributes, you can use square brackets ([]). This is s
 
 ```cd
 // Get any <p> tags with the attribute id="center-ad"
-IEnumerable<HtmlElementNode> nodes = document.Find("p[id="center-ad"]);
+IEnumerable<HtmlElementNode> nodes = document.Find("p[id=\"center-ad\"]");
 
 // Get any <p> tags that have both attributes id="center-ad" and class="align-right"
 nodes = document.Find("p[id=center-ad][class=align-right]);
 
 // Get any <p> tags with the attribute data-id with a value that matches the regular
 // expression "abc-\d+"
-nodes = document.Find("p[data-id:="abc-\\d+"]);
+nodes = document.Find("p[data-id:=\"abc-\\d+\"]");
 ```
 
 The quotes within the square brackets are optional if the value contains no whitespace or most punctuation. In addition, if there is no equal sign within the square brackets, the code simply checks if the attribute exists without regard to its value.
