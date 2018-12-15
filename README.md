@@ -62,6 +62,15 @@ nodes = document.Find("p[id=center-ad][class=align-right]");
 // Get any <p> tags with the attribute data-id with a value that matches the regular
 // expression "abc-\d+"
 nodes = document.Find("p[data-id:=\"abc-\\d+\"]");
+
+// Returns all <a> tags that have an href attribute
+// The value of that attribute does not matter
+IEnumerable<HtmlElementNode> nodes = document.Find("a[href]");
+
+// Finds all <a> links that link to blackbeltcoder.com
+// Uses regular expressions to allow optional http, https, or www prefix
+// This example is also not case-sensitive
+nodes = document.Find("a[href:=\"^(http:\\/\\/|https:\\/\\/)?(www\\.)?blackbeltcoder.com\"]");
 ```
 
 The quotes within the square brackets are optional if the value contains no whitespace or most punctuation. In addition, if there is no equal sign within the square brackets, the code simply checks if the attribute exists without regard to its value.
@@ -83,7 +92,7 @@ nodes = document.Find("div > span");
 
 #### Selector Performance
 
-Obviously, there is some overhead parsing selectors. If you want to use the same selectors more than once, you can optimize your code by parsing the selectors into data structures and then passing those data structures to the find methods. The following code is further optimized by narrowing the nodes down to some container nodes and then searching them.
+Obviously, there is some overhead parsing selectors. If you want to use the same selectors more than once, you can optimize your code by parsing the selectors into data structures and then passing those data structures to the find methods. The following code is further optimized by first finding a set of container nodes, and then potentially performing multiple searches against those container nodes.
 
 ```cs
 // Parse selectors into SelectorCollections
@@ -95,19 +104,6 @@ IEnumerable<HtmlElementNode> containerNodes = containerSelect.Find(document.Root
 
 // Finally, search container nodes for item nodes
 IEnumerable<HtmlElementNode> itemNodes = itemSelectors.Find(containerNodes);
-```
-
-#### Additional Examples
-
-```cs
-// Returns all <a> tags that have an href attribute
-IEnumerable<HtmlElementNode> nodes = document.Find("a[href]");
-```
-```cs
-// Finds all <a> links that link to blackbeltcoder.com
-// Uses regular expressions to allow optional http, https, or www prefix
-// This example is also not case-sensitive
-nodes = document.Find("a[href:=\"^(http:\\/\\/|https:\\/\\/)?(www\\.)?blackbeltcoder.com\"]");
 ```
 
 ## Other Ways to Find Nodes
