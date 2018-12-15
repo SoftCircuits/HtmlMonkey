@@ -68,12 +68,12 @@ nodes = document.Find("p[data-id:=\"abc-\\d+\"]");
 IEnumerable<HtmlElementNode> nodes = document.Find("a[href]");
 
 // Finds all <a> links that link to blackbeltcoder.com
-// Uses regular expressions to allow optional http, https, or www prefix
+// Uses a regular expression to allow optional http:// or https://, and www. prefix
 // This example is also not case-sensitive
 nodes = document.Find("a[href:=\"^(http:\\/\\/|https:\\/\\/)?(www\\.)?blackbeltcoder.com\"]");
 ```
 
-The quotes within the square brackets are optional if the value contains no whitespace or most punctuation. In addition, if there is no equal sign within the square brackets, the code simply checks if the attribute exists without regard to its value.
+Note that the quotes within the square brackets are optional if the value contains no whitespace or most punctuation.
 
 #### Multiple Selectors
 
