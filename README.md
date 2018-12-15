@@ -51,7 +51,7 @@ nodes = document.Find("input:button");
 
 For greater control over attributes, you can use square brackets ([]). This is similar to specifying attributes in jQuery, but there are some differences. The first difference is that all the variations for finding a match at the start, middle or end are not supported by HtmlMonkey. However, to make up for this limitation, you can use the `:=` operator to specify that the value is a regular expression and the code will match if the attribute value matches that regular expression.
 
-```cd
+```cs
 // Get any <p> tags with the attribute id="center-ad"
 IEnumerable<HtmlElementNode> nodes = document.Find("p[id=\"center-ad\"]");
 
