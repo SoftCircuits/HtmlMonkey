@@ -37,7 +37,7 @@ nodes = document.Find("*");
 
 #### Specifying Attributes
 
-There are several ways to search for nodes with specific attributes. You can use the pound (#), period (.) or colon (:) to specify a value for the `id`, `class` or `type` attribute.
+There are several ways to search for nodes with specific attributes. You can use the pound (#), period (.) or colon (:) to specify a value for the `id`, `class` or `type` attribute, respectively.
 
 ```cs
 // Get any nodes with the attribute id="center-ad"
@@ -74,6 +74,8 @@ nodes = document.Find("p[data-id:=\"abc-\\d+\"]");
 // This example is also not case-sensitive
 nodes = document.Find("a[href:=\"^(http:\\/\\/|https:\\/\\/)?(www\\.)?blackbeltcoder.com\"]");
 ```
+
+Note that there is one key difference when using square brackets. When using a pound (#), period (.) or colon (:) is used to specify an attribute value, it is considered a match if it matches any value within that attribute. For example, the selector `div.right-align` would match the attribute `class="main-content right-align"`. When using square brackets, it must match the entire value (although there are exceptions to this when using regular expressions).
 
 #### Multiple Selectors
 
