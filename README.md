@@ -75,7 +75,7 @@ nodes = document.Find("p[data-id:=\"abc-\\d+\"]");
 nodes = document.Find("a[href:=\"^(http:\\/\\/|https:\\/\\/)?(www\\.)?blackbeltcoder.com\"]");
 ```
 
-Note that there is one key difference when using square brackets. When using a pound (#), period (.) or colon (:) is used to specify an attribute value, it is considered a match if it matches any value within that attribute. For example, the selector `div.right-align` would match the attribute `class="main-content right-align"`. When using square brackets, it must match the entire value (although there are exceptions to this when using regular expressions).
+Note that there is one key difference when using square brackets. When using a pound (#), period (.) or colon (:) to specify an attribute value, it is considered a match if it matches any value within that attribute. For example, the selector `div.right-align` would match the attribute `class="main-content right-align"`. When using square brackets, it must match the entire value (although there are exceptions to this when using regular expressions).
 
 #### Multiple Selectors
 
