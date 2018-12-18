@@ -32,6 +32,7 @@ IEnumerable<HtmlElementNode> nodes = document.Find("p");
 
 // Get all nodes in the document
 // Same result as not specifying the tag name
+// Also the same result as document.FindOfType<HtmlElementNode>();
 nodes = document.Find("*");
 ```
 
