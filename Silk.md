@@ -330,9 +330,9 @@ Returns a hexedecimal string equal to the given value.
 
 Returns the 1-based position where the string *s2* appears within the the string *s1*. The optional *start* argument specifies the 1-based position to begin the search.
 
-### Int()
+### Int(*value*)
 
-Converts the given value to an integer, truncating any fractional portion.
+Converts the *value* to an integer, truncating any fractional portion.
 
 ### IsList(*a*)
 
