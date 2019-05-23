@@ -278,9 +278,9 @@ Intrinsic functions
 
 ## Internal Functions
 
-### Abs()
+### Abs(*value*)
 
-Returns the absolute value of the given number.
+Returns the absolute value of *value*.
 
 ### Acos(*value*)
 
