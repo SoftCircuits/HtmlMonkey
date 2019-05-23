@@ -271,3 +271,133 @@ by the compiler.
 Intrinsic functions
 -> Number of parameters passed restricted per settings at compile time
 
+
+
+
+
+
+## Internal Functions
+
+### Abs()
+
+Returns the absolute value of the given number.
+
+### Acos(*value*)
+
+Returns the angle whose cosine is equal to *value*.
+
+### Asc(*s*)
+
+Returns the ASCII/Unicode value of the first character in the string *s*.
+
+### Atn(*value*)
+
+Returns an angle whose tangent is equal to *value*.
+
+### Avg(*value*, ...)
+
+Returns the average of the given arguments. Any number of arguments can be provided. In addition, any argument can be a list. In this case, each item in the list will be averaged.
+
+### Bin(*value*)
+
+Converts the given value to a binary (base 2) string.
+
+### Chr(*value*)
+
+Creates a string with one character with the specified ASCII/Unicode value.
+
+### Cos(*value*)
+
+Returns the cosine of *value*.
+
+### Date()
+
+Returns a string with the current date.
+
+### Environ(*name*)
+
+Returns the value of the specified environment variable.
+
+### Exp(*value*)
+
+Returns `e` raised to the specified power.
+
+### Hex(*value*)
+
+Returns a hexedecimal string equal to the given value.
+
+### InStr(*s1*, *s2*[, *start*])
+
+Returns the 1-based position where the string *s2* appears within the the string *s1*. The optional *start* argument specifies the 1-based position to begin the search.
+
+### Int()
+
+Converts the given value to an integer, truncating any fractional portion.
+
+### IsList(*a*)
+
+Returns true if the variable *a* contains a list.
+
+### Left(*s*, *count*)
+
+Returns a string with the left-most *count* characters from *s*.
+
+### Len(*value*)
+
+If *value* is a list, this function returns the number of items in the list. Otherwise, it returns the number of characters in *value*, converted to a string if needed.
+
+### Max(*value*, ...)
+
+Returns the maximum value of the given arguments. Any number of arguments can be provided. In addition, any argument can be a list. In this case, the maximum value of each item in the list is returned.
+
+### Mid(*s*, *start*[, *count*])
+
+Returns a section of the string given as the first argument. The *start* specifies the 1-based position where the string should be extracted. If *count* is provided, it specifies the maximum number of characters to return.
+
+### Min(*value*, ...)
+
+Returns the minimum value of the given arguments. Any number of arguments can be provided. In addition, any argument can be a list. In this case, the minimum value of each item in the list is returned.
+
+### Oct(*value*)
+
+Converts the given *value* to an octal string.
+
+### Right(*s*, *count*)
+
+Returns a string with the right-most *count* characters from *s*.
+
+### Round(*value*)
+
+Rounds the given value to the nearest integer.
+
+### Sin(*value*)
+
+Returns the sign of the angle specified by *value*.
+
+### Sqr(*value*)
+
+Returns the square root of the given argument.
+
+### String(*value*, *count*)
+
+Returns a string with *value* repeated the number of times specified by *count*.
+
+If *value* is a stringr value, then that string is repeated. Otherwise, the string repeated will contain one character with the specified ASCII/Unicode value specified by *value*
+
+### Tan(*value*)
+
+Returns the tanget of the angle specified by *value*.
+
+### Time()
+
+Returns a string with the current time.
+
+## Internal Variables
+
+### E
+
+Represents the natural logarithmic base, specified by the constant *e*.
+
+### Pi
+
+Represents the ratio of the circumference of a circle to its diameter, specified by the constant *&pi;*.
