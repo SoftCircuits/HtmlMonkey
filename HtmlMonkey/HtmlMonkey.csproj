@@ -5,10 +5,30 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.4</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <ApplicationIcon />
     <OutputTypeEx>library</OutputTypeEx>
     <StartupObject />
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>HtmlMonkey is a lightweight HTML/XML parser written in C#. It allows you to parse an HTML or XML string into a hierarchy of node objects, which can then be traversed or queried using jQuery-like syntax. In addition, the node objects can be modified or even built from scratch using code. Finally, the classes can generate the HTML or XML from the data.</Description>
+    <Copyright>Copyright © 2019 Jonathan Wood</Copyright>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <PackageTags>html parser</PackageTags>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageIconUrl>https://raw.githubusercontent.com/SoftCircuits/HtmlMonkey/master/Logo_64x64.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/SoftCircuits/HtmlMonkey</RepositoryUrl>
+    <Company>SoftCircuits</Company>
+    <Authors>Jonathan Wood</Authors>
+    <PackageProjectUrl>https://github.com/SoftCircuits/HtmlMonkey</PackageProjectUrl>
+    <RepositoryType>Class library</RepositoryType>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
