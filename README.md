@@ -134,7 +134,7 @@ SelectorCollection containerSelectors = Selector.ParseSelector("div.container");
 SelectorCollection itemSelectors = Selector.ParseSelector("p.item");
 
 // Search document for container nodes
-IEnumerable<HtmlElementNode> containerNodes = containerSelect.Find(document.RootNodes);
+IEnumerable<HtmlElementNode> containerNodes = containerSelectors.Find(document.RootNodes);
 
 // Finally, search container nodes for item nodes
 IEnumerable<HtmlElementNode> itemNodes = itemSelectors.Find(containerNodes);
