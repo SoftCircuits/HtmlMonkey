@@ -19,13 +19,13 @@ HtmlMonkey.HtmlDocument document = HtmlMonkey.HtmlDocument.FromHtml(html);
 
 This code parses the HTML document into a hierarchy of nodes, which are then stored in the `HtmlDocument` object.
 
-The node types include `HtmlElementNode`, which represents an HTML tag with attributes and any number of child nodes. `HtmlTextNode` nodes contain only text. And `HtmlCDataNode` nodes contain text from the document that was parsed but otherwise ignored. Examples of content placed in `HtmlCDataNode` nodes include CDATA content, comments and the content of `<script>` tags.
+The node types include `HtmlElementNode`, which represents an HTML tag with attributes and any number of child nodes. `HtmlTextNode` nodes contain only text. And `HtmlCDataNode` nodes contain text from the document that was parsed but is otherwise ignored. Examples of content placed in `HtmlCDataNode` nodes include CDATA content, comments and the content of `<script>` tags.
 
 The code also supports the specialized `HtmlHeaderNode` and `XmlHeaderNode` nodes.
 
 ## Navigating Parsed Nodes
 
-HtmlMonkey provides a number of ways to navigate parsed nodes. The `HtmlDocument.RootNodes` property contains all the root nodes in the document. Each `HtmlElementNode` node includes a `Children` property, which can be used to access all the other nodes in the document. In addition, all nodes have `NextNode`, `PrevNode`, and `ParentNode` properties, which you can use to navigate the nodes in every direction.
+HtmlMonkey provides a number of ways to navigate parsed nodes. The `HtmlDocument.RootNodes` property contains the root nodes in the document. Each `HtmlElementNode` node includes a `Children` property, which can be used to access all the other nodes in the document. In addition, all nodes have `NextNode`, `PrevNode`, and `ParentNode` properties, which you can use to navigate the nodes in every direction.
 
 The `HtmlDocument` class also includes a `Find()` method, which accepts a predicate argument. This method will recursively find all the nodes in the document for which the predicate returns true, and return those nodes in a flat list.
 
@@ -33,6 +33,7 @@ The `HtmlDocument` class also includes a `Find()` method, which accepts a predic
 // Returns all nodes that are the first node of its parent
 IEnumerable<HtmlNode> nodes = document.Find(n => n.PrevNode == null);
 ```
+
 You can also use the `FindOfType()` method. This method traverses the entire document tree to find all the nodes of the specified type.
 
 ```cs
@@ -138,8 +139,6 @@ IEnumerable<HtmlElementNode> containerNodes = containerSelect.Find(document.Root
 // Finally, search container nodes for item nodes
 IEnumerable<HtmlElementNode> itemNodes = itemSelectors.Find(containerNodes);
 ```
-
-
 
 ## Enhancing the Library
 
