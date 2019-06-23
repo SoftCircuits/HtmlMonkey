@@ -1,14 +1,14 @@
 # HtmlMonkey
 
-HtmlMonkey is a lightweight HTML/XML parser written in C#. It allows you to parse an HTML or XML string into a hierarchy of node objects, which can then be traversed or queried using jQuery-like syntax. In addition, the node objects can be modified or even built from scratch using code. Finally, the classes can generate the HTML or XML from the data.
+HtmlMonkey is a lightweight HTML/XML parser written in C#. It allows you to parse an HTML or XML string into a hierarchy of node objects, which can then be traversed or queried using jQuery-like syntax. In addition, the node objects can be modified or even built from scratch using code. Finally, the classes can be used to generate HTML or XML strings from the data.
 
 The code also include a WinForms application to display the parsed data nodes. This was mostly done for testing the parser, but offers some functionality that may be useful for inspecting the original markup.
 
 ## Getting Started
 
-Once you have aquired an HTML file, you can use either of the static methods `HtmlDocument.FromHtml()` or `HtmlDocument.FromFile()` to parse the HTML and create an `HtmlDocument` object.
+You can use either of the static methods `HtmlDocument.FromHtml()` or `HtmlDocument.FromFile()` to parse HTML and create an `HtmlDocument` object.
 
-#### Parse an HTML String
+#### Parse an HTML Document
 
 ```cs
 // Note: We specify the HtmlMonkey namespace below because
@@ -17,9 +17,39 @@ string html = "...";   // HTML markup
 HtmlMonkey.HtmlDocument document = HtmlMonkey.HtmlDocument.FromHtml(html);
 ```
 
+This code parses the HTML document into a hierarchy of nodes, which are then stored in the `HtmlDocument` object.
+
+The node types include `HtmlElementNode`, which represents an HTML tag with attributes and any number of child nodes. `HtmlTextNode` nodes contain only text. And `HtmlCDataNode` nodes contain text from the document that was parsed but otherwise ignored. Examples of content placed in `HtmlCDataNode` nodes include CDATA content, comments and the content of `<script>` tags.
+
+The code also supports the specialized `HtmlHeaderNode` and `XmlHeaderNode` nodes.
+
+## Navigating Parsed Nodes
+
+HtmlMonkey provides a number of ways to navigate parsed nodes. The `HtmlDocument.RootNodes` property contains all the root nodes in the document. Each `HtmlElementNode` node includes a `Children` property, which can be used to access all the other nodes in the document. In addition, all nodes have `NextNode`, `PrevNode`, and `ParentNode` properties, which you can use to navigate the nodes in every direction.
+
+The `HtmlDocument` class also includes a `Find()` method, which accepts a predicate argument. This method will recursively find all the nodes in the document for which the predicate returns true, and return those nodes in a flat list.
+
+```cs
+// Returns all nodes that are the first node of its parent
+IEnumerable<HtmlNode> nodes = document.Find(n => n.PrevNode == null);
+```
+You can also use the `FindOfType()` method. This method traverses the entire document tree to find all the nodes of the specified type.
+
+```cs
+// Returns all text nodes
+IEnumerable<HtmlTextNode> nodes = document.FindOfType<HtmlTextNode>();
+```
+
+The `FindOfType()` method is also overloaded to accept an optional predicate argument.
+
+```cs
+// Returns all HtmlElementNodes that have children
+IEnumerable<HtmlElementNode> nodes = document.FindOfType<HtmlElementNode>(n => n.Children.Any());
+```
+
 ## Using Selectors
 
-HtmlMonkey now supports a modified subset of jQuery selectors to find nodes.
+The `HtmlDocument.Find()` method also has an overload that supports using jQuery-like selectors to find nodes. Selectors provide a powerful and flexible way to locate nodes.
 
 #### Specifying Tag Names
 
@@ -109,28 +139,7 @@ IEnumerable<HtmlElementNode> containerNodes = containerSelect.Find(document.Root
 IEnumerable<HtmlElementNode> itemNodes = itemSelectors.Find(containerNodes);
 ```
 
-## Other Ways to Find Nodes
 
-`HtmlDocument.Find()` is overloaded to allow a predicate argument instead of a selector.
-
-```cs
-// Returns all nodes that are the first node of its parent
-IEnumerable<HtmlNode> nodes = document.Find(n => n.PrevNode == null);
-```
-
-In addition, there is an `HtmlDocument.FindOfType()` method.
-
-```cs
-// Returns all text nodes
-IEnumerable<HtmlTextNode> nodes = document.FindOfType<HtmlTextNode>();
-```
-
-This method is also overloaded to accept an optional predicate argument.
-
-```cs
-// Returns all HtmlElementNodes that have children
-IEnumerable<HtmlElementNode> nodes = document.FindOfType<HtmlElementNode>(n => n.Children.Any());
-```
 
 ## Enhancing the Library
 
