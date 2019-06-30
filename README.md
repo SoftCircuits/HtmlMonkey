@@ -4,6 +4,14 @@ HtmlMonkey is a lightweight HTML/XML parser written in C#. It allows you to pars
 
 The code also include a WinForms application to display the parsed data nodes. This was mostly done for testing the parser, but offers some functionality that may be useful for inspecting the original markup.
 
+## Installation
+
+Install via [NuGet](https://www.nuget.org/packages/HtmlMonkey/):
+
+```
+Install-Package HtmlMonkey
+```
+
 ## Getting Started
 
 You can use either of the static methods `HtmlDocument.FromHtml()` or `HtmlDocument.FromFile()` to parse HTML and create an `HtmlDocument` object.
