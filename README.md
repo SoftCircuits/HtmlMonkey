@@ -1,9 +1,9 @@
 # HtmlMonkey
 
-[![NuGet version (HtmlMonkey)](https://img.shields.io/nuget/v/HtmlMonkey.svg?style=flat-square)](https://www.nuget.org/packages/HtmlMonkey/)
+[![NuGet version (SoftCircuits.HtmlMonkey)](https://img.shields.io/nuget/v/SoftCircuits.HtmlMonkey.svg?style=flat-square)](https://www.nuget.org/packages/SoftCircuits.HtmlMonkey/)
 
 ```
-Install-Package HtmlMonkey
+Install-Package SoftCircuits.HtmlMonkey
 ```
 
 ## Overview
