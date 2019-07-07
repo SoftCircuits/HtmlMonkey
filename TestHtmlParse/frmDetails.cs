@@ -1,13 +1,9 @@
-﻿using HtmlMonkey;
+﻿using SoftCircuits.HtmlMonkey;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TestHtmlMonkey
@@ -15,7 +11,7 @@ namespace TestHtmlMonkey
     public partial class frmDetails : Form
     {
         private HtmlNode Node;
-        private HtmlMonkey.HtmlDocument Document;
+        private HtmlMonkeyDocument Document;
 
         public frmDetails(object node)
         {
@@ -23,8 +19,8 @@ namespace TestHtmlMonkey
             Debug.Assert(node != null);
             if (node is HtmlNode)
                 Node = node as HtmlNode;
-            else if (node is HtmlMonkey.HtmlDocument)
-                Document = node as HtmlMonkey.HtmlDocument;
+            else if (node is HtmlMonkeyDocument)
+                Document = node as HtmlMonkeyDocument;
         }
 
         private void frmDetails_Load(object sender, EventArgs e)

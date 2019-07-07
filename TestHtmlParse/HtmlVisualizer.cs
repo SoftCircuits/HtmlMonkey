@@ -1,4 +1,4 @@
-﻿using HtmlMonkey;
+﻿using SoftCircuits.HtmlMonkey;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -25,7 +25,7 @@ namespace TestHtmlMonkey
             tvwNodes.CollapseAll();
         }
 
-        public void LoadDocument(HtmlMonkey.HtmlDocument document)
+        public void LoadDocument(HtmlMonkeyDocument document)
         {
             tvwNodes.Nodes.Clear();
             TreeNode treeNode = tvwNodes.Nodes.Add("Document");
@@ -99,7 +99,7 @@ namespace TestHtmlMonkey
             [typeof(HtmlElementNode)] = 3,
             [typeof(XmlHeaderNode)] = 2,
             [typeof(HtmlHeaderNode)] = 1,
-            [typeof(HtmlMonkey.HtmlDocument)] = 0
+            [typeof(HtmlMonkeyDocument)] = 0
         };
 
         public int GetImageIndex(object node)

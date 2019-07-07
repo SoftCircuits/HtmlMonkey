@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace HtmlMonkey
+namespace SoftCircuits.HtmlMonkey
 {
     public class SelectorCollection : List<Selector>
     {

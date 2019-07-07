@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic;
+using SoftCircuits.HtmlMonkey;
 using System;
 using System.IO;
 using System.Net;
@@ -69,7 +70,7 @@ namespace HtmlMonkey
             try
             {
                 Cursor = Cursors.WaitCursor;
-                HtmlMonkey.HtmlDocument document = HtmlDocument.FromHtml(txtHtml.Text);
+                HtmlMonkeyDocument document = HtmlMonkeyDocument.FromHtml(txtHtml.Text);
                 Cursor = Cursors.Default;
 
                 frmVisualizer frm = new frmVisualizer(document);

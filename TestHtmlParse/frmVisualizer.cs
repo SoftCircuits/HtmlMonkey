@@ -1,13 +1,14 @@
-﻿using System;
+﻿using SoftCircuits.HtmlMonkey;
+using System;
 using System.Windows.Forms;
 
 namespace TestHtmlMonkey
 {
     public partial class frmVisualizer : Form
     {
-        private HtmlMonkey.HtmlDocument Document;
+        private HtmlMonkeyDocument Document;
 
-        public frmVisualizer(HtmlMonkey.HtmlDocument document)
+        public frmVisualizer(HtmlMonkeyDocument document)
         {
             InitializeComponent();
             Document = document;

@@ -4,7 +4,7 @@
 // http://www.softcircuits.com, http://www.blackbeltcoder.com
 //
 
-namespace HtmlMonkey
+namespace SoftCircuits.HtmlMonkey
 {
     /// <summary>
     /// Class that represents a single element attribute.

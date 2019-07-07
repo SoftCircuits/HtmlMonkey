@@ -6,18 +6,16 @@ The code also include a WinForms application to display the parsed data nodes. T
 
 ## Getting Started
 
-You can use either of the static methods `HtmlDocument.FromHtml()` or `HtmlDocument.FromFile()` to parse HTML and create an `HtmlDocument` object.
+You can use either of the static methods `HtmlMonkeyDocument.FromHtml()` or `HtmlMonkeyDocument.FromFile()` to parse HTML and create an `HtmlMonkeyDocument` object. (Note: The `HtmlMonkeyDocument` class has this longer name because .NET already has a `HtmlDocument` class.)
 
 #### Parse an HTML Document
 
 ```cs
-// Note: We specify the HtmlMonkey namespace below because
-// .NET also has an HtmlDocument class
 string html = "...";   // HTML markup
-HtmlMonkey.HtmlDocument document = HtmlMonkey.HtmlDocument.FromHtml(html);
+HtmlMonkeyDocument document = HtmlMonkeyDocument.FromHtml(html);
 ```
 
-This code parses the HTML document into a hierarchy of nodes, which are then stored in the `HtmlDocument` object.
+This code parses the HTML document into a hierarchy of nodes, which are then stored in the `HtmlMonkeyDocument` object.
 
 The node types include `HtmlElementNode`, which represents an HTML tag with attributes and any number of child nodes. `HtmlTextNode` nodes contain only text. And `HtmlCDataNode` nodes contain text from the document that was parsed but is otherwise ignored. Examples of content placed in `HtmlCDataNode` nodes include CDATA content, comments and the content of `<script>` tags.
 
@@ -25,9 +23,9 @@ The code also supports the specialized `HtmlHeaderNode` and `XmlHeaderNode` node
 
 ## Navigating Parsed Nodes
 
-HtmlMonkey provides a number of ways to navigate parsed nodes. The `HtmlDocument.RootNodes` property contains the root nodes in the document. Each `HtmlElementNode` node includes a `Children` property, which can be used to access all the other nodes in the document. In addition, all nodes have `NextNode`, `PrevNode`, and `ParentNode` properties, which you can use to navigate the nodes in every direction.
+HtmlMonkey provides a number of ways to navigate parsed nodes. The `HtmlMonkeyDocument.RootNodes` property contains the root nodes in the document. Each `HtmlElementNode` node includes a `Children` property, which can be used to access all the other nodes in the document. In addition, all nodes have `NextNode`, `PrevNode`, and `ParentNode` properties, which you can use to navigate the nodes in every direction.
 
-The `HtmlDocument` class also includes a `Find()` method, which accepts a predicate argument. This method will recursively find all the nodes in the document for which the predicate returns true, and return those nodes in a flat list.
+The `HtmlMonkeyDocument` class also includes a `Find()` method, which accepts a predicate argument. This method will recursively find all the nodes in the document for which the predicate returns true, and return those nodes in a flat list.
 
 ```cs
 // Returns all nodes that are the first node of its parent
@@ -50,7 +48,7 @@ IEnumerable<HtmlElementNode> nodes = document.FindOfType<HtmlElementNode>(n => n
 
 ## Using Selectors
 
-The `HtmlDocument.Find()` method also has an overload that supports using jQuery-like selectors to find nodes. Selectors provide a powerful and flexible way to locate nodes.
+The `HtmlMonkeyDocument.Find()` method also has an overload that supports using jQuery-like selectors to find nodes. Selectors provide a powerful and flexible way to locate nodes.
 
 #### Specifying Tag Names
 

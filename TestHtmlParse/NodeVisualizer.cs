@@ -1,4 +1,4 @@
-﻿using HtmlMonkey;
+﻿using SoftCircuits.HtmlMonkey;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -31,11 +31,11 @@ namespace TestHtmlMonkey
         // Note: To work correctly, derived types must appear before base types.
         private static Dictionary<Type, Visualizer> VisualizerLookup = new Dictionary<Type, Visualizer>
         {
-            [typeof(HtmlMonkey.HtmlDocument)] = new Visualizer
+            [typeof(HtmlMonkeyDocument)] = new Visualizer
             {
-                ShortDescription = n => ShortDescriptionDocument(n as HtmlMonkey.HtmlDocument),
-                LongDescription = n => LongDescriptionDocument(n as HtmlMonkey.HtmlDocument),
-                PopulateProperties = (n, lvw) => PopulatePropertiesDocument(n as HtmlMonkey.HtmlDocument, lvw)
+                ShortDescription = n => ShortDescriptionDocument(n as HtmlMonkeyDocument),
+                LongDescription = n => LongDescriptionDocument(n as HtmlMonkeyDocument),
+                PopulateProperties = (n, lvw) => PopulatePropertiesDocument(n as HtmlMonkeyDocument, lvw)
             },
             [typeof(HtmlCDataNode)] = new Visualizer
             {
@@ -81,21 +81,21 @@ namespace TestHtmlMonkey
             return null;
         }
 
-        private static string ShortDescriptionDocument(HtmlMonkey.HtmlDocument document) => $"[{document.GetType().ToString()}]";
+        private static string ShortDescriptionDocument(HtmlMonkeyDocument document) => $"[{document.GetType().ToString()}]";
         private static string ShortDescriptionDocTypeHeader(HtmlHeaderNode node) => "<!doctype>";
         private static string ShortDescriptionXmlHeader(XmlHeaderNode node) => "<?xml>";
         private static string ShortDescriptionElement(HtmlElementNode node) => $"<{node.TagName}>";
         private static string ShortDescriptionText(HtmlTextNode node) => $"\"{TruncateEncoded(node.Text, 32)}\"";
         private static string ShortDescriptionCData(HtmlCDataNode node) => $"\"{TruncateEncoded(node.Html, 32)}\"";
 
-        private static string LongDescriptionDocument(HtmlMonkey.HtmlDocument document) => string.Empty;
+        private static string LongDescriptionDocument(HtmlMonkeyDocument document) => string.Empty;
         private static string LongDescriptionDocTypeHeader(HtmlHeaderNode node) => string.Empty;
         private static string LongDescriptionXmlHeader(XmlHeaderNode node) => string.Empty;
         private static string LongDescriptionElement(HtmlElementNode node) => string.Empty;
         private static string LongDescriptionText(HtmlTextNode node) => node.Html;
         private static string LongDescriptionCData(HtmlCDataNode node) => node.Html;
 
-        private static void PopulatePropertiesDocument(HtmlMonkey.HtmlDocument document, ListView listView)
+        private static void PopulatePropertiesDocument(HtmlMonkeyDocument document, ListView listView)
         {
             InitializeListView(DocumentColumns, listView);
             listView.Items.Add("Title").SubItems.Add(document.Title);

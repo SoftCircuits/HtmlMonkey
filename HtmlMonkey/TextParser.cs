@@ -7,7 +7,7 @@ using System;
 using System.Linq;
 using System.Text;
 
-namespace HtmlMonkey
+namespace SoftCircuits.HtmlMonkey
 {
     /// <summary>
     /// This class provides many methods and conveniences for parsing text.

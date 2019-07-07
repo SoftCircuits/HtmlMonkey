@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace HtmlMonkey
+namespace SoftCircuits.HtmlMonkey
 {
     /// <summary>
     /// Dictionary class to represent a collection of element attributes.

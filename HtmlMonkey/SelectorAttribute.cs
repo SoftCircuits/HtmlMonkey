@@ -6,7 +6,7 @@
 using System;
 using System.Text.RegularExpressions;
 
-namespace HtmlMonkey
+namespace SoftCircuits.HtmlMonkey
 {
     public enum SelectorAttributeMode
     {

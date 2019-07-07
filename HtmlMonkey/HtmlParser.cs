@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace HtmlMonkey
+namespace SoftCircuits.HtmlMonkey
 {
     /// <summary>
     /// Class to parse HTML or XML.
@@ -18,9 +18,9 @@ namespace HtmlMonkey
         /// Parses an HTML document string and returns a new HtmlDocument.
         /// </summary>
         /// <param name="html">The HTML text to parse.</param>
-        public HtmlDocument Parse(string html)
+        public HtmlMonkeyDocument Parse(string html)
         {
-            HtmlDocument document = new HtmlDocument();
+            HtmlMonkeyDocument document = new HtmlMonkeyDocument();
             document.RootNodes.AddRange(ParseChildren(html));
             return document;
         }

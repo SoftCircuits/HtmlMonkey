@@ -6,7 +6,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace HtmlMonkey
+namespace SoftCircuits.HtmlMonkey
 {
     /// <summary>
     /// Represents a IEnumerable collection of nodes. Includes methods

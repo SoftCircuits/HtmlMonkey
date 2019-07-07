@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace HtmlMonkey
+namespace SoftCircuits.HtmlMonkey
 {
     /// <summary>
     /// Defines element tag attributes.

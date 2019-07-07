@@ -10,8 +10,8 @@
     <OutputTypeEx>library</OutputTypeEx>
     <StartupObject />
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Description>HtmlMonkey is a lightweight HTML/XML parser written in C#. It allows you to parse an HTML or XML string into a hierarchy of node objects, which can then be traversed or queried using jQuery-like syntax. In addition, the node objects can be modified or even built from scratch using code. Finally, the classes can generate the HTML or XML from the data.</Description>
-    <Copyright>Copyright © 2019 Jonathan Wood</Copyright>
+    <Description>HtmlMonkey is a lightweight HTML/XML parser written in C#. It allows you to parse an HTML or XML string into a hierarchy of node objects, which can then be traversed or queried using jQuery-like selectors. In addition, the node objects can be modified or even built from scratch using code. Finally, the classes can generate the HTML or XML from the data.</Description>
+    <Copyright>Copyright © 2019 SoftCircuits</Copyright>
     <NeutralLanguage>en-US</NeutralLanguage>
     <PackageTags>html parse html-parser crawler spider</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -20,16 +20,17 @@
     <Company>SoftCircuits</Company>
     <Authors>Jonathan Wood</Authors>
     <PackageProjectUrl>https://github.com/SoftCircuits/HtmlMonkey</PackageProjectUrl>
-    <RepositoryType>Class Library</RepositoryType>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseFile>License.txt</PackageLicenseFile>
     <AssemblyVersion>1.0.1.0</AssemblyVersion>
     <FileVersion>1.0.1.0</FileVersion>
     <Version>1.0.1</Version>
-    <PackageReleaseNotes>Updated nuget tags</PackageReleaseNotes>
+    <PackageReleaseNotes>Renamed namespace from HtmlMonkey to SoftCircuits.HtmlMonkey.</PackageReleaseNotes>
+    <PackageId>SoftCircuits.HtmlMonkey</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\LICENSE">
+    <None Include="..\License.txt">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>

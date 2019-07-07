@@ -8,19 +8,19 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace HtmlMonkey
+namespace SoftCircuits.HtmlMonkey
 {
     /// <summary>
     /// HtmlDocument class. Contains static methods to create an instance.
     /// Document nodes can be found in the <c>RootNodes</c> member.
     /// </summary>
-    public class HtmlDocument
+    public class HtmlMonkeyDocument
     {
         public string Title { get; set; }
 
         public HtmlNodeCollection RootNodes { get; set; }
 
-        public HtmlDocument(string title = null)
+        public HtmlMonkeyDocument(string title = null)
         {
             Title = title;
             RootNodes = new HtmlNodeCollection(null);
@@ -69,7 +69,7 @@ namespace HtmlMonkey
         /// </summary>
         /// <param name="html">HTML file from which to build the document.</param>
         /// <returns>The newly created document.</returns>
-        public static HtmlDocument FromFile(string path)
+        public static HtmlMonkeyDocument FromFile(string path)
         {
             return FromHtml(File.ReadAllText(path));
         }
@@ -79,7 +79,7 @@ namespace HtmlMonkey
         /// </summary>
         /// <param name="html">HTML text from which to build the document.</param>
         /// <returns>The newly created document.</returns>
-        public static HtmlDocument FromHtml(string html)
+        public static HtmlMonkeyDocument FromHtml(string html)
         {
             HtmlParser parser = new HtmlParser();
             return parser.Parse(html);
