@@ -248,9 +248,9 @@ namespace SoftCircuits.HtmlMonkey
             return selectors;
         }
 
-        private static bool IsNameCharacter(char c) => char.IsLetterOrDigit(c);
+        private static bool IsNameCharacter(char c) => char.IsLetterOrDigit(c) || c == '-';
 
-        private static bool IsValueCharacter(char c) => char.IsLetterOrDigit(c) || c == '-';
+        private static bool IsValueCharacter(char c) => IsNameCharacter(c);
 
         #endregion
 

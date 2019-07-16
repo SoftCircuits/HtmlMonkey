@@ -25,7 +25,7 @@
     <AssemblyVersion>1.0.2.0</AssemblyVersion>
     <FileVersion>1.0.2.0</FileVersion>
     <Version>1.0.2</Version>
-    <PackageReleaseNotes>Now using common attribute parser to handle HTML header nodes; Fixed issue in WinForms test application that did not show all HTML when right clicking Document node and selecting Properties; Added HtmlMonkeyDocument.ToHtml(); Added unit tests; Improved documentation comments; BREAKING CHANGES: HtmlHeaderNode.Parameters changes to HtmlHeaderNode.Attributes; Node Html property renamed to InnerHtml.</PackageReleaseNotes>
+    <PackageReleaseNotes>Now using common attribute parser to handle HTML header nodes; Fixed issue in WinForms test application that did not show all HTML when right clicking Document node and selecting Properties; Added HtmlMonkeyDocument.ToHtml(); Added unit tests; Improved documentation comments; Miscellaneous tweaks and fixes; BREAKING CHANGES: HtmlHeaderNode.Parameters changes to HtmlHeaderNode.Attributes; Node Html property renamed to InnerHtml.</PackageReleaseNotes>
     <PackageId>SoftCircuits.HtmlMonkey</PackageId>
   </PropertyGroup>
 

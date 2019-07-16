@@ -102,7 +102,6 @@ namespace SoftCircuits.HtmlMonkey
         public static bool IsQuoteChar(char c) => c == DoubleQuote || c == SingleQuote;
 
         private static readonly HashSet<char> InvalidChars;
-        //private static readonly HashSet<char> Invalid
 
         static HtmlRules()
         {

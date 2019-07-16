@@ -29,7 +29,7 @@ namespace HtmlMonkeyTests
   <body>
     <!-- Comment tag -->
     <h1>Test Document</h1>
-    <p data-id=""123"">
+    <p id=""one-of-many"" data-id=""123"">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
       ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
       ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
@@ -65,11 +65,23 @@ namespace HtmlMonkeyTests
             IEnumerable<HtmlElementNode> elements = document.Find("p");
             Assert.AreEqual(3, elements.Count());
 
+            elements = document.Find("#one-of-many");
+            Assert.AreEqual(1, elements.Count());
+
+            elements = document.Find("p#one-of-many");
+            Assert.AreEqual(1, elements.Count());
+
             elements = document.Find("p.last-para");
             Assert.AreEqual(1, elements.Count());
 
             elements = document.Find("p[data-id=123]");
-            Assert.AreEqual(1, elements.Count());
+            Assert.AreEqual(3, elements.Count());
+
+            elements = document.Find("p[data-id:=\"123\"]");
+            Assert.AreEqual(3, elements.Count());
+
+            elements = document.Find("p[data-id:=\"[0-9]{3}\"]");
+            Assert.AreEqual(3, elements.Count());
 
             IEnumerable<HtmlCDataNode> cDataNodes = document.FindOfType<HtmlCDataNode>();
             Assert.AreEqual(4, cDataNodes.Count());
