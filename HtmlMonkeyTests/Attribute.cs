@@ -29,6 +29,11 @@ namespace HtmlMonkeyTests
 
         public static void CompareAttributes(IEnumerable<Attribute> expectedAttributes, HtmlAttributeCollection attributes)
         {
+            if (expectedAttributes == null)
+            {
+                Assert.AreEqual(0, attributes.Count);
+                return;
+            }
             Assert.AreEqual(expectedAttributes.Count(), attributes.Count);
             if (expectedAttributes.Count() == attributes.Count)
             {
