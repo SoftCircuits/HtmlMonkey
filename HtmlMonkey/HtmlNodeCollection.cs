@@ -1,7 +1,5 @@
-﻿/////////////////////////////////////////////////////////////
-// HTML Monkey
-// Copyright (c) 2018 Jonathan Wood
-// http://www.softcircuits.com, http://www.blackbeltcoder.com
+﻿// Copyright (c) 2019 Jonathan Wood (www.softcircuits.com)
+// Licensed under the MIT license.
 //
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -23,6 +21,12 @@ namespace SoftCircuits.HtmlMonkey
 
         #region Add/remove nodes
 
+        /// <summary>
+        /// Appends the specified node to the end of the collection. If both the last node in the
+        /// collection and the node being added are of type <see cref="HtmlTextNode"></see>, then
+        /// the two text nodes are simply combined into one text node.
+        /// </summary>
+        /// <param name="node">Node to add.</param>
         public new void Add(HtmlNode node)
         {
             Debug.Assert(!Contains(node));
@@ -34,7 +38,7 @@ namespace SoftCircuits.HtmlMonkey
                 if (node.GetType() == typeof(HtmlTextNode) && lastNode.GetType() == typeof(HtmlTextNode))
                 {
                     // Combine if two consecutive HtmlTextNodes
-                    lastNode.Html += node.Html;
+                    lastNode.InnerHtml += node.InnerHtml;
                     return;
                 }
                 else
@@ -50,18 +54,31 @@ namespace SoftCircuits.HtmlMonkey
             base.Add(node);
         }
 
+        /// <summary>
+        /// Appends a range of nodes using the <see cref="Add"></see> method
+        /// to add each one.
+        /// </summary>
+        /// <param name="nodes">List of nodes to add.</param>
         public new void AddRange(IEnumerable<HtmlNode> nodes)
         {
             foreach (HtmlNode node in nodes)
                 Add(node);
         }
 
+        /// <summary>
+        /// Removes the specified node from the collection.
+        /// </summary>
+        /// <param name="node"></param>
         public new void Remove(HtmlNode node)
         {
             Debug.Assert(Contains(node));
             RemoveAt(IndexOf(node));
         }
 
+        /// <summary>
+        /// Removes the node at the specified position from the collection.
+        /// </summary>
+        /// <param name="index"></param>
         public new void RemoveAt(int index)
         {
             if (index >= 0 && index < Count)

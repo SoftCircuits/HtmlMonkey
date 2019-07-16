@@ -1,7 +1,5 @@
-﻿/////////////////////////////////////////////////////////////
-// HTML Monkey
-// Copyright (c) 2018 Jonathan Wood
-// http://www.softcircuits.com, http://www.blackbeltcoder.com
+﻿// Copyright (c) 2019 Jonathan Wood (www.softcircuits.com)
+// Licensed under the MIT license.
 //
 using System;
 using System.Text.RegularExpressions;
@@ -47,7 +45,6 @@ namespace SoftCircuits.HtmlMonkey
                         NodeComparer = IsMatchExistsOnly;
                         break;
                 }
-
             }
         }
         private SelectorAttributeMode _mode;

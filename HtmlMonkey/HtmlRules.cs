@@ -1,7 +1,5 @@
-﻿/////////////////////////////////////////////////////////////
-// HTML Monkey
-// Copyright (c) 2018 Jonathan Wood
-// http://www.softcircuits.com, http://www.blackbeltcoder.com
+﻿// Copyright (c) 2019 Jonathan Wood (www.softcircuits.com)
+// Licensed under the MIT license.
 //
 using System;
 using System.Collections.Generic;
@@ -104,16 +102,15 @@ namespace SoftCircuits.HtmlMonkey
         public static bool IsQuoteChar(char c) => c == DoubleQuote || c == SingleQuote;
 
         private static readonly HashSet<char> InvalidChars;
+        //private static readonly HashSet<char> Invalid
 
         static HtmlRules()
         {
             // Characters that are not valid within tag and attribute names (excluding whitespace and control characters)
             InvalidChars = new HashSet<char>();
-
-            InvalidChars.Add('-');
+            InvalidChars.Add('!');
+            InvalidChars.Add('?');
             InvalidChars.Add('<');
-
-            InvalidChars.Add(' ');
             InvalidChars.Add('"');
             InvalidChars.Add('\'');
             InvalidChars.Add('>');
@@ -144,8 +141,7 @@ namespace SoftCircuits.HtmlMonkey
         }
 
         /// <summary>
-        /// Returns true if <paramref name="c"/> is a valid attribue value character.
-        /// Valid only for unquoted values. Quoted values allow additional characters.
+        /// Returns true if <paramref name="c"/> is a valid unquoted attribue value character.
         /// </summary>
         /// <param name="c">Character to test.</param>
         public static bool IsAttributeValueCharacter(char c)

@@ -1,7 +1,5 @@
-﻿/////////////////////////////////////////////////////////////
-// HTML Monkey
-// Copyright (c) 2018 Jonathan Wood
-// http://www.softcircuits.com, http://www.blackbeltcoder.com
+﻿// Copyright (c) 2019 Jonathan Wood (www.softcircuits.com)
+// Licensed under the MIT license.
 //
 using System;
 using System.Collections.Generic;
@@ -27,7 +25,7 @@ namespace SoftCircuits.HtmlMonkey
 
         /// <summary>
         /// Adds an attribute to the collection. If the attribute already exists in the
-        /// collection, this call is ignored.
+        /// collection, the value of the existing attribute is updated.
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
@@ -36,8 +34,10 @@ namespace SoftCircuits.HtmlMonkey
             if (key == null)
                 throw new ArgumentNullException(nameof(key));
 
-            // Ignore duplicate attributes
-            if (!ContainsKey(key))
+            // Determine if we already have this attribute
+            if (TryGetValue(key, out HtmlAttribute attribute))
+                attribute.Value = value.Value;
+            else
                 base.Add(key, value);
         }
 
@@ -50,14 +50,8 @@ namespace SoftCircuits.HtmlMonkey
         /// <returns></returns>
         public new HtmlAttribute this[string key]
         {
-            get
-            {
-                return TryGetValue(key, out HtmlAttribute value) ? value : null;
-            }
-            set
-            {
-                base[key] = value;
-            }
+            get => TryGetValue(key, out HtmlAttribute value) ? value : null;
+            set => base[key] = value;
         }
 
         public override string ToString()

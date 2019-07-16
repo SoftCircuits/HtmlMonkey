@@ -1,4 +1,7 @@
-﻿using SoftCircuits.HtmlMonkey;
+﻿// Copyright (c) 2019 Jonathan Wood (www.softcircuits.com)
+// Licensed under the MIT license.
+//
+using SoftCircuits.HtmlMonkey;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -86,26 +89,29 @@ namespace TestHtmlMonkey
         private static string ShortDescriptionXmlHeader(XmlHeaderNode node) => "<?xml>";
         private static string ShortDescriptionElement(HtmlElementNode node) => $"<{node.TagName}>";
         private static string ShortDescriptionText(HtmlTextNode node) => $"\"{TruncateEncoded(node.Text, 32)}\"";
-        private static string ShortDescriptionCData(HtmlCDataNode node) => $"\"{TruncateEncoded(node.Html, 32)}\"";
+        private static string ShortDescriptionCData(HtmlCDataNode node) => $"\"{TruncateEncoded(node.InnerHtml, 32)}\"";
 
         private static string LongDescriptionDocument(HtmlMonkeyDocument document) => string.Empty;
         private static string LongDescriptionDocTypeHeader(HtmlHeaderNode node) => string.Empty;
         private static string LongDescriptionXmlHeader(XmlHeaderNode node) => string.Empty;
         private static string LongDescriptionElement(HtmlElementNode node) => string.Empty;
-        private static string LongDescriptionText(HtmlTextNode node) => node.Html;
-        private static string LongDescriptionCData(HtmlCDataNode node) => node.Html;
+        private static string LongDescriptionText(HtmlTextNode node) => node.InnerHtml;
+        private static string LongDescriptionCData(HtmlCDataNode node) => node.InnerHtml;
 
         private static void PopulatePropertiesDocument(HtmlMonkeyDocument document, ListView listView)
         {
             InitializeListView(DocumentColumns, listView);
-            listView.Items.Add("Title").SubItems.Add(document.Title);
+            listView.Items.Add("Path").SubItems.Add(document.Path);
         }
 
         private static void PopulatePropertiesDocTypeHeader(HtmlHeaderNode node, ListView listView)
         {
             InitializeListView(ParameterColumns, listView);
-            foreach (var parm in node.Parameters)
-                listView.Items.Add(parm);
+            foreach (var att in node.Attributes)
+            {
+                var item = listView.Items.Add(att.Key);
+                item.SubItems.Add(att.Value != null ? att.Value.Value : "(null)");
+            }
         }
 
         private static void PopulatePropertiesXmlHeader(XmlHeaderNode node, ListView listView)

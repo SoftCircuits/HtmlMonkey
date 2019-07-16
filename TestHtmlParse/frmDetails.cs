@@ -1,4 +1,7 @@
-﻿using SoftCircuits.HtmlMonkey;
+﻿// Copyright (c) 2019 Jonathan Wood (www.softcircuits.com)
+// Licensed under the MIT license.
+//
+using SoftCircuits.HtmlMonkey;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -40,7 +43,7 @@ namespace TestHtmlMonkey
                         if (value == 1)
                             txtText.Text = Node.OuterHtml;
                         else if (value == 2)
-                            txtText.Text = Node.Html;
+                            txtText.Text = Node.InnerHtml;
                         else if (value == 3)
                             txtText.Text = Node.Text;
                         else
@@ -50,9 +53,9 @@ namespace TestHtmlMonkey
                     {
                         IEnumerable<string> values;
                         if (value == 1)
-                            values = Document.RootNodes.Select(n => n.ToString());
+                            values = Document.RootNodes.Select(n => n.OuterHtml);
                         else if (value == 2)
-                            values = Document.RootNodes.Select(n => n.Html);
+                            values = Document.RootNodes.Select(n => n.InnerHtml);
                         else if (value == 3)
                             values = Document.RootNodes.Select(n => n.Text);
                         else

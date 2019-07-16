@@ -1,7 +1,5 @@
-﻿/////////////////////////////////////////////////////////////
-// HTML Monkey
-// Copyright (c) 2018 Jonathan Wood
-// http://www.softcircuits.com, http://www.blackbeltcoder.com
+﻿// Copyright (c) 2019 Jonathan Wood (www.softcircuits.com)
+// Licensed under the MIT license.
 //
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,8 +9,19 @@ namespace SoftCircuits.HtmlMonkey
 {
     public class Selector
     {
+        /// <summary>
+        /// Tag name.
+        /// </summary>
         public string Tag { get; set; }
+
+        /// <summary>
+        /// Attribute selectors.
+        /// </summary>
         public List<SelectorAttribute> Attributes { get; private set; }
+
+        /// <summary>
+        /// Child selector.
+        /// </summary>
         public Selector ChildSelector { get; set; }
 
         /// <summary>
@@ -27,8 +36,14 @@ namespace SoftCircuits.HtmlMonkey
             ChildSelector = null;
         }
 
+        /// <summary>
+        /// Returns true if selector has no data.
+        /// </summary>
         public bool IsEmpty => string.IsNullOrWhiteSpace(Tag) && !Attributes.Any();
 
+        /// <summary>
+        /// Returns true if the specified node matches this selector.
+        /// </summary>
         public bool IsMatch(HtmlElementNode node)
         {
             // Compare tag

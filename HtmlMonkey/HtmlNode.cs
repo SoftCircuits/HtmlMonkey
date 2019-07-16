@@ -1,7 +1,5 @@
-﻿/////////////////////////////////////////////////////////////
-// HTML Monkey
-// Copyright (c) 2018 Jonathan Wood
-// http://www.softcircuits.com, http://www.blackbeltcoder.com
+﻿// Copyright (c) 2019 Jonathan Wood (www.softcircuits.com)
+// Licensed under the MIT license.
 //
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,36 +12,62 @@ namespace SoftCircuits.HtmlMonkey
     /// <summary>
     /// Base class for all HTML nodes.
     /// </summary>
-    /// <remarks>
-    /// Html:       Inner HTML markup
-    /// OuterHtml:  Full HTML markup, including tag itself
-    /// Text:       Inner text
-    /// ToString(): Tag HTML
-    /// </remarks>
     public abstract class HtmlNode
     {
+        /// <summary>
+        /// Returns this node's parent node, or <c>null</c> if this node
+        /// is a top-level node.
+        /// </summary>
         public HtmlElementNode ParentNode { get; internal set; }
+
+        /// <summary>
+        /// Returns this node's next sibling, or <c>null</c> if this node
+        /// is the last of all its siblings.
+        /// </summary>
         public HtmlNode NextNode { get; internal set; }
+
+        /// <summary>
+        /// Returns this node's previous sibling, or <c>null</c> if this
+        /// node is the first of all its siblings.
+        /// </summary>
         public HtmlNode PrevNode { get; internal set; }
 
+        /// <summary>
+        /// Returns true if this node is a top-level node and has no parent.
+        /// </summary>
         public bool IsTopLevelNode => ParentNode == null;
 
-        public virtual string Html
+        /// <summary>
+        /// Markup for everything inside of the HTML tags.
+        /// </summary>
+        public virtual string InnerHtml
         {
-            get { return string.Empty; }
+            get => string.Empty;
             set { }
         }
 
+        /// <summary>
+        /// Markup for everything including the outer HTML tags and everything inside
+        /// of the HTML tags.
+        /// </summary>
         public virtual string OuterHtml
         {
-            get { return string.Empty; }
+            get => string.Empty;
         }
 
+        /// <summary>
+        /// All text from this element. (Does not include any HTML markup.)
+        /// </summary>
         public virtual string Text
         {
-            get { return string.Empty; }
+            get => string.Empty;
             set { }
         }
+
+        /// <summary>
+        /// An abbreviated form of the node's markup (no inner markup).
+        /// </summary>
+        public override string ToString() => string.Empty;
     }
 
     /// <summary>
@@ -51,11 +75,11 @@ namespace SoftCircuits.HtmlMonkey
     /// </summary>
     public class HtmlHeaderNode : HtmlNode
     {
-        public List<string> Parameters { get; private set; }
+        public HtmlAttributeCollection Attributes { get; private set; }
 
-        public HtmlHeaderNode()
+        public HtmlHeaderNode(HtmlAttributeCollection attributes)
         {
-            Parameters = new List<string>();
+            Attributes = attributes;
         }
 
         public override string OuterHtml
@@ -65,8 +89,7 @@ namespace SoftCircuits.HtmlMonkey
                 StringBuilder builder = new StringBuilder();
                 builder.Append(HtmlRules.TagStart);
                 builder.Append(HtmlRules.HtmlHeaderTag);
-                foreach (string parameter in Parameters)
-                    builder.AppendFormat(" {0}", parameter);
+                builder.Append(Attributes.ToString());
                 builder.Append(HtmlRules.TagEnd);
                 return builder.ToString();
             }
@@ -95,7 +118,7 @@ namespace SoftCircuits.HtmlMonkey
                 builder.Append(HtmlRules.TagStart);
                 builder.Append(HtmlRules.XmlHeaderTag);
                 builder.Append(Attributes.ToString());
-                builder.Append(" ?");
+                builder.Append("?");
                 builder.Append(HtmlRules.TagEnd);
                 return builder.ToString();
             }
@@ -109,8 +132,19 @@ namespace SoftCircuits.HtmlMonkey
     /// </summary>
     public class HtmlElementNode : HtmlNode
     {
+        /// <summary>
+        /// This element's tag name.
+        /// </summary>
         public string TagName { get; set; }
+
+        /// <summary>
+        /// This elements attributes.
+        /// </summary>
         public HtmlAttributeCollection Attributes { get; private set; }
+
+        /// <summary>
+        /// This elements child nodes.
+        /// </summary>
         public HtmlNodeCollection Children { get; private set; }
 
         public HtmlElementNode(string tagName, HtmlAttributeCollection attributes = null)
@@ -120,27 +154,12 @@ namespace SoftCircuits.HtmlMonkey
             Children = new HtmlNodeCollection(this);
         }
 
+        /// <summary>
+        /// Returns true if this element is self-closing and has no children.
+        /// </summary>
         public bool IsSelfClosing => !Children.Any() && !HtmlRules.GetTagFlags(TagName).HasFlag(HtmlTagFlag.NoSelfClosing);
 
-        public override string Text
-        {
-            get
-            {
-                StringBuilder builder = new StringBuilder();
-                foreach (var node in Children)
-                    builder.Append(node.Text);
-                return builder.ToString();
-            }
-            set
-            {
-                // Replaces all existing content
-                Children.Clear();
-                if (!string.IsNullOrEmpty(value))
-                    Children.Add(new HtmlTextNode() { Text = value });
-            }
-        }
-
-        public override string Html
+        public override string InnerHtml
         {
             get
             {
@@ -174,7 +193,7 @@ namespace SoftCircuits.HtmlMonkey
                 // Open tag
                 builder.Append(HtmlRules.TagStart);
                 builder.Append(TagName);
-                // Note: Attributes returned in non-deterministic order ???
+                // Note: Attributes returned in non-deterministic order
                 builder.Append(Attributes.ToString());
 
                 // Finish self-closing tag
@@ -189,7 +208,7 @@ namespace SoftCircuits.HtmlMonkey
                 {
                     builder.Append(HtmlRules.TagEnd);
                     // Inner HTML
-                    builder.Append(Html);
+                    builder.Append(InnerHtml);
                     // Closing tag
                     builder.Append(HtmlRules.TagStart);
                     builder.Append(HtmlRules.ForwardSlash);
@@ -197,6 +216,24 @@ namespace SoftCircuits.HtmlMonkey
                     builder.Append(HtmlRules.TagEnd);
                 }
                 return builder.ToString();
+            }
+        }
+
+        public override string Text
+        {
+            get
+            {
+                StringBuilder builder = new StringBuilder();
+                foreach (var node in Children)
+                    builder.Append(node.Text);
+                return builder.ToString();
+            }
+            set
+            {
+                // Replaces all existing content
+                Children.Clear();
+                if (!string.IsNullOrEmpty(value))
+                    Children.Add(new HtmlTextNode() { Text = value });
             }
         }
 
@@ -228,30 +265,29 @@ namespace SoftCircuits.HtmlMonkey
             Content = html ?? string.Empty;
         }
 
-        public override string Html
+        public override string InnerHtml
         {
-            get { return Content; }
-            set { Content = value; }
+            get => Content;
+            set => Content = value;
         }
 
         public override string OuterHtml
         {
-            get => Html;
+            get => InnerHtml;
         }
 
         public override string Text
         {
-            get { return WebUtility.HtmlDecode(Content); }
-            set { Content = WebUtility.HtmlEncode(value); }
+            get => WebUtility.HtmlDecode(Content);
+            set => Content = WebUtility.HtmlEncode(value);
         }
 
-        public override string ToString() => Html;
+        public override string ToString() => InnerHtml;
     }
 
     /// <summary>
-    /// Represents a node that contains CDATA. This data is saved
-    /// but not parsed. Examples include CDATA, comments and inner
-    /// SCRIPT tags.
+    /// Represents a node that contains CDATA. This data is saved but not parsed.
+    /// Examples include CDATA, comments and the content of SCRIPT and STYLE tags.
     /// </summary>
     public class HtmlCDataNode : HtmlTextNode
     {
@@ -265,6 +301,20 @@ namespace SoftCircuits.HtmlMonkey
             Suffix = suffix;
         }
 
-        public override string ToString() => $"{Prefix}{base.ToString()}{Suffix}";
+        public override string InnerHtml
+        {
+            get => base.InnerHtml;
+            set => base.InnerHtml = value;
+        }
+
+        public override string OuterHtml => $"{Prefix}{base.ToString()}{Suffix}";
+
+        public override string Text
+        {
+            get => base.Text;
+            set => base.Text = value;
+        }
+
+        public override string ToString() => OuterHtml;
     }
 }

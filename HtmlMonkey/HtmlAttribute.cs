@@ -1,7 +1,5 @@
-﻿/////////////////////////////////////////////////////////////
-// HTML Monkey
-// Copyright (c) 2018 Jonathan Wood
-// http://www.softcircuits.com, http://www.blackbeltcoder.com
+﻿// Copyright (c) 2019 Jonathan Wood (www.softcircuits.com)
+// Licensed under the MIT license.
 //
 
 namespace SoftCircuits.HtmlMonkey
@@ -11,24 +9,25 @@ namespace SoftCircuits.HtmlMonkey
     /// </summary>
     public class HtmlAttribute
     {
+        private const string Null = "(null)";
+
         /// <summary>
         /// Attribute name.
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Attribute value. Will be an empty string if the attribute was set
-        /// to an empty value. Will be null if the attribute name was not
-        /// followed by an equal sign.
+        /// Attribute value. Will be an empty string if the attribute has an empty
+        /// value. Will be null if the attribute name was not followed by an equal
+        /// sign.
         /// </summary>
         public string Value { get; set; }
 
         public override string ToString()
         {
-            string name = Name ?? "(null)";
             return (Value != null) ?
-                string.Format("{0}=\"{1}\"", name, Value) :
-                name;
+                $"{Name ?? Null}=\"{Value}\"" :
+                Name ?? Null;
         }
     }
 }

@@ -1,7 +1,5 @@
-﻿/////////////////////////////////////////////////////////////
-// HTML Monkey
-// Copyright (c) 2018 Jonathan Wood
-// http://www.softcircuits.com, http://www.blackbeltcoder.com
+﻿// Copyright (c) 2019 Jonathan Wood (www.softcircuits.com)
+// Licensed under the MIT license.
 //
 using System;
 using System.Linq;
@@ -29,7 +27,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <summary>
         /// Returns the current position within the text being parsed.
         /// </summary>
-        public int Position { get; private set; }
+        public int Index { get; private set; }
 
         /// <summary>
         /// Returns the number of characters not yet parsed. This is equal to the length of the
@@ -38,7 +36,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <remarks>
         /// Returns the length of the current text being parsed minus the current position.
         /// </remarks>
-        public int Remaining => Text.Length - Position;
+        public int Remaining => Text.Length - Index;
 
         /// <summary>
         /// Constructs a TextParse instance.
@@ -54,7 +52,7 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         public void Reset()
         {
-            Position = 0;
+            Index = 0;
         }
 
         /// <summary>
@@ -64,13 +62,13 @@ namespace SoftCircuits.HtmlMonkey
         public void Reset(string text)
         {
             Text = text ?? string.Empty;
-            Position = 0;
+            Index = 0;
         }
 
         /// <summary>
         /// Indicates if the current position is at the end of the text being parsed.
         /// </summary>
-        public bool EndOfText => (Position >= Text.Length);
+        public bool EndOfText => (Index >= Text.Length);
 
         /// <summary>
         /// Returns the character at the current position, or <c>NullChar</c> if we're
@@ -88,7 +86,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <returns>The character at the specified position.</returns>
         public char Peek(int ahead)
         {
-            int pos = (Position + ahead);
+            int pos = (Index + ahead);
             return (pos < Text.Length) ? Text[pos] : NullChar;
         }
 
@@ -108,7 +106,7 @@ namespace SoftCircuits.HtmlMonkey
             {
                 for (int i = 0; i < s.Length; i++)
                 {
-                    if (char.ToUpper(s[i]) != char.ToUpper(Text[Position + i]))
+                    if (char.ToUpper(s[i]) != char.ToUpper(Text[Index + i]))
                         return false;
                 }
             }
@@ -116,7 +114,7 @@ namespace SoftCircuits.HtmlMonkey
             {
                 for (int i = 0; i < s.Length; i++)
                 {
-                    if (s[i] != Text[Position + i])
+                    if (s[i] != Text[Index + i])
                         return false;
                 }
             }
@@ -171,7 +169,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="ahead">The number of characters to move ahead</param>
         public void MoveAhead(int ahead)
         {
-            Position = Math.Min(Position + ahead, Text.Length);
+            Index = Math.Min(Index + ahead, Text.Length);
         }
 
         /// <summary>
@@ -181,9 +179,9 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="ignoreCase">Indicates if case-insensitive comparisons are used</param>
         public void MoveTo(string s, bool ignoreCase = false)
         {
-            Position = Text.IndexOf(s, Position, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal);
-            if (Position < 0)
-                Position = Text.Length;
+            Index = Text.IndexOf(s, Index, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal);
+            if (Index < 0)
+                Index = Text.Length;
         }
 
         /// <summary>
@@ -193,9 +191,9 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="chars">Array of characters to search for.</param>
         public void MoveTo(params char[] chars)
         {
-            Position = Text.IndexOfAny(chars, Position);
-            if (Position < 0)
-                Position = Text.Length;
+            Index = Text.IndexOfAny(chars, Index);
+            if (Index < 0)
+                Index = Text.Length;
         }
 
         /// <summary>
@@ -231,10 +229,10 @@ namespace SoftCircuits.HtmlMonkey
         /// <returns></returns>
         public string ParseWhile(Func<char, bool> test)
         {
-            int start = Position;
+            int start = Index;
             while (test(Peek()))
                 MoveAhead();
-            return Extract(start, Position);
+            return Extract(start, Index);
         }
 
         /// <summary>
@@ -253,11 +251,11 @@ namespace SoftCircuits.HtmlMonkey
             StringBuilder builder = new StringBuilder();
             while (!EndOfText)
             {
-                int start = Position;
+                int start = Index;
                 // Move to next quote
                 MoveTo(quote);
                 // Capture quoted text
-                builder.Append(Extract(start, Position));
+                builder.Append(Extract(start, Index));
                 // Skip over quote
                 MoveAhead();
                 // Two consecutive quotes treated as quote literal
