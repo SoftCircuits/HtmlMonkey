@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2020 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System.Collections.Generic;
@@ -7,6 +7,9 @@ using System.Linq;
 
 namespace SoftCircuits.HtmlMonkey
 {
+    /// <summary>
+    /// Describes a parsed find selector.
+    /// </summary>
     public class Selector
     {
         /// <summary>
@@ -128,8 +131,8 @@ namespace SoftCircuits.HtmlMonkey
 
             if (!string.IsNullOrWhiteSpace(selectorText))
             {
-                TextParser parser = new TextParser(selectorText);
-                parser.MovePastWhitespace();
+                ParsingHelper parser = new ParsingHelper(selectorText);
+                parser.SkipWhiteSpace();
 
                 while (!parser.EndOfText)
                 {
@@ -147,7 +150,7 @@ namespace SoftCircuits.HtmlMonkey
                     else if (SpecialCharacters.TryGetValue(ch, out string name))
                     {
                         // Parse special attributes
-                        parser.MoveAhead();
+                        parser++;
                         string value = parser.ParseWhile(c => IsValueCharacter(c));
                         if (value.Length > 0)
                         {
@@ -165,8 +168,8 @@ namespace SoftCircuits.HtmlMonkey
                     else if (ch == '[')
                     {
                         // Parse attribute selector
-                        parser.MoveAhead();
-                        parser.MovePastWhitespace();
+                        parser++;
+                        parser.SkipWhiteSpace();
                         name = parser.ParseWhile(c => IsNameCharacter(c));
                         if (name.Length > 0)
                         {
@@ -176,16 +179,16 @@ namespace SoftCircuits.HtmlMonkey
                             };
 
                             // Parse attribute assignment operator
-                            parser.MovePastWhitespace();
+                            parser.SkipWhiteSpace();
                             if (parser.Peek() == '=')
                             {
                                 attribute.Mode = SelectorAttributeMode.Match;
-                                parser.MoveAhead();
+                                parser++;
                             }
                             else if (parser.Peek() == ':' && parser.Peek(1) == '=')
                             {
                                 attribute.Mode = SelectorAttributeMode.RegEx;
-                                parser.MoveAhead(2);
+                                parser += 2;
                             }
                             else
                             {
@@ -195,7 +198,7 @@ namespace SoftCircuits.HtmlMonkey
                             // Parse attribute value
                             if (attribute.Mode != SelectorAttributeMode.ExistsOnly)
                             {
-                                parser.MovePastWhitespace();
+                                parser.SkipWhiteSpace();
                                 if (HtmlRules.IsQuoteChar(parser.Peek()))
                                     attribute.Value = parser.ParseQuotedText();
                                 else
@@ -207,23 +210,23 @@ namespace SoftCircuits.HtmlMonkey
                         }
 
                         // Close out attribute selector
-                        parser.MovePastWhitespace();
+                        parser.SkipWhiteSpace();
                         Debug.Assert(parser.Peek() == ']');
                         if (parser.Peek() == ']')
-                            parser.MoveAhead();
+                            parser++;
                     }
                     else if (ch == ',')
                     {
                         // Multiple selectors
-                        parser.MoveAhead();
-                        parser.MovePastWhitespace();
+                        parser++;
+                        parser.SkipWhiteSpace();
                         selectors.Add(new Selector());
                     }
                     else if (ch == '>')
                     {
                         // Whitespace indicates child selector
-                        parser.MoveAhead();
-                        parser.MovePastWhitespace();
+                        parser++;
+                        parser.SkipWhiteSpace();
                         Debug.Assert(selectors.Any());
                         Selector selector = selectors.AddChildSelector();
                         selector.ImmediateChildOnly = true;
@@ -231,7 +234,7 @@ namespace SoftCircuits.HtmlMonkey
                     else if (char.IsWhiteSpace(ch))
                     {
                         // Handle whitespace
-                        parser.MovePastWhitespace();
+                        parser.SkipWhiteSpace();
                         // ',' and '>' change meaning of whitespace
                         if (parser.Peek() != ',' && parser.Peek() != '>')
                             selectors.AddChildSelector();
@@ -240,7 +243,7 @@ namespace SoftCircuits.HtmlMonkey
                     {
                         // Unknown syntax
                         Debug.Assert(false);
-                        parser.MoveAhead();
+                        parser++;
                     }
                 }
             }

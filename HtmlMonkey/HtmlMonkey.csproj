@@ -11,26 +11,37 @@
     <StartupObject />
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>HtmlMonkey is a lightweight HTML/XML parser written in C#. It allows you to parse an HTML or XML string into a hierarchy of node objects, which can then be traversed or queried using jQuery-like selectors. In addition, the node objects can be modified or even built from scratch using code. Finally, the classes can generate the HTML or XML from the data.</Description>
-    <Copyright>Copyright © 2019 SoftCircuits</Copyright>
+    <Copyright>Copyright © 2019-2020 SoftCircuits</Copyright>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <PackageTags>html parse html-parser crawler spider</PackageTags>
+    <PackageTags>html-parser xml-parser html xml parse parser crawler spider</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageIconUrl>https://raw.githubusercontent.com/SoftCircuits/HtmlMonkey/master/Logo_64x64.png</PackageIconUrl>
+    <PackageIconUrl></PackageIconUrl>
     <RepositoryUrl>https://github.com/SoftCircuits/HtmlMonkey</RepositoryUrl>
     <Company>SoftCircuits</Company>
     <Authors>Jonathan Wood</Authors>
     <PackageProjectUrl>https://github.com/SoftCircuits/HtmlMonkey</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
-    <AssemblyVersion>1.0.2.0</AssemblyVersion>
-    <FileVersion>1.0.2.0</FileVersion>
-    <Version>1.0.2</Version>
-    <PackageReleaseNotes>Now using common attribute parser to handle HTML header nodes; Fixed issue in WinForms test application that did not show all HTML when right clicking Document node and selecting Properties; Added HtmlMonkeyDocument.ToHtml(); Added unit tests; Improved documentation comments; Miscellaneous tweaks and fixes; BREAKING CHANGES: HtmlHeaderNode.Parameters changes to HtmlHeaderNode.Attributes; Node Html property renamed to InnerHtml.</PackageReleaseNotes>
+    <AssemblyVersion>1.0.3.0</AssemblyVersion>
+    <FileVersion>1.0.3.0</FileVersion>
+    <Version>1.0.3</Version>
+    <PackageReleaseNotes>Minor tweaks; added package icon</PackageReleaseNotes>
     <PackageId>SoftCircuits.HtmlMonkey</PackageId>
+    <PackageIcon>Logo_64x64.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Backup\**" />
+    <EmbeddedResource Remove="Backup\**" />
+    <None Remove="Backup\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="..\License.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\Logo_64x64.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>

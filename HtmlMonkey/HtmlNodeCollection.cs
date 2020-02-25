@@ -1,14 +1,14 @@
-﻿// Copyright (c) 2019 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2020 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace SoftCircuits.HtmlMonkey
 {
     /// <summary>
-    /// Represents a IEnumerable collection of nodes. Includes methods
-    /// for recursively finding nodes.
+    /// Represents a collection of nodes.
     /// </summary>
     public class HtmlNodeCollection : List<HtmlNode>
     {
@@ -24,7 +24,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <summary>
         /// Appends the specified node to the end of the collection. If both the last node in the
         /// collection and the node being added are of type <see cref="HtmlTextNode"></see>, then
-        /// the two text nodes are simply combined into one text node.
+        /// the two text nodes are combined into one text node.
         /// </summary>
         /// <param name="node">Node to add.</param>
         public new void Add(HtmlNode node)
@@ -78,18 +78,18 @@ namespace SoftCircuits.HtmlMonkey
         /// <summary>
         /// Removes the node at the specified position from the collection.
         /// </summary>
-        /// <param name="index"></param>
+        /// <param name="index">The position of the item to be removed.</param>
         public new void RemoveAt(int index)
         {
-            if (index >= 0 && index < Count)
-            {
-                HtmlNode node = this[index];
-                if (index > 0)
-                    this[index - 1].NextNode = node.NextNode;
-                if (index < (Count - 1))
-                    this[index + 1].PrevNode = node.PrevNode;
-                base.RemoveAt(index);
-            }
+            if (index < 0 || index >= Count)
+                throw new IndexOutOfRangeException();
+
+            HtmlNode node = this[index];
+            if (index > 0)
+                this[index - 1].NextNode = node.NextNode;
+            if (index < (Count - 1))
+                this[index + 1].PrevNode = node.PrevNode;
+            base.RemoveAt(index);
         }
 
         #endregion

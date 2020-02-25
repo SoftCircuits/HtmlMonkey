@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2020 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System;
@@ -13,21 +13,25 @@ namespace SoftCircuits.HtmlMonkey
     /// Holds the nodes of a parsed document (starting from the
     /// <see cref="RootNodes"></see> collection). Includes methods to parse
     /// a document and search a parsed document.
+    /// 
+    /// Note: To convert all the nodes to an HTML string, use the <see cref="ToHtml"></see>
+    /// method. <c>ToString()</c> is not used for this purpose because it could tax the debug
+    /// watch window unnecessarily.
     /// </summary>
     public class HtmlMonkeyDocument
     {
         /// <summary>
-        /// The source document, if known.
+        /// Specifies the source document file, if known.
         /// </summary>
-        public string Path { get; set; }
+        public string Path { get; private set; }
 
         /// <summary>
-        /// The document root nodes, from which all document nodes can be reached.
+        /// The document root nodes. Provides access to all document nodes.
         /// </summary>
         public HtmlNodeCollection RootNodes { get; set; }
 
         /// <summary>
-        /// Initializes a new <c>HtmlMonkeyDocument</c> instances with no data.
+        /// Initializes an empty <see cref="HtmlMonkeyDocument"> instance.
         /// </summary>
         public HtmlMonkeyDocument()
         {
@@ -36,9 +40,10 @@ namespace SoftCircuits.HtmlMonkey
         }
 
         /// <summary>
-        /// 
+        /// Generates an HTML string from the contents of this
+        /// <see cref="HtmlMonkeyDocument"></see>.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>This object as a string</returns>
         public string ToHtml() => string.Join(string.Empty, RootNodes.Select(n => n.OuterHtml));
 
         /// <summary>
@@ -61,9 +66,10 @@ namespace SoftCircuits.HtmlMonkey
         }
 
         /// <summary>
-        /// Recursively finds all nodes of the specified type filtered by the given predicate.
+        /// Recursively finds all nodes of the specified type, filtered by the given predicate.
         /// </summary>
-        /// <param name="predicate">A function that determines if the item should be included in the results.</param>
+        /// <param name="predicate">A function that determines if the item should be included in
+        /// the results.</param>
         /// <returns>The matching nodes.</returns>
         public IEnumerable<T> FindOfType<T>(Func<T, bool> predicate) where T : HtmlNode
         {
@@ -73,7 +79,8 @@ namespace SoftCircuits.HtmlMonkey
         /// <summary>
         /// Recursively finds all HtmlNodes filtered by the given predicate.
         /// </summary>
-        /// <param name="predicate">A function that determines if the item should be included in the results.</param>
+        /// <param name="predicate">A function that determines if the item should be included
+        /// in the results.</param>
         /// <returns>The matching nodes.</returns>
         public IEnumerable<HtmlNode> Find(Func<HtmlNode, bool> predicate)
         {

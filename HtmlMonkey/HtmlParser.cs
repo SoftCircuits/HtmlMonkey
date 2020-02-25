@@ -1,6 +1,7 @@
-﻿// Copyright (c) 2019 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2020 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -29,7 +30,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="html">The HTML text to parse.</param>
         public IEnumerable<HtmlNode> ParseChildren(string html)
         {
-            TextParser parser = new TextParser(html);
+            ParsingHelper parser = new ParsingHelper(html);
             HtmlElementNode rootNode = new HtmlElementNode("[Root]");
             HtmlElementNode parentNode = rootNode;
             string tag;
@@ -41,7 +42,8 @@ namespace SoftCircuits.HtmlMonkey
                 if (parser.Peek() == HtmlRules.TagStart)
                 {
                     // Test for CDATA segments, which we store but do not parse. This includes comments.
-                    CDataDefinition definition = HtmlRules.CDataDefinitions.FirstOrDefault(dd => parser.MatchesCurrentPosition(dd.StartText, dd.IgnoreCase));
+                    CDataDefinition definition = HtmlRules.CDataDefinitions.FirstOrDefault(dd => parser.MatchesCurrentPosition(dd.StartText,
+                        dd.IgnoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
                     if (definition != null)
                     {
                         parentNode.Children.Add(ParseCDataNode(parser, definition));
@@ -51,7 +53,7 @@ namespace SoftCircuits.HtmlMonkey
                     // Closing tag
                     if (parser.Peek(1) == HtmlRules.ForwardSlash)
                     {
-                        parser.MoveAhead(2);
+                        parser += 2;
                         tag = parser.ParseWhile(c => HtmlRules.IsTagCharacter(c));
                         if (tag.Length > 0)
                         {
@@ -74,8 +76,8 @@ namespace SoftCircuits.HtmlMonkey
                                 }
                             }
                         }
-                        parser.MoveTo(HtmlRules.TagEnd);
-                        parser.MoveAhead();
+                        parser.SkipTo(HtmlRules.TagEnd);
+                        parser++;
                         continue;
                     }
 
@@ -99,16 +101,16 @@ namespace SoftCircuits.HtmlMonkey
                             // Parse rest of tag
                             if (parser.Peek() == HtmlRules.ForwardSlash)
                             {
-                                parser.MoveAhead();
-                                parser.MovePastWhitespace();
+                                parser++;
+                                parser.SkipWhiteSpace();
                                 selfClosing = true;
                             }
                             else
                             {
                                 selfClosing = false;
                             }
-                            parser.MoveTo(HtmlRules.TagEnd);
-                            parser.MoveAhead();
+                            parser.SkipTo(HtmlRules.TagEnd);
+                            parser++;
 
                             // Add node
                             HtmlElementNode node = new HtmlElementNode(tag, attributes);
@@ -143,13 +145,13 @@ namespace SoftCircuits.HtmlMonkey
                 // Text node
                 int start = parser.Index;
                 // Text must be at least 1 character (handle '<' that is not part of a tag)
-                parser.MoveAhead();
-                parser.MoveTo(HtmlRules.TagStart);
+                parser++;
+                parser.SkipTo(HtmlRules.TagStart);
                 Debug.Assert(parser.Index > start);
                 parentNode.Children.Add(new HtmlTextNode(parser.Extract(start, parser.Index)));
             }
 
-            //
+            // Return top-level nodes from nodes just parsed
             return rootNode.Children;
         }
 
@@ -158,9 +160,9 @@ namespace SoftCircuits.HtmlMonkey
         /// the parser position is advanced to the end of the tag name and true is returned.
         /// Otherwise, false is returned and the current parser position does not change.
         /// </summary>
-        /// <param name="parser"></param>
-        /// <param name="tag"></param>
-        private bool ParseTag(TextParser parser, out string tag)
+        /// <param name="parser">Text parser.</param>
+        /// <param name="tag">Parsed tag name.</param>
+        private bool ParseTag(ParsingHelper parser, out string tag)
         {
             tag = null;
             int pos = 0;
@@ -175,11 +177,11 @@ namespace SoftCircuits.HtmlMonkey
                 while (HtmlRules.IsTagCharacter(parser.Peek(++pos)))
                     ;
                 // Move past '<'
-                parser.MoveAhead();
+                parser++;
                 // Extract tag name
                 int length = pos - 1;
                 tag = parser.Text.Substring(parser.Index, length);
-                parser.MoveAhead(length);
+                parser += length;
                 return true;
             }
             // No tag found at this position
@@ -190,12 +192,12 @@ namespace SoftCircuits.HtmlMonkey
         /// Parses the attributes of an element tag. When finished, the parser
         /// position is at the next non-space character that follows the attributes.
         /// </summary>
-        private HtmlAttributeCollection ParseAttributes(TextParser parser)
+        private HtmlAttributeCollection ParseAttributes(ParsingHelper parser)
         {
             HtmlAttributeCollection attributes = new HtmlAttributeCollection();
 
             // Parse tag attributes
-            parser.MovePastWhitespace();
+            parser.SkipWhiteSpace();
             char ch = parser.Peek();
             while (HtmlRules.IsAttributeNameCharacter(ch) || HtmlRules.IsQuoteChar(ch))
             {
@@ -208,11 +210,11 @@ namespace SoftCircuits.HtmlMonkey
                 Debug.Assert(attribute.Name.Length > 0);
 
                 // Parse attribute value
-                parser.MovePastWhitespace();
+                parser.SkipWhiteSpace();
                 if (parser.Peek() == '=')
                 {
-                    parser.MoveAhead(); // Skip '='
-                    parser.MovePastWhitespace();
+                    parser++; // Skip '='
+                    parser.SkipWhiteSpace();
                     if (HtmlRules.IsQuoteChar(parser.Peek()))
                     {
                         // Quoted attribute value
@@ -233,7 +235,7 @@ namespace SoftCircuits.HtmlMonkey
                 // Add attribute to tag
                 attributes.Add(attribute.Name, attribute);
                 // Continue
-                parser.MovePastWhitespace();
+                parser.SkipWhiteSpace();
                 ch = parser.Peek();
             }
             return attributes;
@@ -243,12 +245,12 @@ namespace SoftCircuits.HtmlMonkey
         /// Parses an HTML DOCTYPE header tag. Assumes current position is just after tag name.
         /// </summary>
         /// <param name="parser">Parser object.</param>
-        private HtmlHeaderNode ParseHtmlHeader(TextParser parser)
+        private HtmlHeaderNode ParseHtmlHeader(ParsingHelper parser)
         {
             HtmlHeaderNode node = new HtmlHeaderNode(ParseAttributes(parser));
             string tagEnd = ">";
-            parser.MoveTo(tagEnd);
-            parser.MoveAhead(tagEnd.Length);
+            parser.SkipTo(tagEnd);
+            parser += tagEnd.Length;
             return node;
         }
 
@@ -256,12 +258,12 @@ namespace SoftCircuits.HtmlMonkey
         /// Parses an XML header tag. Assumes current position is just after tag name.
         /// </summary>
         /// <param name="parser">Parser object.</param>
-        private XmlHeaderNode ParseXmlHeader(TextParser parser)
+        private XmlHeaderNode ParseXmlHeader(ParsingHelper parser)
         {
             XmlHeaderNode node = new XmlHeaderNode(ParseAttributes(parser));
             string tagEnd = "?>";
-            parser.MoveTo(tagEnd);
-            parser.MoveAhead(tagEnd.Length);
+            parser.SkipTo(tagEnd);
+            parser += tagEnd.Length;
             return node;
         }
 
@@ -274,7 +276,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="tag">Tag name for which the closing tag is being searched.</param>
         /// <param name="content">Returns the content before the closing tag</param>
         /// <returns></returns>
-        private bool ParseToClosingTag(TextParser parser, string tag, out string content)
+        private bool ParseToClosingTag(ParsingHelper parser, string tag, out string content)
         {
             string endTag = $"</{tag}";
             int start = parser.Index;
@@ -283,30 +285,30 @@ namespace SoftCircuits.HtmlMonkey
             Debug.Assert(parser.Index > 0 && parser.Peek(-1) == HtmlRules.TagEnd);
             while (!parser.EndOfText)
             {
-                parser.MoveTo(endTag, true);
+                parser.SkipTo(endTag, StringComparison.OrdinalIgnoreCase);
                 // Check that we didn't just match the first part of a longer tag
                 if (!HtmlRules.IsTagCharacter(parser.Peek(endTag.Length)))
                 {
                     content = parser.Extract(start, parser.Index);
-                    parser.MoveAhead(endTag.Length);
-                    parser.MoveTo(HtmlRules.TagEnd);
-                    parser.MoveAhead();
+                    parser += endTag.Length;
+                    parser.SkipTo(HtmlRules.TagEnd);
+                    parser++;
                     return true;
                 }
-                parser.MoveAhead();
+                parser++;
             }
             content = null;
             return false;
         }
 
-        private HtmlCDataNode ParseCDataNode(TextParser parser, CDataDefinition definition)
+        private HtmlCDataNode ParseCDataNode(ParsingHelper parser, CDataDefinition definition)
         {
             Debug.Assert(parser.MatchesCurrentPosition(definition.StartText));
-            parser.MoveAhead(definition.StartText.Length);
+            parser += definition.StartText.Length;
             int start = parser.Index;
-            parser.MoveTo(definition.EndText);
+            parser.SkipTo(definition.EndText);
             string content = parser.Extract(start, parser.Index);
-            parser.MoveAhead(definition.EndText.Length);
+            parser += definition.EndText.Length;
             return new HtmlCDataNode(definition.StartText, definition.EndText, content);
         }
     }

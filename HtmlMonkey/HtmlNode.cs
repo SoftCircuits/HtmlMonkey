@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2020 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System.Collections.Generic;
@@ -22,13 +22,13 @@ namespace SoftCircuits.HtmlMonkey
 
         /// <summary>
         /// Returns this node's next sibling, or <c>null</c> if this node
-        /// is the last of all its siblings.
+        /// is the last of its siblings.
         /// </summary>
         public HtmlNode NextNode { get; internal set; }
 
         /// <summary>
         /// Returns this node's previous sibling, or <c>null</c> if this
-        /// node is the first of all its siblings.
+        /// node is the first of its siblings.
         /// </summary>
         public HtmlNode PrevNode { get; internal set; }
 
@@ -143,7 +143,7 @@ namespace SoftCircuits.HtmlMonkey
         public HtmlAttributeCollection Attributes { get; private set; }
 
         /// <summary>
-        /// This elements child nodes.
+        /// This element's child nodes.
         /// </summary>
         public HtmlNodeCollection Children { get; private set; }
 

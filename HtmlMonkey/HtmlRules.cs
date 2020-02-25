@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2020 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System;
@@ -205,7 +205,8 @@ namespace SoftCircuits.HtmlMonkey
         }
 
         /// <summary>
-        /// Defines element tag priorities. Used to help resolve mismatched tags.
+        /// Defines element tag priorities. Used to help resolve mismatched tags. Tags cannot appear within
+        /// tags of a lower value.
         /// </summary>
         private static Dictionary<string, int> TagPriority = new Dictionary<string, int>(StringComparer.CurrentCultureIgnoreCase)
         {

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2020 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 
@@ -12,22 +12,25 @@ namespace SoftCircuits.HtmlMonkey
         private const string Null = "(null)";
 
         /// <summary>
-        /// Attribute name.
+        /// Name of this attribute.
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Attribute value. Will be an empty string if the attribute has an empty
-        /// value. Will be null if the attribute name was not followed by an equal
-        /// sign.
+        /// Value of this attribute. The library sets this value to an empty string
+        /// if the attribute has an empty value. It sets it to null if the attribute
+        /// name was not followed by an equal sign.
         /// </summary>
         public string Value { get; set; }
 
+        /// <summary>
+        /// Converts this <see cref="HtmlAttribute"></see> to a string.
+        /// </summary>
         public override string ToString()
         {
-            return (Value != null) ?
-                $"{Name ?? Null}=\"{Value}\"" :
-                Name ?? Null;
+            if (Value != null)
+                return $"{Name ?? Null}=\"{Value}\"";
+            return Name ?? Null;
         }
     }
 }
