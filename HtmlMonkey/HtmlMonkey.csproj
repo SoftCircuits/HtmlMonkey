@@ -22,10 +22,10 @@
     <PackageProjectUrl>https://github.com/SoftCircuits/HtmlMonkey</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
-    <AssemblyVersion>1.0.3.0</AssemblyVersion>
-    <FileVersion>1.0.3.0</FileVersion>
-    <Version>1.0.3</Version>
-    <PackageReleaseNotes>Minor tweaks; added package icon</PackageReleaseNotes>
+    <AssemblyVersion>1.0.4.0</AssemblyVersion>
+    <FileVersion>1.0.4.0</FileVersion>
+    <Version>1.0.4</Version>
+    <PackageReleaseNotes>Minor tweaks; modified package icon.</PackageReleaseNotes>
     <PackageId>SoftCircuits.HtmlMonkey</PackageId>
     <PackageIcon>Logo_64x64.png</PackageIcon>
   </PropertyGroup>
