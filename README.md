@@ -148,4 +148,4 @@ IEnumerable<HtmlElementNode> itemNodes = itemSelectors.Find(containerNodes);
 
 ## Enhancing the Library
 
-This is my initial attempt at this library and I would appreciate any efforts by others to contribute. I want to keep the library small but would like to see more testing done on a wide variety of input markup. What sort of scenarios does the library not handle correctly? This is the type of information I'd be curious about.
+This is my initial attempt at this library and I would appreciate and be responsive to any feedback from people working with it. I want to keep the library small but would like to see more testing done on a wide variety of input markup. What sort of scenarios does the library not handle correctly? This is the type of information I'd be curious about.
