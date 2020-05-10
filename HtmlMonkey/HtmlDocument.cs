@@ -14,18 +14,28 @@ namespace SoftCircuits.HtmlMonkey
     /// property to access these nodes. Use the <see cref="ToHtml"/> method to convert the
     /// nodes back to markup.
     /// </summary>
+    [Obsolete("This class has been deprecated and will be removed in a future version. Please use HtmlDocument instead.")]
+    public class HtmlMonkeyDocument : HtmlDocument
+    {
+    }
+
+    /// <summary>
+    /// Holds the nodes of a parsed HTML or XML document. Use the <see cref="RootNodes"/>
+    /// property to access these nodes. Use the <see cref="ToHtml"/> method to convert the
+    /// nodes back to markup.
+    /// </summary>
     public class HtmlDocument
     {
         /// <summary>
-        /// Specifies the source document file, or <c>null</c> if the source file is not
-        /// known.
+        /// Specifies the source document file. May be empty or <c>null</c> if the source file
+        /// is not known.
         /// </summary>
         public string Path { get; private set; }
 
         /// <summary>
         /// The document root nodes. Provides access to all document nodes.
         /// </summary>
-        public HtmlNodeCollection RootNodes { get; set; }
+        public HtmlNodeCollection RootNodes { get; private set; }
 
         /// <summary>
         /// Initializes an empty <see cref="HtmlDocument"> instance.
@@ -40,27 +50,21 @@ namespace SoftCircuits.HtmlMonkey
         /// Generates an HTML string from the contents of this
         /// <see cref="HtmlDocument"></see>.
         /// </summary>
-        /// <returns>This object as a string</returns>
-        public string ToHtml() => string.Join(string.Empty, RootNodes.Select(n => n.OuterHtml));
+        /// <returns>A string with the markup for this document.</returns>
+        public string ToHtml() => string.Concat(RootNodes.Select(n => n.OuterHtml));
 
         /// <summary>
-        /// Searches the given nodes for ones matching the specified selector.
+        /// Recursively searches the given nodes for ones matching the specified selector.
         /// </summary>
         /// <param name="selector">Selector that describes the nodes to find.</param>
         /// <returns>The matching nodes.</returns>
-        public IEnumerable<HtmlElementNode> Find(string selector)
-        {
-            return Find(RootNodes, selector);
-        }
+        public IEnumerable<HtmlElementNode> Find(string selector) => Find(RootNodes, selector);
 
         /// <summary>
         /// Recursively finds all nodes of the specified type.
         /// </summary>
         /// <returns>The matching nodes.</returns>
-        public IEnumerable<T> FindOfType<T>() where T : HtmlNode
-        {
-            return FindOfType<T>(RootNodes);
-        }
+        public IEnumerable<T> FindOfType<T>() where T : HtmlNode => FindOfType<T>(RootNodes);
 
         /// <summary>
         /// Recursively finds all nodes of the specified type, filtered by the given predicate.
@@ -68,10 +72,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="predicate">A function that determines if the item should be included in
         /// the results.</param>
         /// <returns>The matching nodes.</returns>
-        public IEnumerable<T> FindOfType<T>(Func<T, bool> predicate) where T : HtmlNode
-        {
-            return FindOfType<T>(RootNodes, predicate);
-        }
+        public IEnumerable<T> FindOfType<T>(Func<T, bool> predicate) where T : HtmlNode => FindOfType<T>(RootNodes, predicate);
 
         /// <summary>
         /// Recursively finds all HtmlNodes filtered by the given predicate.
@@ -79,10 +80,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="predicate">A function that determines if the item should be included
         /// in the results.</param>
         /// <returns>The matching nodes.</returns>
-        public IEnumerable<HtmlNode> Find(Func<HtmlNode, bool> predicate)
-        {
-            return Find(RootNodes, predicate);
-        }
+        public IEnumerable<HtmlNode> Find(Func<HtmlNode, bool> predicate) => Find(RootNodes, predicate);
 
         #region Static methods
 
@@ -93,10 +91,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="path">The HTML or XML file to parse.</param>
         /// <returns>Returns an <see cref="HtmlDocument"></see> instance that contains the parsed
         /// nodes.</returns>
-        public static HtmlDocument FromFile(string path)
-        {
-            return FromHtml(File.ReadAllText(path));
-        }
+        public static HtmlDocument FromFile(string path) => FromHtml(File.ReadAllText(path));
 
         /// <summary>
         /// Parses an HTML or XML file and returns an <see cref="HtmlDocument"></see> instance that
@@ -106,10 +101,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="encoding">The encoding applied to the contents of the file.</param>
         /// <returns>Returns an <see cref="HtmlDocument"></see> instance that contains the parsed
         /// nodes.</returns>
-        public static HtmlDocument FromFile(string path, Encoding encoding)
-        {
-            return FromHtml(File.ReadAllText(path, encoding));
-        }
+        public static HtmlDocument FromFile(string path, Encoding encoding) => FromHtml(File.ReadAllText(path, encoding));
 
         /// <summary>
         /// Parses an HTML or XML string and returns an <see cref="HtmlDocument"></see> instance that
@@ -125,7 +117,7 @@ namespace SoftCircuits.HtmlMonkey
         }
 
         /// <summary>
-        /// Searches the given nodes for ones matching the specified selector.
+        /// Recursively searches the given nodes for ones matching the specified selector.
         /// </summary>
         /// <param name="nodes">The nodes to be searched.</param>
         /// <param name="selector">Selector that describes the nodes to find.</param>

@@ -13,7 +13,7 @@ namespace SoftCircuits.HtmlMonkey
     public class SelectorCollection : List<Selector>
     {
         /// <summary>
-        /// Uses this list of selectors to search the given list of nodes.
+        /// Recursively searches the given list of nodes using this list of selectors.
         /// Returns the matching nodes. Ensures no duplicate nodes are returned.
         /// </summary>
         /// <param name="nodes">The set of nodes to search.</param>

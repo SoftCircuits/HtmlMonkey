@@ -102,7 +102,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <summary>
         /// Converts this node to a string.
         /// </summary>
-        public override string ToString() => $"<{HtmlRules.HtmlHeaderTag ?? "(null)"} />";
+        public override string ToString() => $"<{HtmlRules.HtmlHeaderTag} />";
     }
 
     /// <summary>
@@ -144,7 +144,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <summary>
         /// Converts this node to a string.
         /// </summary>
-        public override string ToString() => $"<{HtmlRules.XmlHeaderTag ?? "(null)"} />";
+        public override string ToString() => $"<{HtmlRules.XmlHeaderTag} />";
     }
 
     /// <summary>

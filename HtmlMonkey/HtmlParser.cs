@@ -233,7 +233,7 @@ namespace SoftCircuits.HtmlMonkey
                     attribute.Value = null;
                 }
                 // Add attribute to tag
-                attributes.Add(attribute.Name, attribute);
+                attributes.Add(attribute);
                 // Continue
                 parser.SkipWhiteSpace();
                 ch = parser.Peek();

@@ -36,18 +36,19 @@ namespace SoftCircuits.HtmlMonkey
         /// attribute already exists in the collection, the value of the existing
         /// attribute is updated.
         /// </summary>
-        /// <param name="name">Attribute name.</param>
-        /// <param name="value">Attribute value.</param>
-        public new void Add(string name, HtmlAttribute value)
+        /// <param name="attribute">Attribute to be added.</param>
+        public void Add(HtmlAttribute attribute)
         {
-            if (name == null)
-                throw new ArgumentNullException(nameof(name));
+            if (attribute == null)
+                throw new ArgumentNullException(nameof(attribute));
+            if (string.IsNullOrEmpty(attribute.Name))
+                throw new ArgumentException("Attribute name cannot be null or empty.");
 
             // Determine if we already have this attribute
-            if (TryGetValue(name, out HtmlAttribute attribute))
-                attribute.Value = value.Value;
+            if (TryGetValue(attribute.Name, out HtmlAttribute existingAttribute))
+                existingAttribute.Value = attribute.Value;
             else
-                base.Add(name, value);
+                base.Add(attribute.Name, attribute);
         }
 
         /// <summary>

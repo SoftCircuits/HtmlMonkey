@@ -53,6 +53,13 @@ namespace HtmlMonkeyTests
       sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
       est laborum.
     </p>
+    <div id=""div1"">
+      <div id=""div2"">
+        <div id=""div3"">
+          <p id=""test-paragraph"">Paragraph.</p>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
 ";
@@ -63,7 +70,7 @@ namespace HtmlMonkeyTests
             HtmlDocument document = HtmlDocument.FromHtml(html);
 
             IEnumerable<HtmlElementNode> elements = document.Find("p");
-            Assert.AreEqual(3, elements.Count());
+            Assert.AreEqual(4, elements.Count());
 
             elements = document.Find("#one-of-many");
             Assert.AreEqual(1, elements.Count());
@@ -87,6 +94,15 @@ namespace HtmlMonkeyTests
             Assert.AreEqual(1, elements.Count());
             Assert.AreEqual("h1", elements.First().TagName);
             Assert.AreEqual("Test Document", elements.First().Text);
+
+            elements = document.Find("#div3");
+            Assert.AreEqual(1, elements.Count());
+
+            elements = document.Find("#div1   >   p#test-paragraph");
+            Assert.AreEqual(0, elements.Count());
+
+            elements = document.Find("#div1   p#test-paragraph");
+            Assert.AreEqual(1, elements.Count());
 
             IEnumerable<HtmlCDataNode> cDataNodes = document.FindOfType<HtmlCDataNode>();
             Assert.AreEqual(4, cDataNodes.Count());

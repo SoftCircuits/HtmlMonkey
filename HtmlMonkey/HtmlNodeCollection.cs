@@ -27,7 +27,9 @@ namespace SoftCircuits.HtmlMonkey
         /// the two text nodes are combined into one text node.
         /// </summary>
         /// <param name="node">Node to add.</param>
-        public new void Add(HtmlNode node)
+        /// <returns>Returns <paramref name="node"/> unless the text node was appended to the last
+        /// node, in which case the last node is returned.</returns>
+        public T Add<T>(T node) where T : HtmlNode
         {
             Debug.Assert(!Contains(node));
             if (Count > 0)
@@ -39,7 +41,7 @@ namespace SoftCircuits.HtmlMonkey
                 {
                     // Combine if two consecutive HtmlTextNodes
                     lastNode.InnerHtml += node.InnerHtml;
-                    return;
+                    return lastNode as T;
                 }
                 else
                 {
@@ -52,6 +54,8 @@ namespace SoftCircuits.HtmlMonkey
             node.ParentNode = ParentNode;
 
             base.Add(node);
+
+            return node;
         }
 
         /// <summary>

@@ -78,7 +78,7 @@ namespace HtmlMonkeyTests
 
             foreach (List<Attribute> attributes in xmlHeaders)
             {
-                string header = string.Format($"<?xml {string.Join(" ", attributes)}?>");
+                string header = string.Format($"<?XML {string.Join(" ", attributes)}?>");
                 HtmlDocument document = HtmlDocument.FromHtml(header);
                 Assert.AreEqual(1, document.RootNodes.Count);
                 XmlHeaderNode node = document.RootNodes[0] as XmlHeaderNode;

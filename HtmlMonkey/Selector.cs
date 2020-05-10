@@ -69,7 +69,7 @@ namespace SoftCircuits.HtmlMonkey
         }
 
         /// <summary>
-        /// Scans the list of nodes (and child nodes) and returns the nodes that match this
+        /// Recursively searches the list of nodes and returns the nodes that match this
         /// selector.
         /// </summary>
         /// <param name="nodes">Nodes to search.</param>

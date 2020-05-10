@@ -934,8 +934,6 @@ namespace HtmlMonkeyTests
 
         void TestRecursive(NodeInfo parentInfo, HtmlNodeCollection nodes)
         {
-            SelectorAttribute x;
-
             Assert.AreNotEqual(null, parentInfo);
             Assert.AreNotEqual(null, nodes);
             Assert.AreEqual(parentInfo.ChildNodes.Length, nodes.Count);
