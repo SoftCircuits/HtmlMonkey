@@ -106,15 +106,17 @@ namespace SoftCircuits.HtmlMonkey
         static HtmlRules()
         {
             // Characters that are not valid within tag and attribute names (excluding whitespace and control characters)
-            InvalidChars = new HashSet<char>();
-            InvalidChars.Add('!');
-            InvalidChars.Add('?');
-            InvalidChars.Add('<');
-            InvalidChars.Add('"');
-            InvalidChars.Add('\'');
-            InvalidChars.Add('>');
-            InvalidChars.Add('/');
-            InvalidChars.Add('=');
+            InvalidChars = new HashSet<char>
+            {
+                '!',
+                '?',
+                '<',
+                '"',
+                '\'',
+                '>',
+                '/',
+                '='
+            };
             for (int i = 0xfdd0; i <= 0xfdef; i++)
                 InvalidChars.Add((char)i);
             InvalidChars.Add('\ufffe');
@@ -155,7 +157,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <summary>
         /// Defines tag attributes for element tags.
         /// </summary>
-        private static Dictionary<string, HtmlTagFlag> TagRules = new Dictionary<string, HtmlTagFlag>(StringComparer.CurrentCultureIgnoreCase)
+        private static readonly Dictionary<string, HtmlTagFlag> TagRules = new Dictionary<string, HtmlTagFlag>(StringComparer.CurrentCultureIgnoreCase)
         {
             ["!doctype"] = HtmlTagFlag.HtmlHeader,
             ["?xml"] = HtmlTagFlag.XmlHeader,
@@ -197,18 +199,13 @@ namespace SoftCircuits.HtmlMonkey
         /// <summary>
         /// Returns the attribute flags for the given tag.
         /// </summary>
-        public static HtmlTagFlag GetTagFlags(string tag)
-        {
-            if (TagRules.TryGetValue(tag, out HtmlTagFlag flags))
-                return flags;
-            return HtmlTagFlag.None;
-        }
+        public static HtmlTagFlag GetTagFlags(string tag) => TagRules.TryGetValue(tag, out HtmlTagFlag flags) ? flags : HtmlTagFlag.None;
 
         /// <summary>
         /// Defines element tag priorities. Used to help resolve mismatched tags. Tags cannot appear within
         /// tags of a lower value.
         /// </summary>
-        private static Dictionary<string, int> TagPriority = new Dictionary<string, int>(StringComparer.CurrentCultureIgnoreCase)
+        private static readonly Dictionary<string, int> TagPriority = new Dictionary<string, int>(StringComparer.CurrentCultureIgnoreCase)
         {
             ["div"] = 150,
             ["td"] = 160,
@@ -226,10 +223,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <summary>
         /// Returns a value that signifies the relative priority of the specified tag.
         /// </summary>
-        public static int GetTagPriority(string tag)
-        {
-            return (TagPriority.TryGetValue(tag, out int priority)) ? priority : 100;
-        }
+        public static int GetTagPriority(string tag) => TagPriority.TryGetValue(tag, out int priority) ? priority : 100;
 
         #endregion
 

@@ -1,7 +1,6 @@
 ﻿// Copyright (c) 2019-2020 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -10,7 +9,7 @@ using System.Text;
 namespace SoftCircuits.HtmlMonkey
 {
     /// <summary>
-    /// Base class for all HTML nodes.
+    /// Abstract base class for all HTML nodes.
     /// </summary>
     public abstract class HtmlNode
     {
@@ -33,7 +32,7 @@ namespace SoftCircuits.HtmlMonkey
         public HtmlNode PrevNode { get; internal set; }
 
         /// <summary>
-        /// Returns true if this node is a top-level node and has no parent.
+        /// Returns <c>true</c> if this node is a top-level node and has no parent.
         /// </summary>
         public bool IsTopLevelNode => ParentNode == null;
 
@@ -63,11 +62,6 @@ namespace SoftCircuits.HtmlMonkey
             get => string.Empty;
             set { }
         }
-
-        /// <summary>
-        /// An abbreviated form of the node's markup (no inner markup).
-        /// </summary>
-        public override string ToString() => string.Empty;
     }
 
     /// <summary>
@@ -75,13 +69,23 @@ namespace SoftCircuits.HtmlMonkey
     /// </summary>
     public class HtmlHeaderNode : HtmlNode
     {
+        /// <summary>
+        /// Gets this node's attributes.
+        /// </summary>
         public HtmlAttributeCollection Attributes { get; private set; }
 
+        /// <summary>
+        /// Constructs a <see cref="HtmlHeaderNode"/> instance.
+        /// </summary>
+        /// <param name="attributes">List of attributes for this node.</param>
         public HtmlHeaderNode(HtmlAttributeCollection attributes)
         {
             Attributes = attributes;
         }
 
+        /// <summary>
+        /// Gets the outer markup.
+        /// </summary>
         public override string OuterHtml
         {
             get
@@ -95,7 +99,10 @@ namespace SoftCircuits.HtmlMonkey
             }
         }
 
-        public override string ToString() => OuterHtml;
+        /// <summary>
+        /// Converts this node to a string.
+        /// </summary>
+        public override string ToString() => $"<{HtmlRules.HtmlHeaderTag ?? "(null)"} />";
     }
 
     /// <summary>
@@ -103,13 +110,23 @@ namespace SoftCircuits.HtmlMonkey
     /// </summary>
     public class XmlHeaderNode : HtmlNode
     {
+        /// <summary>
+        /// Gets this node's attributes.
+        /// </summary>
         public HtmlAttributeCollection Attributes { get; private set; }
 
+        /// <summary>
+        /// Constructs an <see cref="XmlHeaderNode"/> instance.
+        /// </summary>
+        /// <param name="attributes">List of attributes for this node.</param>
         public XmlHeaderNode(HtmlAttributeCollection attributes)
         {
             Attributes = attributes;
         }
 
+        /// <summary>
+        /// Gets the outer markup.
+        /// </summary>
         public override string OuterHtml
         {
             get
@@ -124,7 +141,10 @@ namespace SoftCircuits.HtmlMonkey
             }
         }
 
-        public override string ToString() => OuterHtml;
+        /// <summary>
+        /// Converts this node to a string.
+        /// </summary>
+        public override string ToString() => $"<{HtmlRules.XmlHeaderTag ?? "(null)"} />";
     }
 
     /// <summary>
@@ -133,20 +153,25 @@ namespace SoftCircuits.HtmlMonkey
     public class HtmlElementNode : HtmlNode
     {
         /// <summary>
-        /// This element's tag name.
+        /// Gets or sets the tag name.
         /// </summary>
         public string TagName { get; set; }
 
         /// <summary>
-        /// This elements attributes.
+        /// Gets this element's attribute values.
         /// </summary>
         public HtmlAttributeCollection Attributes { get; private set; }
 
         /// <summary>
-        /// This element's child nodes.
+        /// Gets this element's child nodes.
         /// </summary>
         public HtmlNodeCollection Children { get; private set; }
 
+        /// <summary>
+        /// Constructs a new <see cref="HtmlElementNode"/> instance.
+        /// </summary>
+        /// <param name="tagName">Element tag name.</param>
+        /// <param name="attributes">Optional element attributes.</param>
         public HtmlElementNode(string tagName, HtmlAttributeCollection attributes = null)
         {
             TagName = tagName ?? string.Empty;
@@ -159,6 +184,9 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         public bool IsSelfClosing => !Children.Any() && !HtmlRules.GetTagFlags(TagName).HasFlag(HtmlTagFlag.NoSelfClosing);
 
+        /// <summary>
+        /// Gets or sets the inner markup.
+        /// </summary>
         public override string InnerHtml
         {
             get
@@ -184,6 +212,9 @@ namespace SoftCircuits.HtmlMonkey
             }
         }
 
+        /// <summary>
+        /// Gets or sets the outer markup.
+        /// </summary>
         public override string OuterHtml
         {
             get
@@ -219,6 +250,9 @@ namespace SoftCircuits.HtmlMonkey
             }
         }
 
+        /// <summary>
+        /// Gets or sets this node's text.
+        /// </summary>
         public override string Text
         {
             get
@@ -237,20 +271,10 @@ namespace SoftCircuits.HtmlMonkey
             }
         }
 
-        public override string ToString()
-        {
-            StringBuilder builder = new StringBuilder();
-
-            // Open tag
-            builder.Append(HtmlRules.TagStart);
-            builder.Append(TagName);
-            // Note: Attributes returned in non-deterministic order ???
-            builder.Append(Attributes.ToString());
-            builder.Append(' ');
-            builder.Append(HtmlRules.ForwardSlash);
-            builder.Append(HtmlRules.TagEnd);
-            return builder.ToString();
-        }
+        /// <summary>
+        /// Converts this node to a string.
+        /// </summary>
+        public override string ToString() => $"<{TagName ?? "(null)"} />";
     }
 
     /// <summary>
@@ -258,31 +282,48 @@ namespace SoftCircuits.HtmlMonkey
     /// </summary>
     public class HtmlTextNode : HtmlNode
     {
-        private string Content;
+        protected string Content;
 
+        /// <summary>
+        /// Constructs a <see cref="HtmlTextNode"/> instance.
+        /// </summary>
+        /// <param name="html">Optional markup for this node.</param>
         public HtmlTextNode(string html = null)
         {
             Content = html ?? string.Empty;
         }
 
+        /// <summary>
+        /// Gets or sets the inner markup.
+        /// </summary>
         public override string InnerHtml
         {
             get => Content;
             set => Content = value;
         }
 
+        /// <summary>
+        /// Gets the outer markup.
+        /// </summary>
         public override string OuterHtml
         {
             get => InnerHtml;
         }
 
+        /// <summary>
+        /// Gets or sets the text for this node. Automatically HTML-encodes
+        /// and decodes text values.
+        /// </summary>
         public override string Text
         {
             get => WebUtility.HtmlDecode(Content);
             set => Content = WebUtility.HtmlEncode(value);
         }
 
-        public override string ToString() => InnerHtml;
+        /// <summary>
+        /// Converts this node to a string. (Same as <see cref="Text"/>.)
+        /// </summary>
+        public override string ToString() => Text;
     }
 
     /// <summary>
@@ -291,9 +332,22 @@ namespace SoftCircuits.HtmlMonkey
     /// </summary>
     public class HtmlCDataNode : HtmlTextNode
     {
+        /// <summary>
+        /// CDATA prefix markup.
+        /// </summary>
         public string Prefix { get; set; }
+
+        /// <summary>
+        /// CDATA suffix markup.
+        /// </summary>
         public string Suffix { get; set; }
 
+        /// <summary>
+        /// Constructs a new <see cref="HtmlCDataNode"/> instance.
+        /// </summary>
+        /// <param name="prefix">CDATA prefix markup.</param>
+        /// <param name="suffix">CDATA suffix markup.</param>
+        /// <param name="html">CDATA markup.</param>
         public HtmlCDataNode(string prefix, string suffix, string html)
             : base(html)
         {
@@ -301,20 +355,32 @@ namespace SoftCircuits.HtmlMonkey
             Suffix = suffix;
         }
 
+        /// <summary>
+        /// Gets or sets the inner markup.
+        /// </summary>
         public override string InnerHtml
         {
             get => base.InnerHtml;
             set => base.InnerHtml = value;
         }
 
-        public override string OuterHtml => $"{Prefix}{base.ToString()}{Suffix}";
+        /// <summary>
+        /// Gets the outer markup.
+        /// </summary>
+        public override string OuterHtml => $"{Prefix}{InnerHtml}{Suffix}";
 
+        /// <summary>
+        /// This is a placeholder property only. CDATA nodes do not contain text.
+        /// </summary>
         public override string Text
         {
-            get => base.Text;
-            set => base.Text = value;
+            get => string.Empty;
+            set { }
         }
 
-        public override string ToString() => OuterHtml;
+        /// <summary>
+        /// Converts this node to a string.
+        /// </summary>
+        public override string ToString() => $"{Prefix}...{Suffix}";
     }
 }

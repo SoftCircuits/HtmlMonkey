@@ -53,11 +53,11 @@
             this.btnInnerText.AutoSize = true;
             this.btnInnerText.Location = new System.Drawing.Point(259, 19);
             this.btnInnerText.Name = "btnInnerText";
-            this.btnInnerText.Size = new System.Drawing.Size(73, 17);
+            this.btnInnerText.Size = new System.Drawing.Size(46, 17);
             this.btnInnerText.TabIndex = 2;
             this.btnInnerText.TabStop = true;
             this.btnInnerText.Tag = "3";
-            this.btnInnerText.Text = "Inner &Text";
+            this.btnInnerText.Text = "&Text";
             this.btnInnerText.UseVisualStyleBackColor = true;
             this.btnInnerText.Click += new System.EventHandler(this.ViewButton_CheckedChanged);
             // 

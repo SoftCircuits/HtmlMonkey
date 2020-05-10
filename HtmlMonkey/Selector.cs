@@ -13,39 +13,45 @@ namespace SoftCircuits.HtmlMonkey
     public class Selector
     {
         /// <summary>
-        /// Tag name.
+        /// Gets or sets the tag name. Set to <c>null</c> or empty string to
+        /// match all tags.
         /// </summary>
         public string Tag { get; set; }
 
         /// <summary>
-        /// Attribute selectors.
+        /// Gets the list of selectors that test attribute values.
         /// </summary>
-        public List<SelectorAttribute> Attributes { get; private set; }
+        public List<AttributeSelector> Attributes { get; private set; }
 
         /// <summary>
-        /// Child selector.
+        /// Gets or sets this selector's child selector.
         /// </summary>
         public Selector ChildSelector { get; set; }
 
         /// <summary>
-        /// Indicates only matches one level down from parent
+        /// Gets or sets whether this selector only applies only to immediate
+        /// children (one level down from parent).
         /// </summary>
         public bool ImmediateChildOnly { get; set; }
 
+        /// <summary>
+        /// Constructs a new <see cref="Selector"></see> instance.
+        /// </summary>
         public Selector()
         {
             Tag = null;
-            Attributes = new List<SelectorAttribute>();
+            Attributes = new List<AttributeSelector>();
             ChildSelector = null;
         }
 
         /// <summary>
-        /// Returns true if selector has no data.
+        /// Returns true if selector has no data. Child selectors are not included in this
+        /// evaluation.
         /// </summary>
         public bool IsEmpty => string.IsNullOrWhiteSpace(Tag) && !Attributes.Any();
 
         /// <summary>
-        /// Returns true if the specified node matches this selector.
+        /// Returns true if this selector matches the specified node.
         /// </summary>
         public bool IsMatch(HtmlElementNode node)
         {
@@ -54,18 +60,19 @@ namespace SoftCircuits.HtmlMonkey
                 return false;
 
             // Compare attributes
-            foreach (SelectorAttribute attribute in Attributes)
+            foreach (AttributeSelector selector in Attributes)
             {
-                if (!attribute.IsMatch(node))
+                if (!selector.IsMatch(node))
                     return false;
             }
             return true;
         }
 
         /// <summary>
-        /// Returns the nodes that match this selector.
+        /// Scans the list of nodes (and child nodes) and returns the nodes that match this
+        /// selector.
         /// </summary>
-        /// <param name="nodes">Nodes to be searched.</param>
+        /// <param name="nodes">Nodes to search.</param>
         /// <returns>The matching nodes.</returns>
         public IEnumerable<HtmlElementNode> Find(IEnumerable<HtmlNode> nodes)
         {
@@ -76,6 +83,7 @@ namespace SoftCircuits.HtmlMonkey
             {
                 results = new List<HtmlElementNode>();
                 FindRecursive(nodes, selector, matchTopLevelNodes, true, results);
+                // In next iteration, apply nodes that matched this iteration
                 nodes = results;
                 matchTopLevelNodes = false;
             }
@@ -103,14 +111,11 @@ namespace SoftCircuits.HtmlMonkey
             }
         }
 
-        public override string ToString()
-        {
-            return Tag ?? "(null)";
-        }
+        public override string ToString() => Tag ?? "(null)";
 
         #region Parsing
 
-        private static Dictionary<char, string> SpecialCharacters = new Dictionary<char, string>
+        private readonly static Dictionary<char, string> SpecialCharacters = new Dictionary<char, string>
         {
             { '#', "id" },
             { '.', "class" },
@@ -141,7 +146,7 @@ namespace SoftCircuits.HtmlMonkey
                     if (IsNameCharacter(ch) || ch == '*')
                     {
                         // Parse tag name
-                        Selector selector = selectors.GetLast(true);
+                        Selector selector = selectors.GetLastSelector(true);
                         if (ch == '*')
                             selector.Tag = null;    // Match all tags
                         else
@@ -154,14 +159,14 @@ namespace SoftCircuits.HtmlMonkey
                         string value = parser.ParseWhile(c => IsValueCharacter(c));
                         if (value.Length > 0)
                         {
-                            SelectorAttribute attribute = new SelectorAttribute
+                            AttributeSelector attribute = new AttributeSelector
                             {
                                 Name = name,
                                 Value = value,
                                 Mode = SelectorAttributeMode.Contains
                             };
 
-                            Selector selector = selectors.GetLast(true);
+                            Selector selector = selectors.GetLastSelector(true);
                             selector.Attributes.Add(attribute);
                         }
                     }
@@ -173,7 +178,7 @@ namespace SoftCircuits.HtmlMonkey
                         name = parser.ParseWhile(c => IsNameCharacter(c));
                         if (name.Length > 0)
                         {
-                            SelectorAttribute attribute = new SelectorAttribute
+                            AttributeSelector attribute = new AttributeSelector
                             {
                                 Name = name
                             };
@@ -205,7 +210,7 @@ namespace SoftCircuits.HtmlMonkey
                                     attribute.Value = parser.ParseWhile(c => IsValueCharacter(c));
                             }
 
-                            Selector selector = selectors.GetLast(true);
+                            Selector selector = selectors.GetLastSelector(true);
                             selector.Attributes.Add(attribute);
                         }
 
@@ -247,7 +252,7 @@ namespace SoftCircuits.HtmlMonkey
                     }
                 }
             }
-            selectors.RemoveEmpty();
+            selectors.RemoveEmptySelectors();
             return selectors;
         }
 

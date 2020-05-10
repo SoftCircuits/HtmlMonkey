@@ -17,9 +17,9 @@ namespace SoftCircuits.HtmlMonkey
         /// Parses an HTML document string and returns a new HtmlMonkeyDocument.
         /// </summary>
         /// <param name="html">The HTML text to parse.</param>
-        public HtmlMonkeyDocument Parse(string html)
+        public HtmlDocument Parse(string html)
         {
-            HtmlMonkeyDocument document = new HtmlMonkeyDocument();
+            HtmlDocument document = new HtmlDocument();
             document.RootNodes.AddRange(ParseChildren(html));
             return document;
         }

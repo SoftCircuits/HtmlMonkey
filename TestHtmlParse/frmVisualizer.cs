@@ -9,9 +9,9 @@ namespace TestHtmlMonkey
 {
     public partial class frmVisualizer : Form
     {
-        private HtmlMonkeyDocument Document;
+        private SoftCircuits.HtmlMonkey.HtmlDocument Document;
 
-        public frmVisualizer(HtmlMonkeyDocument document)
+        public frmVisualizer(SoftCircuits.HtmlMonkey.HtmlDocument document)
         {
             InitializeComponent();
             Document = document;

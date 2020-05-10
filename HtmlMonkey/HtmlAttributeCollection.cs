@@ -13,11 +13,19 @@ namespace SoftCircuits.HtmlMonkey
     /// </summary>
     public class HtmlAttributeCollection : Dictionary<string, HtmlAttribute>
     {
+        /// <summary>
+        /// Constructs an <see cref="HtmlAttributeCollection"/> instance.
+        /// </summary>
         public HtmlAttributeCollection()
             : base(HtmlRules.TagStringComparer)
         {
         }
 
+        /// <summary>
+        /// Constructs an <see cref="HtmlAttributeCollection"/> instance.
+        /// </summary>
+        /// <param name="attributes">Attributes with which to prepopulate this
+        /// collection.</param>
         public HtmlAttributeCollection(HtmlAttributeCollection attributes)
             : base(attributes, HtmlRules.TagStringComparer)
         {

@@ -14,7 +14,7 @@ namespace TestHtmlMonkey
     public partial class frmDetails : Form
     {
         private HtmlNode Node;
-        private HtmlMonkeyDocument Document;
+        private SoftCircuits.HtmlMonkey.HtmlDocument Document;
 
         public frmDetails(object node)
         {
@@ -22,8 +22,8 @@ namespace TestHtmlMonkey
             Debug.Assert(node != null);
             if (node is HtmlNode)
                 Node = node as HtmlNode;
-            else if (node is HtmlMonkeyDocument)
-                Document = node as HtmlMonkeyDocument;
+            else if (node is SoftCircuits.HtmlMonkey.HtmlDocument)
+                Document = node as SoftCircuits.HtmlMonkey.HtmlDocument;
         }
 
         private void frmDetails_Load(object sender, EventArgs e)
@@ -33,8 +33,7 @@ namespace TestHtmlMonkey
 
         private void ViewButton_CheckedChanged(object sender, EventArgs e)
         {
-            RadioButton button = sender as RadioButton;
-            if (button != null)
+            if (sender is RadioButton button)
             {
                 if (int.TryParse(button.Tag as string, out int value))
                 {

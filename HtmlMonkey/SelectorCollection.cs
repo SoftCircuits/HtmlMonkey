@@ -7,71 +7,81 @@ using System.Linq;
 
 namespace SoftCircuits.HtmlMonkey
 {
+    /// <summary>
+    /// Holds a list of selectors that can be used together in a node search.
+    /// </summary>
     public class SelectorCollection : List<Selector>
     {
         /// <summary>
-        /// Returns the combined results of all the selectors in the collection.
-        /// Ensures no duplicate nodes are returned.
+        /// Uses this list of selectors to search the given list of nodes.
+        /// Returns the matching nodes. Ensures no duplicate nodes are returned.
         /// </summary>
         /// <param name="nodes">The set of nodes to search.</param>
         /// <returns>A set of nodes that matches this selector collection.</returns>
         public IEnumerable<HtmlElementNode> Find(IEnumerable<HtmlNode> nodes)
         {
-            List<HtmlElementNode> results = new List<HtmlElementNode>();
-
-            // Loop through each selector
-            foreach (Selector selector in this)
-                results.AddRange(selector.Find(nodes));
-
-            // If necessary, remove duplicates between selectors
-            return (Count > 1) ? results.Distinct() : results;
+            return this.SelectMany(s => s.Find(nodes))
+                .Distinct();
         }
 
         #region Internal methods
 
         /// <summary>
-        /// Adds a new child level selector to the collection, and returns that child selector.
+        /// Appends a new child selector to the last selector in the collection.
+        /// If the collection is empty, a child selector is added to a new parent
+        /// selector.
         /// </summary>
         /// <returns>Returns the new child selector.</returns>
         internal Selector AddChildSelector()
         {
-            Selector selector = GetLast();
+            Selector selector = GetLastSelector(true);
+            Debug.Assert(selector != null);
             Debug.Assert(selector.ChildSelector == null);
             selector.ChildSelector = new Selector();
             return selector.ChildSelector;
         }
 
         /// <summary>
-        /// Returns the last selector in the collection. If the collection is empty and <paramref name="createNewIfEmpty"/> is true,
-        /// an empty selector is added to the collection and the new selector is returned. If the collection is empty and
-        /// <paramref name="createNewIfEmpty"/> is false, then <c>null</c> is returned.
-        /// </summary>
-        /// <param name="createNewIfEmpty">The true and the collection is empty, an empty selector is added to the collection.</param>
-        /// <returns>The last selector in the collection.</returns>
-        internal Selector GetLast(bool createNewIfEmpty = false)
+        /// Returns the last selector or, if the last selector has child selectors, the last
+        /// child selector of the last selector. If the collection is empty and
+        /// <paramref name="createNewIfEmpty"/> is <c>true</c>, the last selector is
+        /// automatically added and returned. If the collection is empty and
+        /// <paramref name="createNewIfEmpty"/> is <c>false</c>, this method returns <c>null</c>.
+        /// <param name="createNewIfEmpty">If <c>true</c> and the collection is empty, a new
+        /// selector is added to the collection.</param>
+        /// <returns>The last child selector of the last selector in the collection.</returns>
+        internal Selector GetLastSelector(bool createNewIfEmpty = false)
         {
-            // Create new selector if needed
-            if (Count == 0 && createNewIfEmpty)
-                Add(new Selector());
+            Selector selector;
 
-            if (Count > 0)
+            // Test for empty collection
+            if (Count == 0)
             {
-                Selector selector = this[Count - 1];
-                while (selector.ChildSelector != null)
-                    selector = selector.ChildSelector;
-                return selector;
+                if (createNewIfEmpty)
+                {
+                    selector = new Selector();
+                    Add(selector);
+                    return selector;
+                }
+                return null;
             }
-            return null;
+
+            // Get last selector
+            selector = this[Count - 1];
+            // Get last child selector (return selector if no children)
+            while (selector.ChildSelector != null)
+                selector = selector.ChildSelector;
+            return selector;
         }
 
         /// <summary>
-        /// Removes all selectors and child selectors that do not contain valid data.
+        /// Removes all selectors and child selectors that do not contain selection data.
         /// </summary>
-        internal void RemoveEmpty()
+        internal void RemoveEmptySelectors()
         {
             for (int i = Count - 1; i >= 0; i--)
             {
-                Selector selector = RemoveEmptyChain(this[i]);
+                Selector selector = RemoveEmptyChildSelectors(this[i]);
                 if (selector == null)
                     RemoveAt(i);
                 else if (this[i] != selector)
@@ -79,27 +89,34 @@ namespace SoftCircuits.HtmlMonkey
             }
         }
 
-        private Selector RemoveEmptyChain(Selector selector)
+        /// <summary>
+        /// Removes any empty child selectors of the given selector. If the parent
+        /// selector is empty, that is also removed and the new parent is returned.
+        /// </summary>
+        /// <param name="selector">Selector from which to remove child selectors.</param>
+        /// <returns>The new parent selector, which may be the same as
+        /// <paramref name="selector"/>.</returns>
+        private Selector RemoveEmptyChildSelectors(Selector selector)
         {
-            Selector firstSelector = selector;
-            Selector prevSelector = null;
+            Selector parent = selector;
+            Selector prev = null;
 
             while (selector != null)
             {
                 if (selector.IsEmpty)
                 {
-                    if (prevSelector == null)
-                        firstSelector = selector.ChildSelector;
+                    if (prev == null)
+                        parent = selector.ChildSelector;
                     else
-                        prevSelector.ChildSelector = selector.ChildSelector;
+                        prev.ChildSelector = selector.ChildSelector;
                 }
                 else
                 {
-                    prevSelector = selector;
+                    prev = selector;
                 }
                 selector = selector.ChildSelector;
             }
-            return firstSelector;
+            return parent;
         }
 
         #endregion

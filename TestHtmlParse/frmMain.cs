@@ -73,7 +73,7 @@ namespace HtmlMonkey
             try
             {
                 Cursor = Cursors.WaitCursor;
-                HtmlMonkeyDocument document = HtmlMonkeyDocument.FromHtml(txtHtml.Text);
+                SoftCircuits.HtmlMonkey.HtmlDocument document = SoftCircuits.HtmlMonkey.HtmlDocument.FromHtml(txtHtml.Text);
                 Cursor = Cursors.Default;
 
                 frmVisualizer frm = new frmVisualizer(document);

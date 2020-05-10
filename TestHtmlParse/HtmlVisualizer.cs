@@ -28,7 +28,7 @@ namespace TestHtmlMonkey
             tvwNodes.CollapseAll();
         }
 
-        public void LoadDocument(HtmlMonkeyDocument document)
+        public void LoadDocument(SoftCircuits.HtmlMonkey.HtmlDocument document)
         {
             tvwNodes.Nodes.Clear();
             TreeNode treeNode = tvwNodes.Nodes.Add("Document");
@@ -102,7 +102,7 @@ namespace TestHtmlMonkey
             [typeof(HtmlElementNode)] = 3,
             [typeof(XmlHeaderNode)] = 2,
             [typeof(HtmlHeaderNode)] = 1,
-            [typeof(HtmlMonkeyDocument)] = 0
+            [typeof(SoftCircuits.HtmlMonkey.HtmlDocument)] = 0
         };
 
         public int GetImageIndex(object node)

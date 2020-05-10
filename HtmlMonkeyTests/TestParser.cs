@@ -926,7 +926,7 @@ namespace HtmlMonkeyTests
 
             for (int i = 0; i < Markup.Length; i++)
             {
-                HtmlMonkeyDocument document = HtmlMonkeyDocument.FromHtml(Markup[i]);
+                HtmlDocument document = HtmlDocument.FromHtml(Markup[i]);
                 NodeInfo info = NodeData[i];
                 TestRecursive(info, document.RootNodes);
             }
@@ -934,6 +934,8 @@ namespace HtmlMonkeyTests
 
         void TestRecursive(NodeInfo parentInfo, HtmlNodeCollection nodes)
         {
+            SelectorAttribute x;
+
             Assert.AreNotEqual(null, parentInfo);
             Assert.AreNotEqual(null, nodes);
             Assert.AreEqual(parentInfo.ChildNodes.Length, nodes.Count);
@@ -963,13 +965,13 @@ namespace HtmlMonkeyTests
                         else
                             Assert.AreEqual(0, elementNode.Children.Count);
                     }
+                    else if (nodes[i] is HtmlCDataNode cDataNode)
+                    {
+                        Assert.AreEqual(info.Text, cDataNode.InnerHtml);
+                    }
                     else if (nodes[i] is HtmlTextNode textNode)
                     {
                         Assert.AreEqual(info.Text, textNode.Text);
-                    }
-                    else if (nodes[i] is HtmlCDataNode cDataNode)
-                    {
-                        Assert.AreEqual(info.Text, cDataNode.Text);
                     }
                     else Assert.Fail("Unknown HtmlNode type!");
                 }

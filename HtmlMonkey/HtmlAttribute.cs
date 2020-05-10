@@ -9,8 +9,6 @@ namespace SoftCircuits.HtmlMonkey
     /// </summary>
     public class HtmlAttribute
     {
-        private const string Null = "(null)";
-
         /// <summary>
         /// Name of this attribute.
         /// </summary>
@@ -28,9 +26,11 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         public override string ToString()
         {
-            if (Value != null)
-                return $"{Name ?? Null}=\"{Value}\"";
-            return Name ?? Null;
+            const string nullString = "(null)";
+
+            return (Value != null) ?
+                $"{Name ?? nullString}=\"{Value}\"" :
+                Name ?? nullString;
         }
     }
 }

@@ -60,7 +60,7 @@ namespace HtmlMonkeyTests
         [TestMethod]
         public void Test()
         {
-            HtmlMonkeyDocument document = HtmlMonkeyDocument.FromHtml(html);
+            HtmlDocument document = HtmlDocument.FromHtml(html);
 
             IEnumerable<HtmlElementNode> elements = document.Find("p");
             Assert.AreEqual(3, elements.Count());
@@ -82,6 +82,11 @@ namespace HtmlMonkeyTests
 
             elements = document.Find("p[data-id:=\"[0-9]{3}\"]");
             Assert.AreEqual(3, elements.Count());
+
+            elements = document.Find("body > h1");
+            Assert.AreEqual(1, elements.Count());
+            Assert.AreEqual("h1", elements.First().TagName);
+            Assert.AreEqual("Test Document", elements.First().Text);
 
             IEnumerable<HtmlCDataNode> cDataNodes = document.FindOfType<HtmlCDataNode>();
             Assert.AreEqual(4, cDataNodes.Count());

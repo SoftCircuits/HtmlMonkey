@@ -10,18 +10,15 @@ using System.Text;
 namespace SoftCircuits.HtmlMonkey
 {
     /// <summary>
-    /// Holds the nodes of a parsed document (starting from the
-    /// <see cref="RootNodes"></see> collection). Includes methods to parse
-    /// a document and search a parsed document.
-    /// 
-    /// Note: To convert all the nodes to an HTML string, use the <see cref="ToHtml"></see>
-    /// method. <c>ToString()</c> is not used for this purpose because it could tax the debug
-    /// watch window unnecessarily.
+    /// Holds the nodes of a parsed HTML or XML document. Use the <see cref="RootNodes"/>
+    /// property to access these nodes. Use the <see cref="ToHtml"/> method to convert the
+    /// nodes back to markup.
     /// </summary>
-    public class HtmlMonkeyDocument
+    public class HtmlDocument
     {
         /// <summary>
-        /// Specifies the source document file, if known.
+        /// Specifies the source document file, or <c>null</c> if the source file is not
+        /// known.
         /// </summary>
         public string Path { get; private set; }
 
@@ -31,9 +28,9 @@ namespace SoftCircuits.HtmlMonkey
         public HtmlNodeCollection RootNodes { get; set; }
 
         /// <summary>
-        /// Initializes an empty <see cref="HtmlMonkeyDocument"> instance.
+        /// Initializes an empty <see cref="HtmlDocument"> instance.
         /// </summary>
-        public HtmlMonkeyDocument()
+        public HtmlDocument()
         {
             Path = string.Empty;
             RootNodes = new HtmlNodeCollection(null);
@@ -41,7 +38,7 @@ namespace SoftCircuits.HtmlMonkey
 
         /// <summary>
         /// Generates an HTML string from the contents of this
-        /// <see cref="HtmlMonkeyDocument"></see>.
+        /// <see cref="HtmlDocument"></see>.
         /// </summary>
         /// <returns>This object as a string</returns>
         public string ToHtml() => string.Join(string.Empty, RootNodes.Select(n => n.OuterHtml));
@@ -90,38 +87,38 @@ namespace SoftCircuits.HtmlMonkey
         #region Static methods
 
         /// <summary>
-        /// Parses an HTML or XML file and returns an <see cref="HtmlMonkeyDocument"></see> instance that
+        /// Parses an HTML or XML file and returns an <see cref="HtmlDocument"></see> instance that
         /// contains the parsed nodes.
         /// </summary>
         /// <param name="path">The HTML or XML file to parse.</param>
-        /// <returns>Returns an <see cref="HtmlMonkeyDocument"></see> instance that contains the parsed
+        /// <returns>Returns an <see cref="HtmlDocument"></see> instance that contains the parsed
         /// nodes.</returns>
-        public static HtmlMonkeyDocument FromFile(string path)
+        public static HtmlDocument FromFile(string path)
         {
             return FromHtml(File.ReadAllText(path));
         }
 
         /// <summary>
-        /// Parses an HTML or XML file and returns an <see cref="HtmlMonkeyDocument"></see> instance that
+        /// Parses an HTML or XML file and returns an <see cref="HtmlDocument"></see> instance that
         /// contains the parsed nodes.
         /// </summary>
         /// <param name="path">The HTML or XML file to parse.</param>
         /// <param name="encoding">The encoding applied to the contents of the file.</param>
-        /// <returns>Returns an <see cref="HtmlMonkeyDocument"></see> instance that contains the parsed
+        /// <returns>Returns an <see cref="HtmlDocument"></see> instance that contains the parsed
         /// nodes.</returns>
-        public static HtmlMonkeyDocument FromFile(string path, Encoding encoding)
+        public static HtmlDocument FromFile(string path, Encoding encoding)
         {
             return FromHtml(File.ReadAllText(path, encoding));
         }
 
         /// <summary>
-        /// Parses an HTML or XML string and returns an <see cref="HtmlMonkeyDocument"></see> instance that
+        /// Parses an HTML or XML string and returns an <see cref="HtmlDocument"></see> instance that
         /// contains the parsed nodes.
         /// </summary>
         /// <param name="html">The HTML or XML string to parse.</param>
-        /// <returns>Returns an <see cref="HtmlMonkeyDocument"></see> instance that contains the parsed
+        /// <returns>Returns an <see cref="HtmlDocument"></see> instance that contains the parsed
         /// nodes.</returns>
-        public static HtmlMonkeyDocument FromHtml(string html)
+        public static HtmlDocument FromHtml(string html)
         {
             HtmlParser parser = new HtmlParser();
             return parser.Parse(html);

@@ -56,7 +56,7 @@ namespace HtmlMonkeyTests
             foreach (List<Attribute> attributes in htmlHeaders)
             {
                 string header = string.Format($"<!DOCTYPE {string.Join(" ", attributes)}>");
-                HtmlMonkeyDocument document = HtmlMonkeyDocument.FromHtml(header);
+                HtmlDocument document = HtmlDocument.FromHtml(header);
                 Assert.AreEqual(1, document.RootNodes.Count);
                 HtmlHeaderNode node = document.RootNodes[0] as HtmlHeaderNode;
                 Assert.AreNotEqual(null, node);
@@ -79,7 +79,7 @@ namespace HtmlMonkeyTests
             foreach (List<Attribute> attributes in xmlHeaders)
             {
                 string header = string.Format($"<?xml {string.Join(" ", attributes)}?>");
-                HtmlMonkeyDocument document = HtmlMonkeyDocument.FromHtml(header);
+                HtmlDocument document = HtmlDocument.FromHtml(header);
                 Assert.AreEqual(1, document.RootNodes.Count);
                 XmlHeaderNode node = document.RootNodes[0] as XmlHeaderNode;
                 Assert.AreNotEqual(null, node);

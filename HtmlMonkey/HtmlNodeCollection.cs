@@ -12,7 +12,7 @@ namespace SoftCircuits.HtmlMonkey
     /// </summary>
     public class HtmlNodeCollection : List<HtmlNode>
     {
-        private HtmlElementNode ParentNode;
+        private readonly HtmlElementNode ParentNode;
 
         public HtmlNodeCollection(HtmlElementNode parentNode)
         {

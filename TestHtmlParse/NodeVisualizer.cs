@@ -25,20 +25,20 @@ namespace TestHtmlMonkey
     /// </summary>
     public class NodeVisualizer
     {
-        private static string[] EmptyColumns = { };
-        private static string[] AttributeColumns = { "Attribute", "Value" };
-        private static string[] ParameterColumns = { "Parameter" };
-        private static string[] CDataColumns = { "Delimiter", "Value" };
-        private static string[] DocumentColumns = { "Property", "Value" };
+        private static readonly string[] EmptyColumns = { };
+        private static readonly string[] AttributeColumns = { "Attribute", "Value" };
+        private static readonly string[] ParameterColumns = { "Parameter" };
+        private static readonly string[] CDataColumns = { "Delimiter", "Value" };
+        private static readonly string[] DocumentColumns = { "Property", "Value" };
 
         // Note: To work correctly, derived types must appear before base types.
-        private static Dictionary<Type, Visualizer> VisualizerLookup = new Dictionary<Type, Visualizer>
+        private static readonly Dictionary<Type, Visualizer> VisualizerLookup = new Dictionary<Type, Visualizer>
         {
-            [typeof(HtmlMonkeyDocument)] = new Visualizer
+            [typeof(SoftCircuits.HtmlMonkey.HtmlDocument)] = new Visualizer
             {
-                ShortDescription = n => ShortDescriptionDocument(n as HtmlMonkeyDocument),
-                LongDescription = n => LongDescriptionDocument(n as HtmlMonkeyDocument),
-                PopulateProperties = (n, lvw) => PopulatePropertiesDocument(n as HtmlMonkeyDocument, lvw)
+                ShortDescription = n => ShortDescriptionDocument(n as SoftCircuits.HtmlMonkey.HtmlDocument),
+                LongDescription = n => LongDescriptionDocument(n as SoftCircuits.HtmlMonkey.HtmlDocument),
+                PopulateProperties = (n, lvw) => PopulatePropertiesDocument(n as SoftCircuits.HtmlMonkey.HtmlDocument, lvw)
             },
             [typeof(HtmlCDataNode)] = new Visualizer
             {
@@ -84,21 +84,21 @@ namespace TestHtmlMonkey
             return null;
         }
 
-        private static string ShortDescriptionDocument(HtmlMonkeyDocument document) => $"[{document.GetType().ToString()}]";
+        private static string ShortDescriptionDocument(SoftCircuits.HtmlMonkey.HtmlDocument document) => $"[{document.GetType().ToString()}]";
         private static string ShortDescriptionDocTypeHeader(HtmlHeaderNode node) => "<!doctype>";
         private static string ShortDescriptionXmlHeader(XmlHeaderNode node) => "<?xml>";
         private static string ShortDescriptionElement(HtmlElementNode node) => $"<{node.TagName}>";
         private static string ShortDescriptionText(HtmlTextNode node) => $"\"{TruncateEncoded(node.Text, 32)}\"";
         private static string ShortDescriptionCData(HtmlCDataNode node) => $"\"{TruncateEncoded(node.InnerHtml, 32)}\"";
 
-        private static string LongDescriptionDocument(HtmlMonkeyDocument document) => string.Empty;
+        private static string LongDescriptionDocument(SoftCircuits.HtmlMonkey.HtmlDocument document) => string.Empty;
         private static string LongDescriptionDocTypeHeader(HtmlHeaderNode node) => string.Empty;
         private static string LongDescriptionXmlHeader(XmlHeaderNode node) => string.Empty;
         private static string LongDescriptionElement(HtmlElementNode node) => string.Empty;
         private static string LongDescriptionText(HtmlTextNode node) => node.InnerHtml;
         private static string LongDescriptionCData(HtmlCDataNode node) => node.InnerHtml;
 
-        private static void PopulatePropertiesDocument(HtmlMonkeyDocument document, ListView listView)
+        private static void PopulatePropertiesDocument(SoftCircuits.HtmlMonkey.HtmlDocument document, ListView listView)
         {
             InitializeListView(DocumentColumns, listView);
             listView.Items.Add("Path").SubItems.Add(document.Path);
