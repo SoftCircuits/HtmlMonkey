@@ -92,10 +92,11 @@ namespace TestHtmlMonkey
                     lvwProperties.Items.Clear();
                     txtText.Text = string.Empty;
                 }
+                DisplayedNode = treeNode;
             }
         }
 
-        private static Dictionary<Type, int> ImageIndexLookup = new Dictionary<Type, int>
+        private static readonly Dictionary<Type, int> ImageIndexLookup = new Dictionary<Type, int>
         {
             [typeof(HtmlCDataNode)] = 5,
             [typeof(HtmlTextNode)] = 4,
@@ -120,12 +121,111 @@ namespace TestHtmlMonkey
 
         private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            ShowProperties();
+        }
+
+        public void ShowProperties()
+        {
             TreeNode treeNode = tvwNodes.SelectedNode;
             if (treeNode.Tag is object node)
             {
                 frmDetails frm = new frmDetails(node);
                 frm.ShowDialog();
             }
+        }
+
+        public bool FindNext(string text, bool matchCase)
+        {
+            if (string.IsNullOrEmpty(text) || tvwNodes.Nodes.Count == 0)
+                return false;
+
+            TextSearch search = new TextSearch(text, matchCase);
+
+            TreeNode startNode = tvwNodes.SelectedNode;
+            if (startNode == null)
+                startNode = tvwNodes.Nodes[0];
+            else
+                startNode = startNode.NextVisibleNode;
+
+            TreeNode node = startNode;
+            while (node != null)
+            {
+                if (MatchesNode(node.Tag, search))
+                {
+                    tvwNodes.SelectedNode = node;
+                    return true;
+                }
+                // Get next node
+                node = node.NextVisibleNode;
+                // Wrap to start if needed
+                if (node == null)
+                    node = tvwNodes.Nodes[0];
+                // Check if we're back to starting node
+                if (node == startNode)
+                    break;
+            }
+            MessageBox.Show($"The text '{text}' was not found.", "Find");
+            return false;
+        }
+
+        private bool MatchesNode(object node, TextSearch search)
+        {
+            if (node is HtmlElementNode htmlElementNode)
+            {
+                return search.IsMatch(htmlElementNode.TagName) ||
+                    MatchesAttributes(htmlElementNode.Attributes, search);
+            }
+            else if (node is HtmlCDataNode htmlCDataNode)
+            {
+                return search.IsMatch(htmlCDataNode.InnerHtml);
+            }
+            else if (node is HtmlTextNode htmlTextNode)
+            {
+                return search.IsMatch(htmlTextNode.Text);
+            }
+            else if (node is HtmlHeaderNode htmlHeaderNode)
+            {
+                return MatchesAttributes(htmlHeaderNode.Attributes, search);
+            }
+            else if (node is XmlHeaderNode xmlHeaderNode)
+            {
+                return MatchesAttributes(xmlHeaderNode.Attributes, search);
+            }
+            else if (node is SoftCircuits.HtmlMonkey.HtmlDocument)
+            {
+                // Root node
+            }
+            else Debug.Assert(false);
+            return false;
+        }
+
+        private bool MatchesAttributes(HtmlAttributeCollection attributes, TextSearch search)
+        {
+            foreach (string name in attributes.Keys)
+            {
+                if (search.IsMatch(name) || search.IsMatch(attributes[name]?.Value))
+                    return true;
+            }
+            return false;
+        }
+    }
+
+    class TextSearch
+    {
+        private readonly string Text;
+        private readonly StringComparison StringComparison;
+
+        public TextSearch(string text, bool matchCase)
+        {
+            Text = text;
+            StringComparison = matchCase ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+        }
+
+        public bool IsMatch(string s)
+        {
+            if (string.IsNullOrEmpty(s))
+                return false;
+            return s.IndexOf(Text, StringComparison) >= 0;
         }
     }
 }

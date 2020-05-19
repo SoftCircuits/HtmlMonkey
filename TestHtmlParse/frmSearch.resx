@@ -117,35 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="txtHtml.Text" xml:space="preserve">
-    <value>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd"&gt;
-&lt;html&gt;
-  &lt;head&gt;
-    &lt;title&gt;HTML Monkey Test Page&lt;/title&gt;
-    &lt;script type="text/javascript"&gt;
-      DoSomething();
-      function DoSomething() {
-        for (var i = 1; i &lt;= 100; i++)
-          alert(i);
-      }
-    &lt;/script&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;!-- The table below has some mistmatched tags --&gt;
-    &lt;table&gt;
-      &lt;tr&gt;
-        &lt;td&gt;
-    &lt;/table&gt;
-    &lt;p&gt;Here is a sample paragraph&lt;/p&gt;
-    &lt;![CDATA[ Here is some sample CDATA ]]&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-</value>
-  </data>
-  <metadata name="menuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <metadata name="openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>237, 17</value>
-  </metadata>
 </root>

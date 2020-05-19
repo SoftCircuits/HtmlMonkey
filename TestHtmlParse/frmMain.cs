@@ -2,10 +2,10 @@
 // Licensed under the MIT license.
 //
 using Microsoft.VisualBasic;
-using SoftCircuits.HtmlMonkey;
 using System;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Windows.Forms;
 using TestHtmlMonkey;
 
@@ -43,22 +43,29 @@ namespace HtmlMonkey
             }
         }
 
-        private void downloadToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void downloadToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string url = Interaction.InputBox("Url to download:", "Download HTML", Url);
             if (!string.IsNullOrWhiteSpace(url))
             {
                 try
                 {
+                    // Prevent other tasks during download
+                    Enabled = false;
+
                     Url = url;
-                    using (WebClient client = new WebClient())
+                    using (HttpClient client = new HttpClient())
                     {
-                        txtHtml.Text = client.DownloadString(url);
+                        txtHtml.Text = await client.GetStringAsync(url);
                     }
                 }
                 catch (Exception ex)
                 {
                     ex.ShowError();
+                }
+                finally
+                {
+                    Enabled = true;
                 }
             }
         }

@@ -10,7 +10,7 @@
     <OutputTypeEx>library</OutputTypeEx>
     <StartupObject />
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Description>HtmlMonkey is a lightweight HTML/XML parser written in C#. It allows you to parse an HTML or XML string into a hierarchy of node objects, which can then be traversed or queried using jQuery-like selectors. The library also supports create node objects from code and generating HTML or XML from those objects.</Description>
+    <Description>HtmlMonkey is a lightweight HTML/XML parser written in C#. It allows you to parse an HTML or XML string into a hierarchy of node objects, which can then be traversed or queried using jQuery-like selectors. The library also supports creating node objects from code and generating HTML or XML from those objects.</Description>
     <Copyright>Copyright © 2019-2020 SoftCircuits</Copyright>
     <NeutralLanguage>en-US</NeutralLanguage>
     <PackageTags>html-parser xml-parser html xml parse parser crawler spider</PackageTags>
@@ -22,10 +22,10 @@
     <PackageProjectUrl>https://github.com/SoftCircuits/HtmlMonkey</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
-    <AssemblyVersion>1.1.1.0</AssemblyVersion>
-    <FileVersion>1.1.1.0</FileVersion>
-    <Version>1.1.1</Version>
-    <PackageReleaseNotes>After renaming HtmlMonkeyDocument class to HtmlDocument in last version, added HtmlMonkeyDocument back with Obsolete attribute; Added additional unit tests; Made some tasks easier when creating HTML nodes from code; Other tweaks and optimizations.</PackageReleaseNotes>
+    <AssemblyVersion>1.1.2.0</AssemblyVersion>
+    <FileVersion>1.1.2.0</FileVersion>
+    <Version>1.1.2</Version>
+    <PackageReleaseNotes>Minor tweaks; Updated test application: Implemented text search in HTML visualizer, added Properties command to View menu.</PackageReleaseNotes>
     <PackageId>SoftCircuits.HtmlMonkey</PackageId>
     <PackageIcon>Logo_64x64.png</PackageIcon>
   </PropertyGroup>

@@ -1,7 +1,6 @@
 ﻿// Copyright (c) 2019-2020 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
-using SoftCircuits.HtmlMonkey;
 using System;
 using System.Windows.Forms;
 
@@ -9,7 +8,9 @@ namespace TestHtmlMonkey
 {
     public partial class frmVisualizer : Form
     {
-        private SoftCircuits.HtmlMonkey.HtmlDocument Document;
+        private readonly SoftCircuits.HtmlMonkey.HtmlDocument Document;
+        private string FindText;
+        private bool MatchCase;
 
         public frmVisualizer(SoftCircuits.HtmlMonkey.HtmlDocument document)
         {
@@ -25,6 +26,32 @@ namespace TestHtmlMonkey
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void findToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmSearch frm = new frmSearch();
+            frm.FindText = FindText;
+            frm.MatchCase = MatchCase;
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                FindText = frm.FindText;
+                MatchCase = frm.MatchCase;
+                htmlVisualizer1.FindNext(FindText, MatchCase);
+            }
+        }
+
+        private void findNextToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (FindText.Length > 0)
+                htmlVisualizer1.FindNext(FindText, MatchCase);
+            else
+                findToolStripMenuItem_Click(this, e);
+        }
+
+        private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            htmlVisualizer1.ShowProperties();
         }
 
         private void expandAllToolStripMenuItem_Click(object sender, EventArgs e)
