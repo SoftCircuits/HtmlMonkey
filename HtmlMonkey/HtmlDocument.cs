@@ -27,13 +27,13 @@ namespace SoftCircuits.HtmlMonkey
     public class HtmlDocument
     {
         /// <summary>
-        /// Specifies the source document file. May be empty or <c>null</c> if the source file
-        /// is not known.
+        /// Gets the source document path. May be empty or <c>null</c> if the source file
+        /// is unknown.
         /// </summary>
         public string Path { get; private set; }
 
         /// <summary>
-        /// The document root nodes. Provides access to all document nodes.
+        /// Gets the document root nodes. Provides access to all document nodes.
         /// </summary>
         public HtmlNodeCollection RootNodes { get; private set; }
 
@@ -42,23 +42,32 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         public HtmlDocument()
         {
-            Path = string.Empty;
+            Path = null;
             RootNodes = new HtmlNodeCollection(null);
         }
 
         /// <summary>
-        /// Generates an HTML string from the contents of this
-        /// <see cref="HtmlDocument"></see>.
-        /// </summary>
-        /// <returns>A string with the markup for this document.</returns>
-        public string ToHtml() => string.Concat(RootNodes.Select(n => n.OuterHtml));
-
-        /// <summary>
-        /// Recursively searches the given nodes for ones matching the specified selector.
+        /// Recursively searches this documents nodes for ones matching the specified selector.
         /// </summary>
         /// <param name="selector">Selector that describes the nodes to find.</param>
         /// <returns>The matching nodes.</returns>
         public IEnumerable<HtmlElementNode> Find(string selector) => Find(RootNodes, selector);
+
+        /// <summary>
+        /// Recursively searches this document's nodes for ones matching the specified compiled
+        /// selectors.
+        /// </summary>
+        /// <param name="selectors">Compiled selectors that describe the nodes to find.</param>
+        /// <returns>The matching nodes.</returns>
+        public IEnumerable<HtmlElementNode> Find(SelectorCollection selectors) => Find(RootNodes, selectors);
+
+        /// <summary>
+        /// Recursively finds all HtmlNodes in this document filtered by the given predicate.
+        /// </summary>
+        /// <param name="predicate">A function that determines if the item should be included
+        /// in the results.</param>
+        /// <returns>The matching nodes.</returns>
+        public IEnumerable<HtmlNode> Find(Func<HtmlNode, bool> predicate) => Find(RootNodes, predicate);
 
         /// <summary>
         /// Recursively finds all nodes of the specified type.
@@ -75,14 +84,26 @@ namespace SoftCircuits.HtmlMonkey
         public IEnumerable<T> FindOfType<T>(Func<T, bool> predicate) where T : HtmlNode => FindOfType<T>(RootNodes, predicate);
 
         /// <summary>
-        /// Recursively finds all HtmlNodes filtered by the given predicate.
+        /// Generates an HTML string from the contents of this
+        /// <see cref="HtmlDocument"></see>.
         /// </summary>
-        /// <param name="predicate">A function that determines if the item should be included
-        /// in the results.</param>
-        /// <returns>The matching nodes.</returns>
-        public IEnumerable<HtmlNode> Find(Func<HtmlNode, bool> predicate) => Find(RootNodes, predicate);
+        /// <returns>A string with the markup for this document.</returns>
+        public string ToHtml() => string.Concat(RootNodes.Select(n => n.OuterHtml));
 
         #region Static methods
+
+        /// <summary>
+        /// Parses an HTML or XML string and returns an <see cref="HtmlDocument"></see> instance that
+        /// contains the parsed nodes.
+        /// </summary>
+        /// <param name="html">The HTML or XML string to parse.</param>
+        /// <returns>Returns an <see cref="HtmlDocument"></see> instance that contains the parsed
+        /// nodes.</returns>
+        public static HtmlDocument FromHtml(string html)
+        {
+            HtmlParser parser = new HtmlParser();
+            return parser.Parse(html);
+        }
 
         /// <summary>
         /// Parses an HTML or XML file and returns an <see cref="HtmlDocument"></see> instance that
@@ -104,52 +125,6 @@ namespace SoftCircuits.HtmlMonkey
         public static HtmlDocument FromFile(string path, Encoding encoding) => FromHtml(File.ReadAllText(path, encoding));
 
         /// <summary>
-        /// Parses an HTML or XML string and returns an <see cref="HtmlDocument"></see> instance that
-        /// contains the parsed nodes.
-        /// </summary>
-        /// <param name="html">The HTML or XML string to parse.</param>
-        /// <returns>Returns an <see cref="HtmlDocument"></see> instance that contains the parsed
-        /// nodes.</returns>
-        public static HtmlDocument FromHtml(string html)
-        {
-            HtmlParser parser = new HtmlParser();
-            return parser.Parse(html);
-        }
-
-        /// <summary>
-        /// Recursively searches the given nodes for ones matching the specified selector.
-        /// </summary>
-        /// <param name="nodes">The nodes to be searched.</param>
-        /// <param name="selector">Selector that describes the nodes to find.</param>
-        /// <returns>The matching nodes.</returns>
-        public static IEnumerable<HtmlElementNode> Find(IEnumerable<HtmlNode> nodes, string selector)
-        {
-            SelectorCollection selectors = Selector.ParseSelector(selector);
-            return selectors.Find(nodes);
-        }
-
-        /// <summary>
-        /// Recursively finds all nodes of the specified type.
-        /// </summary>
-        /// <param name="nodes">The nodes to be searched.</param>
-        /// <returns>The matching nodes.</returns>
-        public static IEnumerable<T> FindOfType<T>(IEnumerable<HtmlNode> nodes) where T : HtmlNode
-        {
-            return Find(nodes, n => n.GetType() == typeof(T)).Cast<T>();
-        }
-
-        /// <summary>
-        /// Recursively finds all nodes of the specified type filtered by the given predicate.
-        /// </summary>
-        /// <param name="nodes">The nodes to be searched.</param>
-        /// <param name="predicate">A function that determines if the item should be included in the results.</param>
-        /// <returns>The matching nodes.</returns>
-        public static IEnumerable<T> FindOfType<T>(IEnumerable<HtmlNode> nodes, Func<T, bool> predicate) where T : HtmlNode
-        {
-            return Find(nodes, n => n.GetType() == typeof(T) && predicate((T)n)).Cast<T>();
-        }
-
-        /// <summary>
         /// Recursively finds all HtmlNodes filtered by the given predicate.
         /// </summary>
         /// <param name="nodes">The nodes to be searched.</param>
@@ -163,7 +138,7 @@ namespace SoftCircuits.HtmlMonkey
         }
 
         /// <summary>
-        /// Recursive portion of <see cref="Find"></see>.
+        /// Recursive portion of <see cref="Find(IEnumerable{HtmlNode}, Func{HtmlNode, bool})"/>.
         /// </summary>
         private static void FindRecursive(IEnumerable<HtmlNode> nodes, Func<HtmlNode, bool> predicate, List<HtmlNode> results)
         {
@@ -174,6 +149,47 @@ namespace SoftCircuits.HtmlMonkey
                 if (node is HtmlElementNode elementNode)
                     FindRecursive(elementNode.Children, predicate, results);
             }
+        }
+
+        /// <summary>
+        /// Recursively searches the given nodes for ones matching the specified selectors.
+        /// </summary>
+        /// <param name="nodes">The nodes to be searched.</param>
+        /// <param name="selector">Selector that describes the nodes to find.</param>
+        /// <returns>The matching nodes.</returns>
+        public static IEnumerable<HtmlElementNode> Find(IEnumerable<HtmlNode> nodes, string selector)
+        {
+            SelectorCollection selectors = Selector.ParseSelector(selector);
+            return selectors.Find(nodes);
+        }
+
+        /// <summary>
+        /// Recursively searches the given nodes for ones matching the specified compiled selectors.
+        /// </summary>
+        /// <param name="nodes">The nodes to be searched.</param>
+        /// <param name="selectors">Compiled selectors that describe the nodes to find.</param>
+        /// <returns>The matching nodes.</returns>
+        public static IEnumerable<HtmlElementNode> Find(IEnumerable<HtmlNode> nodes, SelectorCollection selectors) => selectors.Find(nodes);
+
+        /// <summary>
+        /// Recursively finds all nodes of the specified type.
+        /// </summary>
+        /// <param name="nodes">The nodes to be searched.</param>
+        /// <returns>The matching nodes.</returns>
+        public static IEnumerable<T> FindOfType<T>(IEnumerable<HtmlNode> nodes) where T : HtmlNode
+        {
+            return Find(nodes, n => n is T).Cast<T>();
+        }
+
+        /// <summary>
+        /// Recursively finds all nodes of the specified type filtered by the given predicate.
+        /// </summary>
+        /// <param name="nodes">The nodes to be searched.</param>
+        /// <param name="predicate">A function that determines if the item should be included in the results.</param>
+        /// <returns>The matching nodes.</returns>
+        public static IEnumerable<T> FindOfType<T>(IEnumerable<HtmlNode> nodes, Func<T, bool> predicate) where T : HtmlNode
+        {
+            return Find(nodes, n => n is T node && predicate(node)).Cast<T>();
         }
 
         #endregion

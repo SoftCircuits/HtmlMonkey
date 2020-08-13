@@ -48,7 +48,7 @@ namespace SoftCircuits.HtmlMonkey
             if (TryGetValue(attribute.Name, out HtmlAttribute existingAttribute))
                 existingAttribute.Value = attribute.Value;
             else
-                base.Add(attribute.Name, attribute);
+                Add(attribute.Name, attribute);
         }
 
         /// <summary>

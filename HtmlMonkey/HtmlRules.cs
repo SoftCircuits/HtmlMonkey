@@ -185,6 +185,7 @@ namespace SoftCircuits.HtmlMonkey
             ["p"] = HtmlTagFlag.NoNested,
             ["param"] = HtmlTagFlag.NoChildren,
             ["script"] = HtmlTagFlag.CData,
+            ["select"] = HtmlTagFlag.NoSelfClosing,
             ["source"] = HtmlTagFlag.NoChildren,
             ["spacer"] = HtmlTagFlag.NoChildren,
             ["style"] = HtmlTagFlag.CData,

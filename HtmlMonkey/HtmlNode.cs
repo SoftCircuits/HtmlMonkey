@@ -14,19 +14,19 @@ namespace SoftCircuits.HtmlMonkey
     public abstract class HtmlNode
     {
         /// <summary>
-        /// Returns this node's parent node, or <c>null</c> if this node
+        /// Gets this node's parent node, or <c>null</c> if this node
         /// is a top-level node.
         /// </summary>
         public HtmlElementNode ParentNode { get; internal set; }
 
         /// <summary>
-        /// Returns this node's next sibling, or <c>null</c> if this node
+        /// Gets this node's next sibling, or <c>null</c> if this node
         /// is the last of its siblings.
         /// </summary>
         public HtmlNode NextNode { get; internal set; }
 
         /// <summary>
-        /// Returns this node's previous sibling, or <c>null</c> if this
+        /// Gets this node's previous sibling, or <c>null</c> if this
         /// node is the first of its siblings.
         /// </summary>
         public HtmlNode PrevNode { get; internal set; }
@@ -37,7 +37,7 @@ namespace SoftCircuits.HtmlMonkey
         public bool IsTopLevelNode => ParentNode == null;
 
         /// <summary>
-        /// Markup for everything inside of the HTML tags.
+        /// Gets this node's markup, excluding the outer HTML tags.
         /// </summary>
         public virtual string InnerHtml
         {
@@ -46,8 +46,7 @@ namespace SoftCircuits.HtmlMonkey
         }
 
         /// <summary>
-        /// Markup for everything including the outer HTML tags and everything inside
-        /// of the HTML tags.
+        /// Gets this node's markup, including the outer HTML tags.
         /// </summary>
         public virtual string OuterHtml
         {
@@ -55,7 +54,7 @@ namespace SoftCircuits.HtmlMonkey
         }
 
         /// <summary>
-        /// All text from this element. (Does not include any HTML markup.)
+        /// Gets this node's text. No markup is included.
         /// </summary>
         public virtual string Text
         {
@@ -185,20 +184,19 @@ namespace SoftCircuits.HtmlMonkey
         public bool IsSelfClosing => !Children.Any() && !HtmlRules.GetTagFlags(TagName).HasFlag(HtmlTagFlag.NoSelfClosing);
 
         /// <summary>
-        /// Gets or sets the inner markup.
+        /// Gets or sets the inner markup. When setting the markup, it is parsed on
+        /// the fly.
         /// </summary>
         public override string InnerHtml
         {
             get
             {
-                if (Children.Any())
-                {
-                    StringBuilder builder = new StringBuilder();
-                    foreach (var node in Children)
-                        builder.Append(node.OuterHtml);
-                    return builder.ToString();
-                }
-                return string.Empty;
+                if (!Children.Any())
+                    return string.Empty;
+                StringBuilder builder = new StringBuilder();
+                foreach (var node in Children)
+                    builder.Append(node.OuterHtml);
+                return builder.ToString();
             }
             set
             {
@@ -257,6 +255,8 @@ namespace SoftCircuits.HtmlMonkey
         {
             get
             {
+                if (!Children.Any())
+                    return string.Empty;
                 StringBuilder builder = new StringBuilder();
                 foreach (var node in Children)
                     builder.Append(node.Text);
@@ -285,7 +285,7 @@ namespace SoftCircuits.HtmlMonkey
         protected string Content;
 
         /// <summary>
-        /// Constructs a <see cref="HtmlTextNode"/> instance.
+        /// Constructs a new <see cref="HtmlTextNode"/> instance.
         /// </summary>
         /// <param name="html">Optional markup for this node.</param>
         public HtmlTextNode(string html = null)
@@ -294,7 +294,7 @@ namespace SoftCircuits.HtmlMonkey
         }
 
         /// <summary>
-        /// Gets or sets the inner markup.
+        /// Gets or sets this node's raw text.
         /// </summary>
         public override string InnerHtml
         {
@@ -303,7 +303,7 @@ namespace SoftCircuits.HtmlMonkey
         }
 
         /// <summary>
-        /// Gets the outer markup.
+        /// Gets this node's raw text.
         /// </summary>
         public override string OuterHtml
         {
@@ -333,12 +333,12 @@ namespace SoftCircuits.HtmlMonkey
     public class HtmlCDataNode : HtmlTextNode
     {
         /// <summary>
-        /// CDATA prefix markup.
+        /// Gets or sets this node's CDATA prefix markup.
         /// </summary>
         public string Prefix { get; set; }
 
         /// <summary>
-        /// CDATA suffix markup.
+        /// Gets or sets this node's CDATA suffix markup.
         /// </summary>
         public string Suffix { get; set; }
 
@@ -347,7 +347,7 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         /// <param name="prefix">CDATA prefix markup.</param>
         /// <param name="suffix">CDATA suffix markup.</param>
-        /// <param name="html">CDATA markup.</param>
+        /// <param name="html">CDATA content.</param>
         public HtmlCDataNode(string prefix, string suffix, string html)
             : base(html)
         {
@@ -356,7 +356,7 @@ namespace SoftCircuits.HtmlMonkey
         }
 
         /// <summary>
-        /// Gets or sets the inner markup.
+        /// Gets or sets this node's inner content.
         /// </summary>
         public override string InnerHtml
         {
@@ -365,12 +365,12 @@ namespace SoftCircuits.HtmlMonkey
         }
 
         /// <summary>
-        /// Gets the outer markup.
+        /// Gets this node's markup, including the outer prefix and suffix.
         /// </summary>
         public override string OuterHtml => $"{Prefix}{InnerHtml}{Suffix}";
 
         /// <summary>
-        /// This is a placeholder property only. CDATA nodes do not contain text.
+        /// Returns an empty string. CDATA nodes do not contain text.
         /// </summary>
         public override string Text
         {
