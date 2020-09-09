@@ -42,8 +42,7 @@ namespace SoftCircuits.HtmlMonkey
                 if (parser.Peek() == HtmlRules.TagStart)
                 {
                     // Test for CDATA segments, which we store but do not parse. This includes comments.
-                    CDataDefinition definition = HtmlRules.CDataDefinitions.FirstOrDefault(dd => parser.MatchesCurrentPosition(dd.StartText,
-                        dd.IgnoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
+                    CDataDefinition definition = HtmlRules.CDataDefinitions.FirstOrDefault(dd => parser.MatchesCurrentPosition(dd.StartText, dd.StringComparison));
                     if (definition != null)
                     {
                         parentNode.Children.Add(ParseCDataNode(parser, definition));
@@ -66,8 +65,8 @@ namespace SoftCircuits.HtmlMonkey
                             else
                             {
                                 // Handle mismatched closing tag
-                                int tagPriority = HtmlRules.GetTagPriority(tag);
-                                while (!parentNode.IsTopLevelNode && tagPriority > HtmlRules.GetTagPriority(parentNode.TagName))
+                                int tagPriority = HtmlRules.GetTagNestLevel(tag);
+                                while (!parentNode.IsTopLevelNode && tagPriority > HtmlRules.GetTagNestLevel(parentNode.TagName))
                                     parentNode = parentNode.ParentNode;
                                 if (parentNode.TagName.Equals(tag, HtmlRules.TagStringComparison))
                                 {

@@ -16,6 +16,7 @@ namespace HtmlMonkeyTests
     <meta name=""description"" content=""This is my test meta description node!"" />
   </head>
   <body>
+    <!-- Here's a comment! -->
     <p id=""par1"">
       This is my first paragraph
     </p>
@@ -26,7 +27,14 @@ namespace HtmlMonkeyTests
 </html>";
 
         [TestMethod]
-        public void Test()
+        public void TestFromParsed()
+        {
+            HtmlDocument document = HtmlDocument.FromHtml(Html);
+            Assert.AreEqual(Html, document.ToHtml());
+        }
+
+        [TestMethod]
+        public void TestFromParts()
         {
             HtmlDocument document = new HtmlDocument();
 
@@ -58,6 +66,10 @@ namespace HtmlMonkeyTests
             // Body element
             htmlNode.Children.Add(new HtmlTextNode("\r\n  "));
             HtmlElementNode bodyNode = htmlNode.Children.Add(new HtmlElementNode("body"));
+
+            // Comment
+            bodyNode.Children.Add(new HtmlTextNode("\r\n    "));
+            bodyNode.Children.Add(new HtmlCDataNode("<!--", "-->", " Here's a comment! "));
 
             // First paragraph
             bodyNode.Children.Add(new HtmlTextNode("\r\n    "));

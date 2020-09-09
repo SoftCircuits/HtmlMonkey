@@ -61,6 +61,50 @@ namespace SoftCircuits.HtmlMonkey
             get => string.Empty;
             set { }
         }
+
+        /// <summary>
+        /// Navigates to the next logical node. If this node has children, the first child
+        /// is returned. Otherwise, if this node has a next sibling, that sibling is returned.
+        /// Otherwise, this method traverses up to find the first parent with a next sibling.
+        /// </summary>
+        /// <returns>Returns the next logical node, or <c>null</c> if no more nodes were
+        /// found.</returns>
+        public HtmlNode NavigateNextNode()
+        {
+            HtmlNode node = this;
+
+            if (node is HtmlElementNode elementNode && elementNode.Children.Any())
+                return elementNode.Children[0];
+
+            while (node != null)
+            {
+                if (node.NextNode != null)
+                    return node.NextNode;
+                node = node.ParentNode;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Navigates to the previous logical node. If this node has a previous node, the
+        /// last child of the last child, etc. is returned. Otherwise, the parent is
+        /// returned.
+        /// </summary>
+        /// <returns>Returns the previous logical node, or <c>null</c> if no more nodes
+        /// were found.</returns>
+        public HtmlNode NavigatePrevNode()
+        {
+            HtmlNode node = this;
+
+            if (node.PrevNode != null)
+            {
+                node = node.PrevNode;
+                while (node is HtmlElementNode elementNode && elementNode.Children.Any())
+                    node = elementNode.Children[elementNode.Children.Count - 1];
+                return node;
+            }
+            return node.ParentNode;
+        }
     }
 
     /// <summary>

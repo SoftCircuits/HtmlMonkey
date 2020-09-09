@@ -22,10 +22,10 @@
     <PackageProjectUrl>https://github.com/SoftCircuits/HtmlMonkey</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
-    <AssemblyVersion>1.1.3.0</AssemblyVersion>
-    <FileVersion>1.1.3.0</FileVersion>
-    <Version>1.1.3</Version>
-    <PackageReleaseNotes>Minor tweaks and optimizations.</PackageReleaseNotes>
+    <AssemblyVersion>1.1.4.0</AssemblyVersion>
+    <FileVersion>1.1.4.0</FileVersion>
+    <Version>1.1.4</Version>
+    <PackageReleaseNotes>Improved HtmlDocument search recursion; Added HtmlNode.NavigateNextNode() and HtmlNode.NavigatePrevNode() and related unit tests; Minor tweaks and optimizations.</PackageReleaseNotes>
     <PackageId>SoftCircuits.HtmlMonkey</PackageId>
     <PackageIcon>Logo_64x64.png</PackageIcon>
   </PropertyGroup>

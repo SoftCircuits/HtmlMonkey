@@ -95,6 +95,11 @@ namespace HtmlMonkeyTests
             Assert.AreEqual("h1", elements.First().TagName);
             Assert.AreEqual("Test Document", elements.First().Text);
 
+            elements = document.Find("body>h1");
+            Assert.AreEqual(1, elements.Count());
+            Assert.AreEqual("h1", elements.First().TagName);
+            Assert.AreEqual("Test Document", elements.First().Text);
+
             elements = document.Find("#div3");
             Assert.AreEqual(1, elements.Count());
 

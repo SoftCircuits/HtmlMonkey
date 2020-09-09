@@ -132,22 +132,15 @@ namespace SoftCircuits.HtmlMonkey
         /// <returns>The matching nodes.</returns>
         public static IEnumerable<HtmlNode> Find(IEnumerable<HtmlNode> nodes, Func<HtmlNode, bool> predicate)
         {
-            List<HtmlNode> results = new List<HtmlNode>();
-            FindRecursive(nodes, predicate, results);
-            return results;
-        }
-
-        /// <summary>
-        /// Recursive portion of <see cref="Find(IEnumerable{HtmlNode}, Func{HtmlNode, bool})"/>.
-        /// </summary>
-        private static void FindRecursive(IEnumerable<HtmlNode> nodes, Func<HtmlNode, bool> predicate, List<HtmlNode> results)
-        {
             foreach (var node in nodes)
             {
                 if (predicate(node))
-                    results.Add(node);
+                    yield return node;
                 if (node is HtmlElementNode elementNode)
-                    FindRecursive(elementNode.Children, predicate, results);
+                {
+                    foreach (var childNode in Find(elementNode.Children, predicate))
+                        yield return childNode;
+                }
             }
         }
 
@@ -191,6 +184,9 @@ namespace SoftCircuits.HtmlMonkey
         {
             return Find(nodes, n => n is T node && predicate(node)).Cast<T>();
         }
+
+
+
 
         #endregion
 

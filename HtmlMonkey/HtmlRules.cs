@@ -49,7 +49,7 @@ namespace SoftCircuits.HtmlMonkey
     /// </summary>
     /// <remarks>
     /// For all entries, the StartText member must start with HtmlRules.TagStart
-    /// or else the parser can miss the segment.
+    /// or else the parser will miss the segment.
     /// </remarks>
     internal class CDataDefinition
     {
@@ -57,10 +57,9 @@ namespace SoftCircuits.HtmlMonkey
         public string EndText { get; set; }
 
         /// <summary>
-        /// Should be true if StartText contains letters that require a
-        /// case-insensitive comparison.
+        /// Gets or sets the string comparison used to compare <see cref="StartText"/>.
         /// </summary>
-        public bool IgnoreCase { get; set; }
+        public StringComparison StringComparison { get; set; }
     }
 
     /// <summary>
@@ -84,8 +83,18 @@ namespace SoftCircuits.HtmlMonkey
 
         public static List<CDataDefinition> CDataDefinitions = new List<CDataDefinition>
         {
-            new CDataDefinition { StartText = "<!--", EndText = "-->", IgnoreCase = false },
-            new CDataDefinition { StartText = "<![CDATA[", EndText = "]]>", IgnoreCase = true },
+            new CDataDefinition
+            {
+                StartText = "<!--",
+                EndText = "-->",
+                StringComparison = StringComparison.Ordinal
+            },
+            new CDataDefinition
+            {
+                StartText = "<![CDATA[",
+                EndText = "]]>",
+                StringComparison = StringComparison.OrdinalIgnoreCase
+            },
         };
 
         public static readonly StringComparison TagStringComparison = StringComparison.CurrentCultureIgnoreCase;
@@ -203,10 +212,10 @@ namespace SoftCircuits.HtmlMonkey
         public static HtmlTagFlag GetTagFlags(string tag) => TagRules.TryGetValue(tag, out HtmlTagFlag flags) ? flags : HtmlTagFlag.None;
 
         /// <summary>
-        /// Defines element tag priorities. Used to help resolve mismatched tags. Tags cannot appear within
-        /// tags of a lower value.
+        /// Defines element tag nesting values. Tags cannot appear within tags with a lower value. Used when parsing to detected
+        /// mismatches open/close tags.
         /// </summary>
-        private static readonly Dictionary<string, int> TagPriority = new Dictionary<string, int>(StringComparer.CurrentCultureIgnoreCase)
+        private static readonly Dictionary<string, int> NestLevelLookup = new Dictionary<string, int>(StringComparer.CurrentCultureIgnoreCase)
         {
             ["div"] = 150,
             ["td"] = 160,
@@ -221,18 +230,25 @@ namespace SoftCircuits.HtmlMonkey
             ["html"] = 220,
         };
 
+        [Obsolete("This method is deprecated and will be removed in a future version. Please use GetTagNestLevel() instead.")]
         /// <summary>
         /// Returns a value that signifies the relative priority of the specified tag.
         /// </summary>
-        public static int GetTagPriority(string tag) => TagPriority.TryGetValue(tag, out int priority) ? priority : 100;
+        public static int GetTagPriority(string tag) => GetTagNestLevel(tag);
+
+        /// <summary>
+        /// Returns a value that signifies the relative nest level of the specified tag. Tags with higher values
+        /// cannot be contained within tags with lower levels.
+        /// </summary>
+        /// <param name="tag">The element tag for which to get the nest level.</param>
+        public static int GetTagNestLevel(string tag) => NestLevelLookup.TryGetValue(tag, out int priority) ? priority : 100;
 
         #endregion
 
-        #region Tag containership logic
+        #region Tag nesting rules logic
 
         /// <summary>
-        /// Returns true if it is considered valid for the given parent tag to contain the
-        /// given child tag.
+        /// Returns true if it is valid for the given parent tag to contain the given child tag.
         /// </summary>
         public static bool TagMayContain(string parentTag, string childTag)
         {
@@ -247,10 +263,10 @@ namespace SoftCircuits.HtmlMonkey
         {
             if (parentFlags.HasFlag(HtmlTagFlag.NoChildren))
                 return false;
-            if (parentFlags.HasFlag(HtmlTagFlag.NoNested) && parentTag.Equals(childTag, StringComparison.OrdinalIgnoreCase))
+            if (parentFlags.HasFlag(HtmlTagFlag.NoNested) && parentTag.Equals(childTag, TagStringComparison))
                 return false;
-            // Attempt to catch some obviously invalid HTML structure
-            if (GetTagPriority(childTag) > GetTagPriority(parentTag))
+            // Attempt to catch mismatched open/close tags
+            if (GetTagNestLevel(childTag) > GetTagNestLevel(parentTag))
                 return false;
             return true;
         }
