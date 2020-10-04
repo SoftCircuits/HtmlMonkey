@@ -185,9 +185,6 @@ namespace SoftCircuits.HtmlMonkey
             return Find(nodes, n => n is T node && predicate(node)).Cast<T>();
         }
 
-
-
-
         #endregion
 
     }

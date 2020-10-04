@@ -75,14 +75,19 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="node"></param>
         public new void Remove(HtmlNode node)
         {
-            Debug.Assert(Contains(node));
-            RemoveAt(IndexOf(node));
+            int i = IndexOf(node);
+            if (i >= 0)
+                RemoveAt(i);
         }
 
         /// <summary>
         /// Removes the node at the specified position from the collection.
         /// </summary>
         /// <param name="index">The position of the item to be removed.</param>
+        /// <remarks>
+        /// Overrides <see cref="List{T}.RemoveAt(int)"/> in order to handle
+        /// navigation property fixups.
+        /// </remarks>
         public new void RemoveAt(int index)
         {
             if (index < 0 || index >= Count)

@@ -32,11 +32,19 @@ namespace SoftCircuits.HtmlMonkey
         }
 
         /// <summary>
+        /// Adds an attribute to the collection. If the attribute already exists in the collection,
+        /// the value of the existing attribute is updated.
+        /// </summary>
+        /// <param name="name">The name of the attribute to add.</param>
+        /// <param name="value">The value of the attribute to add.</param>
+        public void Add(string name, string value) => Add(new HtmlAttribute(name, value));
+
+        /// <summary>
         /// Adds an <see cref="HtmlAttribute"></see> to the collection. If the
         /// attribute already exists in the collection, the value of the existing
         /// attribute is updated.
         /// </summary>
-        /// <param name="attribute">Attribute to be added.</param>
+        /// <param name="attribute">The attribute to add.</param>
         public void Add(HtmlAttribute attribute)
         {
             if (attribute == null)
@@ -62,7 +70,7 @@ namespace SoftCircuits.HtmlMonkey
         public new HtmlAttribute this[string name]
         {
             get => TryGetValue(name, out HtmlAttribute value) ? value : null;
-            set => base[name] = value;
+            set => this[name] = value;
         }
 
         /// <summary>

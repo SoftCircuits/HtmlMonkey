@@ -82,6 +82,7 @@ namespace SoftCircuits.HtmlMonkey
                     return node.NextNode;
                 node = node.ParentNode;
             }
+
             return null;
         }
 
@@ -103,6 +104,7 @@ namespace SoftCircuits.HtmlMonkey
                     node = elementNode.Children[elementNode.Children.Count - 1];
                 return node;
             }
+
             return node.ParentNode;
         }
     }
