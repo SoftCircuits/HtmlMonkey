@@ -8,7 +8,7 @@ using System.Linq;
 namespace SoftCircuits.HtmlMonkey
 {
     /// <summary>
-    /// Describes a parsed find selector.
+    /// Describes a selector used for finding elements.
     /// </summary>
     public class Selector
     {
@@ -19,7 +19,7 @@ namespace SoftCircuits.HtmlMonkey
         public string Tag { get; set; }
 
         /// <summary>
-        /// Gets the list of selectors that test attribute values.
+        /// Gets this selector's attribute selectors.
         /// </summary>
         public List<AttributeSelector> Attributes { get; private set; }
 
@@ -29,8 +29,8 @@ namespace SoftCircuits.HtmlMonkey
         public Selector ChildSelector { get; set; }
 
         /// <summary>
-        /// Gets or sets whether this selector only applies only to immediate
-        /// children (one level down from parent).
+        /// Gets or sets whether this selector applies only to immediate children
+        /// (one level down from parent).
         /// </summary>
         public bool ImmediateChildOnly { get; set; }
 
@@ -51,7 +51,7 @@ namespace SoftCircuits.HtmlMonkey
         public bool IsEmpty => string.IsNullOrWhiteSpace(Tag) && !Attributes.Any();
 
         /// <summary>
-        /// Returns true if this selector matches the specified node.
+        /// Returns true if this selector matches the specified <see cref="HtmlElementNode"/>.
         /// </summary>
         public bool IsMatch(HtmlElementNode node)
         {
@@ -79,6 +79,7 @@ namespace SoftCircuits.HtmlMonkey
             List<HtmlElementNode> results = null;
             bool matchTopLevelNodes = true;
 
+            // Search from this selector on down through its child selectors
             for (Selector selector = this; selector != null; selector = selector.ChildSelector)
             {
                 results = new List<HtmlElementNode>();

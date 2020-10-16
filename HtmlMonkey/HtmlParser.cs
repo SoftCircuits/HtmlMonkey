@@ -14,7 +14,7 @@ namespace SoftCircuits.HtmlMonkey
     internal class HtmlParser
     {
         /// <summary>
-        /// Parses an HTML document string and returns a new HtmlMonkeyDocument.
+        /// Parses an HTML document string and returns a new <see cref="HtmlDocument"/>.
         /// </summary>
         /// <param name="html">The HTML text to parse.</param>
         public HtmlDocument Parse(string html)

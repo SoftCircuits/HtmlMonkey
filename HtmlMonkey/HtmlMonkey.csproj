@@ -22,10 +22,10 @@
     <PackageProjectUrl>https://github.com/SoftCircuits/HtmlMonkey</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
-    <AssemblyVersion>1.1.4.0</AssemblyVersion>
-    <FileVersion>1.1.4.0</FileVersion>
-    <Version>1.1.5</Version>
-    <PackageReleaseNotes>Added HtmlAttributeCollection.Add(string, string); Minor tweaks and enhancements.</PackageReleaseNotes>
+    <AssemblyVersion>1.2.0.0</AssemblyVersion>
+    <FileVersion>1.2.0.0</FileVersion>
+    <Version>1.2.0</Version>
+    <PackageReleaseNotes>Reworked and cleaned up HtmlAttributeCollection interface; BREAKING CHANGE: HtmlAttributeCollection no longer implements Dictionary&lt;string, HtmlAttribute&gt;--enumerating Keys or Values no longer supported; Minor tweaks and enhancements.</PackageReleaseNotes>
     <PackageId>SoftCircuits.HtmlMonkey</PackageId>
     <PackageIcon>Logo_64x64.png</PackageIcon>
   </PropertyGroup>

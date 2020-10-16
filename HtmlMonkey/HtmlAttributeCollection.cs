@@ -3,22 +3,24 @@
 //
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace SoftCircuits.HtmlMonkey
 {
     /// <summary>
-    /// Dictionary class to represent a collection of element attributes.
-    /// Keys are not case-sensitive.
+    /// Class to represent a collection of element attributes.
     /// </summary>
-    public class HtmlAttributeCollection : Dictionary<string, HtmlAttribute>
+    public class HtmlAttributeCollection : IEnumerable<HtmlAttribute>
     {
+        // Internal attribute collection
+        private readonly Dictionary<string, HtmlAttribute> Attributes;
+
         /// <summary>
         /// Constructs an <see cref="HtmlAttributeCollection"/> instance.
         /// </summary>
         public HtmlAttributeCollection()
-            : base(HtmlRules.TagStringComparer)
         {
+            Attributes = new Dictionary<string, HtmlAttribute>(HtmlRules.TagStringComparer);
         }
 
         /// <summary>
@@ -27,22 +29,21 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="attributes">Attributes with which to prepopulate this
         /// collection.</param>
         public HtmlAttributeCollection(HtmlAttributeCollection attributes)
-            : base(attributes, HtmlRules.TagStringComparer)
         {
+            Attributes = new Dictionary<string, HtmlAttribute>(attributes.Attributes, HtmlRules.TagStringComparer);
         }
 
         /// <summary>
-        /// Adds an attribute to the collection. If the attribute already exists in the collection,
-        /// the value of the existing attribute is updated.
+        /// Adds an <see cref="HtmlAttribute"/> to the collection. If the attribute already exists in the
+        /// collection, the value of the existing attribute is updated.
         /// </summary>
         /// <param name="name">The name of the attribute to add.</param>
         /// <param name="value">The value of the attribute to add.</param>
         public void Add(string name, string value) => Add(new HtmlAttribute(name, value));
 
         /// <summary>
-        /// Adds an <see cref="HtmlAttribute"></see> to the collection. If the
-        /// attribute already exists in the collection, the value of the existing
-        /// attribute is updated.
+        /// Adds an <see cref="HtmlAttribute"/> to the collection. If the attribute already exists, the
+        /// value of the existing attribute is updated.
         /// </summary>
         /// <param name="attribute">The attribute to add.</param>
         public void Add(HtmlAttribute attribute)
@@ -53,38 +54,66 @@ namespace SoftCircuits.HtmlMonkey
                 throw new ArgumentException("Attribute name cannot be null or empty.");
 
             // Determine if we already have this attribute
-            if (TryGetValue(attribute.Name, out HtmlAttribute existingAttribute))
+            if (Attributes.TryGetValue(attribute.Name, out HtmlAttribute existingAttribute))
                 existingAttribute.Value = attribute.Value;
             else
-                Add(attribute.Name, attribute);
+                Attributes.Add(attribute.Name, attribute);
         }
 
         /// <summary>
-        /// Returns the <see cref="HtmlAttribute"/> with the given name. Unlike the
-        /// standard <see cref="Dictionary{TKey, TValue}"></see>, this property
+        /// Returns the <see cref="HtmlAttribute"/> with the given name. This property
         /// returns null rather than throwing an exception when the attribute does not
         /// exist.
         /// </summary>
         /// <param name="name">Attribute name.</param>
         /// <returns>Returns the <see cref="HtmlAttribute"/> with the given name.</returns>
-        public new HtmlAttribute this[string name]
+        public HtmlAttribute this[string name]
         {
-            get => TryGetValue(name, out HtmlAttribute value) ? value : null;
-            set => this[name] = value;
+            get => Attributes.TryGetValue(name, out HtmlAttribute value) ? value : null;
+            set => Attributes[name] = value;
         }
 
         /// <summary>
         /// Converts this <see cref="HtmlAttributeCollection"></see> to a string.
         /// </summary>
-        public override string ToString()
+        public override string ToString() => Attributes.Any() ? $" {string.Join(" ", this)}" : string.Empty;
+
+        /// <summary>
+        /// Gets the number of <see cref="HtmlAttribute"/>s in this collection.
+        /// </summary>
+        public int Count => Attributes.Count;
+
+        /// <summary>
+        /// Gets an enumerable on the attribute names.
+        /// </summary>
+        public IEnumerable<string> Names => Attributes.Values.Select(a => a.Name);
+
+        /// <summary>
+        /// Gets an enumerable on the attribute values.
+        /// </summary>
+        public IEnumerable<string> Values => Attributes.Values.Select(a => a.Value);
+
+        #region IEnumerable
+
+        /// <summary>
+        /// Gets an enumerator that iterates through the <see cref="HtmlAttribute"/>
+        /// collection.
+        /// </summary>
+        public IEnumerator<HtmlAttribute> GetEnumerator()
         {
-            StringBuilder builder = new StringBuilder();
-            foreach (HtmlAttribute attribute in Values)
-            {
-                builder.Append(' ');
-                builder.Append(attribute.ToString());
-            }
-            return builder.ToString();
+            return Attributes.Values.GetEnumerator();
         }
+
+        /// <summary>
+        /// Gets an enumerator that iterates through the <see cref="HtmlAttribute"/>
+        /// collection.
+        /// </summary>
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return Attributes.GetEnumerator();
+        }
+
+        #endregion
+
     }
 }

@@ -201,9 +201,9 @@ namespace TestHtmlMonkey
 
         private bool MatchesAttributes(HtmlAttributeCollection attributes, TextSearch search)
         {
-            foreach (string name in attributes.Keys)
+            foreach (var attribute in attributes)
             {
-                if (search.IsMatch(name) || search.IsMatch(attributes[name]?.Value))
+                if (search.IsMatch(attribute.Name) || search.IsMatch(attribute.Value))
                     return true;
             }
             return false;

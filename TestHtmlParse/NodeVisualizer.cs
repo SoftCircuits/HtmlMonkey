@@ -107,30 +107,30 @@ namespace TestHtmlMonkey
         private static void PopulatePropertiesDocTypeHeader(HtmlHeaderNode node, ListView listView)
         {
             InitializeListView(ParameterColumns, listView);
-            foreach (var att in node.Attributes)
+            foreach (var attribute in node.Attributes)
             {
-                var item = listView.Items.Add(att.Key);
-                item.SubItems.Add(att.Value != null ? att.Value.Value : "(null)");
+                var item = listView.Items.Add(attribute.Name);
+                item.SubItems.Add(attribute.Value != null ? attribute.Value : "(null)");
             }
         }
 
         private static void PopulatePropertiesXmlHeader(XmlHeaderNode node, ListView listView)
         {
             InitializeListView(AttributeColumns, listView);
-            foreach (var att in node.Attributes)
+            foreach (var attribute in node.Attributes)
             {
-                var item = listView.Items.Add(att.Key);
-                item.SubItems.Add(att.Value != null ? att.Value.Value : "(null)");
+                var item = listView.Items.Add(attribute.Name);
+                item.SubItems.Add(attribute.Value != null ? attribute.Value : "(null)");
             }
         }
 
         private static void PopulatePropertiesElement(HtmlElementNode node, ListView listView)
         {
             InitializeListView(AttributeColumns, listView);
-            foreach (var att in node.Attributes)
+            foreach (var attribute in node.Attributes)
             {
-                var item = listView.Items.Add(att.Key);
-                item.SubItems.Add(att.Value != null ? att.Value.Value : "(null)");
+                var item = listView.Items.Add(attribute.Name);
+                item.SubItems.Add(attribute.Value != null ? attribute.Value : "(null)");
             }
         }
 

@@ -8,7 +8,7 @@ using System.Linq;
 namespace SoftCircuits.HtmlMonkey
 {
     /// <summary>
-    /// Holds a list of selectors that can be used together in a node search.
+    /// Holds a list of selectors that can all be applied to a node search.
     /// </summary>
     public class SelectorCollection : List<Selector>
     {
