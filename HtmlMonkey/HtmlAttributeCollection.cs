@@ -74,6 +74,15 @@ namespace SoftCircuits.HtmlMonkey
         }
 
         /// <summary>
+        /// Gets the <see cref="HtmlAttribute"/> with the given name. Returns <c>true</c>
+        /// if successful, or <c>false</c> if no matching attribute was found.
+        /// </summary>
+        /// <param name="name">Attribute name.</param>
+        /// <param name="value">Returns the attribute with the specified name, if successful.</param>
+        /// <returns>True if successful, false if no matching attribute was found.</returns>
+        public bool TryGetValue(string name, out HtmlAttribute value) => Attributes.TryGetValue(name, out value);
+
+        /// <summary>
         /// Converts this <see cref="HtmlAttributeCollection"></see> to a string.
         /// </summary>
         public override string ToString() => Attributes.Any() ? $" {string.Join(" ", this)}" : string.Empty;
@@ -110,7 +119,7 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return Attributes.GetEnumerator();
+            return Attributes.Values.GetEnumerator();
         }
 
         #endregion
