@@ -6,17 +6,6 @@ using System.Text.RegularExpressions;
 
 namespace SoftCircuits.HtmlMonkey
 {
-    /// <summary>
-    /// Specifies the type of comparison to use on an attribute value.
-    /// </summary>
-    public enum SelectorAttributeMode
-    {
-        Match,
-        RegEx,
-        Contains,
-        ExistsOnly,
-    }
-
     [Obsolete("This class is deprecated and will be removed from a future version. Please use AttributeSelector instead.")]
     public class SelectorAttribute : AttributeSelector
     {
@@ -41,7 +30,7 @@ namespace SoftCircuits.HtmlMonkey
         /// Gets or sets the type of comparison that should be performed
         /// on the attribute value.
         /// </summary>
-        public SelectorAttributeMode Mode
+        public AttributeSelectorMode Mode
         {
             get => _mode;
             set
@@ -49,23 +38,23 @@ namespace SoftCircuits.HtmlMonkey
                 _mode = value;
                 switch (_mode)
                 {
-                    case SelectorAttributeMode.Match:
+                    case AttributeSelectorMode.Match:
                     default:
                         NodeComparer = MatchComparer;
                         break;
-                    case SelectorAttributeMode.RegEx:
+                    case AttributeSelectorMode.RegEx:
                         NodeComparer = RegExComparer;
                         break;
-                    case SelectorAttributeMode.Contains:
+                    case AttributeSelectorMode.Contains:
                         NodeComparer = ContainsComparer;
                         break;
-                    case SelectorAttributeMode.ExistsOnly:
+                    case AttributeSelectorMode.ExistsOnly:
                         NodeComparer = ExistsOnlyComparer;
                         break;
                 }
             }
         }
-        private SelectorAttributeMode _mode;
+        private AttributeSelectorMode _mode;
         private Func<HtmlElementNode, bool> NodeComparer;
 
         private readonly StringComparison StringComparison;
@@ -80,7 +69,7 @@ namespace SoftCircuits.HtmlMonkey
         {
             Name = null;
             Value = null;
-            Mode = SelectorAttributeMode.Match;
+            Mode = AttributeSelectorMode.Match;
             StringComparison = ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
             RegexOptions = ignoreCase ? RegexOptions.IgnoreCase : RegexOptions.None;
         }

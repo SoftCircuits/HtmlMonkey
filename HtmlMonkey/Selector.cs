@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2019-2020 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
+using SoftCircuits.Parsing.Helper;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -151,20 +152,20 @@ namespace SoftCircuits.HtmlMonkey
                         if (ch == '*')
                             selector.Tag = null;    // Match all tags
                         else
-                            selector.Tag = parser.ParseWhile(c => IsNameCharacter(c));
+                            selector.Tag = parser.ParseWhile(IsNameCharacter);
                     }
                     else if (SpecialCharacters.TryGetValue(ch, out string name))
                     {
                         // Parse special attributes
                         parser++;
-                        string value = parser.ParseWhile(c => IsValueCharacter(c));
+                        string value = parser.ParseWhile(IsValueCharacter);
                         if (value.Length > 0)
                         {
                             AttributeSelector attribute = new AttributeSelector
                             {
                                 Name = name,
                                 Value = value,
-                                Mode = SelectorAttributeMode.Contains
+                                Mode = AttributeSelectorMode.Contains
                             };
 
                             Selector selector = selectors.GetLastSelector(true);
@@ -176,7 +177,7 @@ namespace SoftCircuits.HtmlMonkey
                         // Parse attribute selector
                         parser++;
                         parser.SkipWhiteSpace();
-                        name = parser.ParseWhile(c => IsNameCharacter(c));
+                        name = parser.ParseWhile(IsNameCharacter);
                         if (name.Length > 0)
                         {
                             AttributeSelector attribute = new AttributeSelector
@@ -188,27 +189,27 @@ namespace SoftCircuits.HtmlMonkey
                             parser.SkipWhiteSpace();
                             if (parser.Peek() == '=')
                             {
-                                attribute.Mode = SelectorAttributeMode.Match;
+                                attribute.Mode = AttributeSelectorMode.Match;
                                 parser++;
                             }
                             else if (parser.Peek() == ':' && parser.Peek(1) == '=')
                             {
-                                attribute.Mode = SelectorAttributeMode.RegEx;
+                                attribute.Mode = AttributeSelectorMode.RegEx;
                                 parser += 2;
                             }
                             else
                             {
-                                attribute.Mode = SelectorAttributeMode.ExistsOnly;
+                                attribute.Mode = AttributeSelectorMode.ExistsOnly;
                             }
 
                             // Parse attribute value
-                            if (attribute.Mode != SelectorAttributeMode.ExistsOnly)
+                            if (attribute.Mode != AttributeSelectorMode.ExistsOnly)
                             {
                                 parser.SkipWhiteSpace();
                                 if (HtmlRules.IsQuoteChar(parser.Peek()))
                                     attribute.Value = parser.ParseQuotedText();
                                 else
-                                    attribute.Value = parser.ParseWhile(c => IsValueCharacter(c));
+                                    attribute.Value = parser.ParseWhile(IsValueCharacter);
                             }
 
                             Selector selector = selectors.GetLastSelector(true);
