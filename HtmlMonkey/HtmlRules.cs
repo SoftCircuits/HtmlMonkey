@@ -43,26 +43,6 @@ namespace SoftCircuits.HtmlMonkey
     }
 
     /// <summary>
-    /// Defines a CDATA segment. These are segments that we save and store,
-    /// but we do not parse the contents. Examples include comments, CDATA
-    /// and the content of tags with CData attribute.
-    /// </summary>
-    /// <remarks>
-    /// For all entries, the StartText member must start with HtmlRules.TagStart
-    /// or else the parser will miss the segment.
-    /// </remarks>
-    internal class CDataDefinition
-    {
-        public string StartText { get; set; }
-        public string EndText { get; set; }
-
-        /// <summary>
-        /// Gets or sets the string comparison used to compare <see cref="StartText"/>.
-        /// </summary>
-        public StringComparison StringComparison { get; set; }
-    }
-
-    /// <summary>
     /// Defines constants and rules that are used to parse and interpret
     /// HTML and XML.
     /// </summary>
@@ -87,13 +67,15 @@ namespace SoftCircuits.HtmlMonkey
             {
                 StartText = "<!--",
                 EndText = "-->",
-                StringComparison = StringComparison.Ordinal
+                StartComparison = StringComparison.Ordinal,
+                EndComparison = StringComparison.Ordinal
             },
             new CDataDefinition
             {
                 StartText = "<![CDATA[",
                 EndText = "]]>",
-                StringComparison = StringComparison.OrdinalIgnoreCase
+                StartComparison = StringComparison.OrdinalIgnoreCase,
+                EndComparison = StringComparison.Ordinal
             },
         };
 

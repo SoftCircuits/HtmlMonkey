@@ -1,7 +1,6 @@
 ﻿// Copyright (c) 2019-2020 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
-using SoftCircuits.Parsing.Helper;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -138,7 +137,7 @@ namespace SoftCircuits.HtmlMonkey
 
             if (!string.IsNullOrWhiteSpace(selectorText))
             {
-                ParsingHelper parser = new ParsingHelper(selectorText);
+                TextParser parser = new TextParser(selectorText);
                 parser.SkipWhiteSpace();
 
                 while (!parser.EndOfText)
@@ -157,7 +156,7 @@ namespace SoftCircuits.HtmlMonkey
                     else if (SpecialCharacters.TryGetValue(ch, out string name))
                     {
                         // Parse special attributes
-                        parser++;
+                        parser.Next();
                         string value = parser.ParseWhile(IsValueCharacter);
                         if (value.Length > 0)
                         {
@@ -175,7 +174,7 @@ namespace SoftCircuits.HtmlMonkey
                     else if (ch == '[')
                     {
                         // Parse attribute selector
-                        parser++;
+                        parser.Next();
                         parser.SkipWhiteSpace();
                         name = parser.ParseWhile(IsNameCharacter);
                         if (name.Length > 0)
@@ -190,12 +189,12 @@ namespace SoftCircuits.HtmlMonkey
                             if (parser.Peek() == '=')
                             {
                                 attribute.Mode = AttributeSelectorMode.Match;
-                                parser++;
+                                parser.Next();
                             }
                             else if (parser.Peek() == ':' && parser.Peek(1) == '=')
                             {
                                 attribute.Mode = AttributeSelectorMode.RegEx;
-                                parser += 2;
+                                parser.Index += 2;
                             }
                             else
                             {
@@ -220,19 +219,19 @@ namespace SoftCircuits.HtmlMonkey
                         parser.SkipWhiteSpace();
                         Debug.Assert(parser.Peek() == ']');
                         if (parser.Peek() == ']')
-                            parser++;
+                            parser.Next();
                     }
                     else if (ch == ',')
                     {
                         // Multiple selectors
-                        parser++;
+                        parser.Next();
                         parser.SkipWhiteSpace();
                         selectors.Add(new Selector());
                     }
                     else if (ch == '>')
                     {
                         // Whitespace indicates child selector
-                        parser++;
+                        parser.Next();
                         parser.SkipWhiteSpace();
                         Debug.Assert(selectors.Any());
                         Selector selector = selectors.AddChildSelector();
@@ -250,7 +249,7 @@ namespace SoftCircuits.HtmlMonkey
                     {
                         // Unknown syntax
                         Debug.Assert(false);
-                        parser++;
+                        parser.Next();
                     }
                 }
             }

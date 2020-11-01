@@ -27,8 +27,8 @@ namespace SoftCircuits.HtmlMonkey
     public class HtmlDocument
     {
         /// <summary>
-        /// Gets the source document path. May be empty or <c>null</c> if the source file
-        /// is unknown.
+        /// Gets the source document path. May be empty or <c>null</c> if there is no
+        /// source file.
         /// </summary>
         public string Path { get; private set; }
 
