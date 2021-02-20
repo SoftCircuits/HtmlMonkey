@@ -1,7 +1,8 @@
-﻿// Copyright (c) 2019-2020 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2021 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -17,23 +18,26 @@ namespace SoftCircuits.HtmlMonkey
         /// Gets this node's parent node, or <c>null</c> if this node
         /// is a top-level node.
         /// </summary>
-        public HtmlElementNode ParentNode { get; internal set; }
+        public HtmlElementNode? ParentNode { get; internal set; }
 
         /// <summary>
         /// Gets this node's next sibling, or <c>null</c> if this node
         /// is the last of its siblings.
         /// </summary>
-        public HtmlNode NextNode { get; internal set; }
+        public HtmlNode? NextNode { get; internal set; }
 
         /// <summary>
         /// Gets this node's previous sibling, or <c>null</c> if this
         /// node is the first of its siblings.
         /// </summary>
-        public HtmlNode PrevNode { get; internal set; }
+        public HtmlNode? PrevNode { get; internal set; }
 
         /// <summary>
         /// Returns <c>true</c> if this node is a top-level node and has no parent.
         /// </summary>
+#if NET5_0
+        [MemberNotNullWhen(false, nameof(ParentNode))]
+#endif
         public bool IsTopLevelNode => ParentNode == null;
 
         /// <summary>
@@ -69,9 +73,9 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         /// <returns>Returns the next logical node, or <c>null</c> if no more nodes were
         /// found.</returns>
-        public HtmlNode NavigateNextNode()
+        public HtmlNode? NavigateNextNode()
         {
-            HtmlNode node = this;
+            HtmlNode? node = this;
 
             if (node is HtmlElementNode elementNode && elementNode.Children.Any())
                 return elementNode.Children[0];
@@ -93,7 +97,7 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         /// <returns>Returns the previous logical node, or <c>null</c> if no more nodes
         /// were found.</returns>
-        public HtmlNode NavigatePrevNode()
+        public HtmlNode? NavigatePrevNode()
         {
             HtmlNode node = this;
 
@@ -180,7 +184,7 @@ namespace SoftCircuits.HtmlMonkey
                 builder.Append(HtmlRules.TagStart);
                 builder.Append(HtmlRules.XmlHeaderTag);
                 builder.Append(Attributes.ToString());
-                builder.Append("?");
+                builder.Append('?');
                 builder.Append(HtmlRules.TagEnd);
                 return builder.ToString();
             }
@@ -217,7 +221,7 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         /// <param name="tagName">Element tag name.</param>
         /// <param name="attributes">Optional element attributes.</param>
-        public HtmlElementNode(string tagName, HtmlAttributeCollection attributes = null)
+        public HtmlElementNode(string tagName, HtmlAttributeCollection? attributes = null)
         {
             TagName = tagName ?? string.Empty;
             Attributes = attributes ?? new HtmlAttributeCollection();
@@ -334,7 +338,7 @@ namespace SoftCircuits.HtmlMonkey
         /// Constructs a new <see cref="HtmlTextNode"/> instance.
         /// </summary>
         /// <param name="html">Optional markup for this node.</param>
-        public HtmlTextNode(string html = null)
+        public HtmlTextNode(string? html = null)
         {
             Content = html ?? string.Empty;
         }

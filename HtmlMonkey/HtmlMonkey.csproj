@@ -5,13 +5,18 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>net5.0;netstandard2.0</TargetFrameworks>
+    <Nullable>annotations</Nullable>
+    <Nullable Condition="'$(TargetFramework)' == 'net5.0'">enable</Nullable>
+    <LangVersion>9.0</LangVersion>
     <ApplicationIcon />
     <OutputTypeEx>library</OutputTypeEx>
     <StartupObject />
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Description>HtmlMonkey is a lightweight HTML/XML parser written in C#. It allows you to parse an HTML or XML string into a hierarchy of node objects, which can then be traversed or queried using jQuery-like selectors. The library also supports creating node objects from code and producing HTML or XML from those objects.</Description>
-    <Copyright>Copyright © 2019-2020 SoftCircuits</Copyright>
+    <Description>HtmlMonkey is a lightweight HTML/XML parser written in C#. It allows you to parse an HTML or XML string into a hierarchy of node objects, which can then be traversed or queried using jQuery-like selectors. The library also supports creating node objects from code and producing HTML or XML from those objects.
+
+Now targeting .NET Standard 2.0 or .NET 5.0 with nullable reference types.</Description>
+    <Copyright>Copyright © 2019-2021 SoftCircuits</Copyright>
     <NeutralLanguage>en-US</NeutralLanguage>
     <PackageTags>html-parser xml-parser html xml parse parser crawler spider</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -22,10 +27,10 @@
     <PackageProjectUrl>https://github.com/SoftCircuits/HtmlMonkey</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
-    <AssemblyVersion>1.3.1.0</AssemblyVersion>
-    <FileVersion>1.3.1.0</FileVersion>
-    <Version>1.3.1</Version>
-    <PackageReleaseNotes>Code review; No longer using SoftCircuits.Parsing.Helper package for low-level parsing; Minor tweaks and changes.</PackageReleaseNotes>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <FileVersion>2.0.0.0</FileVersion>
+    <Version>2.0.0</Version>
+    <PackageReleaseNotes>Now targeting .NET Standard 2.0 or .NET 5.0 with nullable reference types.</PackageReleaseNotes>
     <PackageId>SoftCircuits.HtmlMonkey</PackageId>
     <PackageIcon>Logo_64x64.png</PackageIcon>
   </PropertyGroup>

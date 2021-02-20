@@ -1,9 +1,10 @@
-﻿// Copyright (c) 2019-2020 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2021 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace SoftCircuits.HtmlMonkey
@@ -14,6 +15,11 @@ namespace SoftCircuits.HtmlMonkey
     internal class HtmlParser
     {
         private TextParser Parser;
+
+        public HtmlParser()
+        {
+            Parser = new TextParser(null);
+        }
 
         /// <summary>
         /// Parses an HTML document string and returns a new <see cref="HtmlDocument"/>.
@@ -31,13 +37,13 @@ namespace SoftCircuits.HtmlMonkey
         /// children.
         /// </summary>
         /// <param name="html">The HTML text to parse.</param>
-        public IEnumerable<HtmlNode> ParseChildren(string html)
+        public IEnumerable<HtmlNode> ParseChildren(string? html)
         {
             HtmlElementNode rootNode = new HtmlElementNode("[TempContainer]");
             HtmlElementNode parentNode = rootNode;
-            Parser = new TextParser(html);
+            Parser.Reset(html);
             bool selfClosing;
-            string tag;
+            string? tag;
 
             // Loop until end of input
             while (!Parser.EndOfText)
@@ -45,7 +51,7 @@ namespace SoftCircuits.HtmlMonkey
                 if (Parser.Peek() == HtmlRules.TagStart)
                 {
                     // CDATA segments (blocks we store but don't parse--includes comments)
-                    CDataDefinition definition = HtmlRules.CDataDefinitions.FirstOrDefault(dd => Parser.MatchesCurrentPosition(dd.StartText, dd.StartComparison));
+                    CDataDefinition? definition = HtmlRules.CDataDefinitions.FirstOrDefault(dd => Parser.MatchesCurrentPosition(dd.StartText, dd.StartComparison));
                     if (definition != null)
                     {
                         parentNode.Children.Add(ParseCDataNode(definition));
@@ -62,19 +68,21 @@ namespace SoftCircuits.HtmlMonkey
                             if (parentNode.TagName.Equals(tag, HtmlRules.TagStringComparison))
                             {
                                 // Should never have matched parent if the top-level node
-                                Debug.Assert(!parentNode.IsTopLevelNode);
-                                parentNode = parentNode.ParentNode;
+                                if (!parentNode.IsTopLevelNode)
+                                    parentNode = parentNode.ParentNode;
                             }
                             else
                             {
                                 // Handle mismatched closing tag
                                 int tagPriority = HtmlRules.GetTagNestLevel(tag);
+
                                 while (!parentNode.IsTopLevelNode && tagPriority > HtmlRules.GetTagNestLevel(parentNode.TagName))
                                     parentNode = parentNode.ParentNode;
+
                                 if (parentNode.TagName.Equals(tag, HtmlRules.TagStringComparison))
                                 {
-                                    Debug.Assert(!parentNode.IsTopLevelNode);
-                                    parentNode = parentNode.ParentNode;
+                                    if (!parentNode.IsTopLevelNode)
+                                        parentNode = parentNode.ParentNode;
                                 }
                             }
                         }
@@ -117,10 +125,7 @@ namespace SoftCircuits.HtmlMonkey
                             // Add node
                             HtmlElementNode node = new HtmlElementNode(tag, attributes);
                             while (!HtmlRules.TagMayContain(parentNode.TagName, tag) && !parentNode.IsTopLevelNode)
-                            {
-                                Debug.Assert(parentNode.ParentNode != null);
                                 parentNode = parentNode.ParentNode;
-                            }
                             parentNode.Children.Add(node);
 
                             if (flags.HasFlag(HtmlTagFlag.CData))
@@ -128,7 +133,7 @@ namespace SoftCircuits.HtmlMonkey
                                 // CDATA tags are treated as elements but we store and do not parse the inner content
                                 if (!selfClosing)
                                 {
-                                    if (ParseToClosingTag(tag, out string content) && content.Length > 0)
+                                    if (ParseToClosingTag(tag, out string? content) && content.Length > 0)
                                         node.Children.Add(new HtmlCDataNode(string.Empty, string.Empty, content));
                                 }
                             }
@@ -160,7 +165,11 @@ namespace SoftCircuits.HtmlMonkey
         /// Otherwise, false is returned and the current parser position does not change.
         /// </summary>
         /// <param name="tag">Parsed tag name.</param>
-        private bool ParseTag(out string tag)
+#if NETSTANDARD2_0
+        private bool ParseTag(out string? tag)
+#else
+        private bool ParseTag([NotNullWhen(true)] out string? tag)
+#endif
         {
             tag = null;
             int pos = 0;
@@ -269,9 +278,13 @@ namespace SoftCircuits.HtmlMonkey
         /// of the text and false is returned.
         /// </summary>
         /// <param name="tag">Tag name for which the closing tag is being searched.</param>
-        /// <param name="content">Returns the content before the closing tag</param>
+        /// <param name="content">Returns the content before the closing tag.</param>
         /// <returns></returns>
-        private bool ParseToClosingTag(string tag, out string content)
+#if NETSTANDARD2_0
+        private bool ParseToClosingTag(string tag, out string? content)
+#else
+        private bool ParseToClosingTag(string tag, [NotNullWhen(true)] out string? content)
+#endif
         {
             string endTag = $"</{tag}";
             int start = Parser.Index;

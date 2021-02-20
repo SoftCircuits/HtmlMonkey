@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2020 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2021 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ namespace SoftCircuits.HtmlMonkey
         /// Gets or sets the tag name. Set to <c>null</c> or empty string to
         /// match all tags.
         /// </summary>
-        public string Tag { get; set; }
+        public string? Tag { get; set; }
 
         /// <summary>
         /// Gets this selector's attribute selectors.
@@ -26,7 +26,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <summary>
         /// Gets or sets this selector's child selector.
         /// </summary>
-        public Selector ChildSelector { get; set; }
+        public Selector? ChildSelector { get; set; }
 
         /// <summary>
         /// Gets or sets whether this selector applies only to immediate children
@@ -76,11 +76,11 @@ namespace SoftCircuits.HtmlMonkey
         /// <returns>The matching nodes.</returns>
         public IEnumerable<HtmlElementNode> Find(IEnumerable<HtmlNode> nodes)
         {
-            List<HtmlElementNode> results = null;
+            List<HtmlElementNode>? results = null;
             bool matchTopLevelNodes = true;
 
             // Search from this selector on down through its child selectors
-            for (Selector selector = this; selector != null; selector = selector.ChildSelector)
+            for (Selector? selector = this; selector != null; selector = selector.ChildSelector)
             {
                 results = new List<HtmlElementNode>();
                 FindRecursive(nodes, selector, matchTopLevelNodes, true, results);
@@ -147,13 +147,13 @@ namespace SoftCircuits.HtmlMonkey
                     if (IsNameCharacter(ch) || ch == '*')
                     {
                         // Parse tag name
-                        Selector selector = selectors.GetLastSelector(true);
+                        Selector selector = selectors.GetLastSelector();
                         if (ch == '*')
                             selector.Tag = null;    // Match all tags
                         else
                             selector.Tag = parser.ParseWhile(IsNameCharacter);
                     }
-                    else if (SpecialCharacters.TryGetValue(ch, out string name))
+                    else if (SpecialCharacters.TryGetValue(ch, out string? name))
                     {
                         // Parse special attributes
                         parser.Next();
@@ -167,7 +167,7 @@ namespace SoftCircuits.HtmlMonkey
                                 Mode = AttributeSelectorMode.Contains
                             };
 
-                            Selector selector = selectors.GetLastSelector(true);
+                            Selector selector = selectors.GetLastSelector();
                             selector.Attributes.Add(attribute);
                         }
                     }
@@ -211,7 +211,7 @@ namespace SoftCircuits.HtmlMonkey
                                     attribute.Value = parser.ParseWhile(IsValueCharacter);
                             }
 
-                            Selector selector = selectors.GetLastSelector(true);
+                            Selector selector = selectors.GetLastSelector();
                             selector.Attributes.Add(attribute);
                         }
 

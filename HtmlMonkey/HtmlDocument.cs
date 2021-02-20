@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2020 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2021 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System;
@@ -30,7 +30,7 @@ namespace SoftCircuits.HtmlMonkey
         /// Gets the source document path. May be empty or <c>null</c> if there is no
         /// source file.
         /// </summary>
-        public string Path { get; private set; }
+        public string? Path { get; private set; }
 
         /// <summary>
         /// Gets the document root nodes. Provides access to all document nodes.

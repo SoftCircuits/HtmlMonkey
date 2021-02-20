@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestHtmlMonkey", "TestHtmlP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HtmlMonkey", "HtmlMonkey\HtmlMonkey.csproj", "{C883DB82-1D3C-468C-85B0-E2E1E1431A4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HtmlMonkeyTests", "HtmlMonkeyTests\HtmlMonkeyTests.csproj", "{48A90CEE-B51B-403D-A559-E8CB81559637}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HtmlMonkeyTests", "HtmlMonkeyTests\HtmlMonkeyTests.csproj", "{48A90CEE-B51B-403D-A559-E8CB81559637}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

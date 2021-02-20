@@ -1,8 +1,9 @@
-﻿// Copyright (c) 2019-2020 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2021 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace SoftCircuits.HtmlMonkey
@@ -29,7 +30,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="text">The text to be parsed. Can be <c>null</c>.</param>
         /// <param name="regularExpressionOptions">Specifies regular expression options used by
         /// all methods that use regular expressions.</param>
-        public TextParser(string text)
+        public TextParser(string? text)
         {
             Reset(text);
         }
@@ -38,7 +39,10 @@ namespace SoftCircuits.HtmlMonkey
         /// Sets the text to be parsed and sets the current position to the start of that text.
         /// </summary>
         /// <param name="text">The text to be parsed. Can be <c>null</c>.</param>
-        public void Reset(string text)
+#if NET5_0
+        [MemberNotNull(nameof(Text))]
+#endif
+        public void Reset(string? text)
         {
             Text = text ?? string.Empty;
             InternalIndex = 0;
@@ -300,7 +304,7 @@ namespace SoftCircuits.HtmlMonkey
         /// comparison.</param>
         /// <returns>Returns <c>true</c> if the given string matches the characters at the current position,
         /// of <c>false</c> otherwise.</returns>
-        public bool MatchesCurrentPosition(string s, StringComparison comparison) => s != null &&
+        public bool MatchesCurrentPosition(string? s, StringComparison comparison) => s != null &&
             s.Length != 0 &&
             string.Compare(Text, InternalIndex, s, 0, s.Length, comparison) == 0;
 
@@ -317,7 +321,11 @@ namespace SoftCircuits.HtmlMonkey
                 throw new ArgumentOutOfRangeException(nameof(start));
             if (end < start || end > Text.Length)
                 throw new ArgumentOutOfRangeException(nameof(end));
+#if NETSTANDARD2_0
             return Text.Substring(start, end - start);
+#else
+            return Text[start..end];
+#endif
         }
     }
 }

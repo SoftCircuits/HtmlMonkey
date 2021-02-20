@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2020 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2021 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System;
@@ -12,9 +12,9 @@ namespace SoftCircuits.HtmlMonkey
     /// </summary>
     public class HtmlNodeCollection : List<HtmlNode>
     {
-        private readonly HtmlElementNode ParentNode;
+        private readonly HtmlElementNode? ParentNode;
 
-        public HtmlNodeCollection(HtmlElementNode parentNode)
+        public HtmlNodeCollection(HtmlElementNode? parentNode)
         {
             ParentNode = parentNode;
         }
@@ -41,7 +41,9 @@ namespace SoftCircuits.HtmlMonkey
                 {
                     // Combine if two consecutive HtmlTextNodes
                     lastNode.InnerHtml += node.InnerHtml;
+#pragma warning disable CS8603 // Possible null reference return.
                     return lastNode as T;
+#pragma warning restore CS8603 // Possible null reference return.
                 }
                 else
                 {

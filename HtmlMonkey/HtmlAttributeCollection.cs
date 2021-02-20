@@ -1,9 +1,11 @@
-﻿// Copyright (c) 2019-2020 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2021 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using System.Diagnostics.CodeAnalysis;
 
 namespace SoftCircuits.HtmlMonkey
 {
@@ -39,7 +41,7 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         /// <param name="name">The name of the attribute to add.</param>
         /// <param name="value">The value of the attribute to add.</param>
-        public void Add(string name, string value) => Add(new HtmlAttribute(name, value));
+        public void Add(string name, string? value) => Add(new HtmlAttribute(name, value));
 
         /// <summary>
         /// Adds an <see cref="HtmlAttribute"/> to the collection. If the attribute already exists, the
@@ -54,7 +56,7 @@ namespace SoftCircuits.HtmlMonkey
                 throw new ArgumentException("Attribute name cannot be null or empty.");
 
             // Determine if we already have this attribute
-            if (Attributes.TryGetValue(attribute.Name, out HtmlAttribute existingAttribute))
+            if (Attributes.TryGetValue(attribute.Name, out HtmlAttribute? existingAttribute))
                 existingAttribute.Value = attribute.Value;
             else
                 Attributes.Add(attribute.Name, attribute);
@@ -67,10 +69,27 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         /// <param name="name">Attribute name.</param>
         /// <returns>Returns the <see cref="HtmlAttribute"/> with the given name.</returns>
-        public HtmlAttribute this[string name]
+        public HtmlAttribute? this[string? name]
         {
-            get => Attributes.TryGetValue(name, out HtmlAttribute value) ? value : null;
-            set => Attributes[name] = value;
+            get
+            {
+                if (name != null && Attributes.TryGetValue(name, out HtmlAttribute? value))
+                    return value;
+                return null;
+            }
+            set
+            {
+                if (name != null)
+                {
+                    if (value == null)
+                        Attributes.Remove(name);    // TODO: ???
+                    else
+                        Attributes[name] = value;
+                }
+
+
+                    //Attributes[name] = value;
+            }
         }
 
         /// <summary>
@@ -80,7 +99,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="name">Attribute name.</param>
         /// <param name="value">Returns the attribute with the specified name, if successful.</param>
         /// <returns>True if successful, false if no matching attribute was found.</returns>
-        public bool TryGetValue(string name, out HtmlAttribute value) => Attributes.TryGetValue(name, out value);
+        public bool TryGetValue(string name, out HtmlAttribute? value) => Attributes.TryGetValue(name, out value);
 
         /// <summary>
         /// Converts this <see cref="HtmlAttributeCollection"></see> to a string.
@@ -95,12 +114,12 @@ namespace SoftCircuits.HtmlMonkey
         /// <summary>
         /// Gets an enumerable on the attribute names.
         /// </summary>
-        public IEnumerable<string> Names => Attributes.Values.Select(a => a.Name);
+        public IEnumerable<string?> Names => Attributes.Values.Select(a => a.Name);
 
         /// <summary>
         /// Gets an enumerable on the attribute values.
         /// </summary>
-        public IEnumerable<string> Values => Attributes.Values.Select(a => a.Value);
+        public IEnumerable<string?> Values => Attributes.Values.Select(a => a.Value);
 
         #region IEnumerable
 

@@ -1,7 +1,9 @@
-﻿// Copyright (c) 2019-2020 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2021 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace SoftCircuits.HtmlMonkey
@@ -19,12 +21,12 @@ namespace SoftCircuits.HtmlMonkey
         /// <summary>
         /// Gets or sets the name of the attribute to be compared.
         /// </summary>
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>
         /// Gets or sets the value the attribute should be compared to.
         /// </summary>
-        public string Value { get; set; }
+        public string? Value { get; set; }
 
         /// <summary>
         /// Gets or sets the type of comparison that should be performed
@@ -36,22 +38,13 @@ namespace SoftCircuits.HtmlMonkey
             set
             {
                 _mode = value;
-                switch (_mode)
+                NodeComparer = _mode switch
                 {
-                    case AttributeSelectorMode.Match:
-                    default:
-                        NodeComparer = MatchComparer;
-                        break;
-                    case AttributeSelectorMode.RegEx:
-                        NodeComparer = RegExComparer;
-                        break;
-                    case AttributeSelectorMode.Contains:
-                        NodeComparer = ContainsComparer;
-                        break;
-                    case AttributeSelectorMode.ExistsOnly:
-                        NodeComparer = ExistsOnlyComparer;
-                        break;
-                }
+                    AttributeSelectorMode.RegEx => RegExComparer,
+                    AttributeSelectorMode.Contains => ContainsComparer,
+                    AttributeSelectorMode.ExistsOnly => ExistsOnlyComparer,
+                    _ => MatchComparer,
+                };
             }
         }
         private AttributeSelectorMode _mode;
@@ -70,6 +63,7 @@ namespace SoftCircuits.HtmlMonkey
             Name = null;
             Value = null;
             Mode = AttributeSelectorMode.Match;
+            NodeComparer = MatchComparer;
             StringComparison = ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
             RegexOptions = ignoreCase ? RegexOptions.IgnoreCase : RegexOptions.None;
         }
@@ -88,9 +82,13 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         private bool MatchComparer(HtmlElementNode node)
         {
-            
-            HtmlAttribute attribute = node.Attributes[Name];
-            return string.Equals(attribute?.Value, Value, StringComparison);
+            if (Value != null)
+            {
+                string? attributeValue = node.Attributes[Name]?.Value;
+                if (attributeValue != null)
+                    return string.Equals(attributeValue, Value, StringComparison);
+            }
+            return false;
         }
 
         /// <summary>
@@ -98,9 +96,12 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         private bool RegExComparer(HtmlElementNode node)
         {
-            HtmlAttribute attribute = node.Attributes[Name];
-            if (attribute != null)
-                return Regex.IsMatch(attribute?.Value, Value, RegexOptions);
+            if (Value != null)
+            {
+                string? attributeValue = node.Attributes[Name]?.Value;
+                if (attributeValue != null)
+                    return Regex.IsMatch(attributeValue, Value, RegexOptions);
+            }
             return false;
         }
 
@@ -109,14 +110,16 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         private bool ContainsComparer(HtmlElementNode node)
         {
-            HtmlAttribute attribute = node.Attributes[Name];
-            if (attribute != null && attribute.Value != null)
+            if (Value != null)
             {
-                string[] values = attribute.Value.Split(new[] { ' ', '\t', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (string value in values)
+                string? attributeValue = node.Attributes[Name]?.Value;
+                if (attributeValue != null)
                 {
-                    if (string.Equals(Value, value, StringComparison))
-                        return true;
+                    foreach (string value in ParseWords(attributeValue))
+                    {
+                        if (string.Equals(Value, value, StringComparison))
+                            return true;
+                    }
                 }
             }
             return false;
@@ -127,7 +130,42 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         private bool ExistsOnlyComparer(HtmlElementNode node) => node.Attributes[Name] != null;
 
-        #endregion
+        private static IEnumerable<string> ParseWords(string s)
+        {
+            bool inWord = false;
+            int wordStart = 0;
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (char.IsWhiteSpace(s[i]))
+                {
+                    if (inWord)
+                    {
+                        inWord = false;
+#if NETSTANDARD2_0
+                        yield return s.Substring(wordStart, i - wordStart);
+#else
+                        yield return s[wordStart..i];
+#endif
+                    }
+                }
+                else if (!inWord)
+                {
+                    inWord = true;
+                    wordStart = i;
+                }
+            }
+
+            // Check for last word
+            if (inWord)
+#if NETSTANDARD2_0
+                yield return s.Substring(wordStart);
+#else
+                yield return s[wordStart..];
+#endif
+        }
+
+#endregion
 
         public override string ToString()
         {

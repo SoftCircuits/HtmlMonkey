@@ -131,7 +131,7 @@
     &lt;/script&gt;
   &lt;/head&gt;
   &lt;body&gt;
-    &lt;!-- The table below has some mistmatched tags --&gt;
+    &lt;!-- The table below has some mismatched tags --&gt;
     &lt;table&gt;
       &lt;tr&gt;
         &lt;td&gt;

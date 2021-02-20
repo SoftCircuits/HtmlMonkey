@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2020 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2021 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -53,6 +53,9 @@ namespace HtmlMonkeyTests
       sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
       est laborum.
     </p>
+    <p>
+        <input type=""text"" id=""name"">
+    </p>
     <div id=""div1"">
       <div id=""div2"">
         <div id=""div3"">
@@ -70,7 +73,7 @@ namespace HtmlMonkeyTests
             HtmlDocument document = HtmlDocument.FromHtml(html);
 
             IEnumerable<HtmlElementNode> elements = document.Find("p");
-            Assert.AreEqual(4, elements.Count());
+            Assert.AreEqual(5, elements.Count());
 
             elements = document.Find("#one-of-many");
             Assert.AreEqual(1, elements.Count());
@@ -78,7 +81,16 @@ namespace HtmlMonkeyTests
             elements = document.Find("p#one-of-many");
             Assert.AreEqual(1, elements.Count());
 
+            elements = document.Find(".last-para");
+            Assert.AreEqual(1, elements.Count());
+
             elements = document.Find("p.last-para");
+            Assert.AreEqual(1, elements.Count());
+
+            elements = document.Find(":text");
+            Assert.AreEqual(1, elements.Count());
+
+            elements = document.Find("input:text");
             Assert.AreEqual(1, elements.Count());
 
             elements = document.Find("p[data-id=123]");

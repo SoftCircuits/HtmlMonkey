@@ -1,8 +1,9 @@
-﻿// Copyright (c) 2019-2020 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2021 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace SoftCircuits.HtmlMonkey
@@ -34,7 +35,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <returns>Returns the new child selector.</returns>
         internal Selector AddChildSelector()
         {
-            Selector selector = GetLastSelector(true);
+            Selector? selector = GetLastSelector();
             Debug.Assert(selector != null);
             Debug.Assert(selector.ChildSelector == null);
             selector.ChildSelector = new Selector();
@@ -43,34 +44,25 @@ namespace SoftCircuits.HtmlMonkey
 
         /// <summary>
         /// Returns the last selector or, if the last selector has child selectors, the last
-        /// child selector of the last selector. If the collection is empty and
-        /// <paramref name="createNewIfEmpty"/> is <c>true</c>, the last selector is
-        /// automatically added and returned. If the collection is empty and
-        /// <paramref name="createNewIfEmpty"/> is <c>false</c>, this method returns <c>null</c>.
-        /// <param name="createNewIfEmpty">If <c>true</c> and the collection is empty, a new
-        /// selector is added to the collection.</param>
+        /// child selector of the last selector. If the collection is empty, a new selector is
+        /// added and returned.
         /// <returns>The last child selector of the last selector in the collection.</returns>
-        internal Selector GetLastSelector(bool createNewIfEmpty = false)
+        internal Selector GetLastSelector()
         {
             Selector selector;
 
-            // Test for empty collection
-            if (Count == 0)
+            if (Count > 0)
             {
-                if (createNewIfEmpty)
-                {
-                    selector = new Selector();
-                    Add(selector);
-                    return selector;
-                }
-                return null;
+                // Get last selector
+                selector = this[Count - 1];
+                // Get last child selector (return selector if no children)
+                while (selector.ChildSelector != null)
+                    selector = selector.ChildSelector;
+                return selector;
             }
 
-            // Get last selector
-            selector = this[Count - 1];
-            // Get last child selector (return selector if no children)
-            while (selector.ChildSelector != null)
-                selector = selector.ChildSelector;
+            selector = new Selector();
+            Add(selector);
             return selector;
         }
 
@@ -81,7 +73,7 @@ namespace SoftCircuits.HtmlMonkey
         {
             for (int i = Count - 1; i >= 0; i--)
             {
-                Selector selector = RemoveEmptyChildSelectors(this[i]);
+                Selector? selector = RemoveEmptyChildSelectors(this[i]);
                 if (selector == null)
                     RemoveAt(i);
                 else if (this[i] != selector)
@@ -96,10 +88,10 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="selector">Selector from which to remove child selectors.</param>
         /// <returns>The new parent selector, which may be the same as
         /// <paramref name="selector"/>.</returns>
-        private Selector RemoveEmptyChildSelectors(Selector selector)
+        private Selector? RemoveEmptyChildSelectors(Selector? selector)
         {
-            Selector parent = selector;
-            Selector prev = null;
+            Selector? parent = selector;
+            Selector? prev = null;
 
             while (selector != null)
             {
