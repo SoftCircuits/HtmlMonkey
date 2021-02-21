@@ -5,8 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using System.Diagnostics.CodeAnalysis;
-
 namespace SoftCircuits.HtmlMonkey
 {
     /// <summary>
@@ -63,6 +61,19 @@ namespace SoftCircuits.HtmlMonkey
         }
 
         /// <summary>
+        /// Removes the attribute with the specified name from the collection.
+        /// </summary>
+        /// <param name="name">The name of the attribute to remove.</param>
+        /// <returns>True if an attribute with the specified name is found and removed.
+        /// False if no attribute was found with the given name.</returns>
+        public bool Remove(string? name)
+        {
+            if (name != null)
+                return Attributes.Remove(name);
+            return false;
+        }
+
+        /// <summary>
         /// Returns the <see cref="HtmlAttribute"/> with the given name. This property
         /// returns null rather than throwing an exception when the attribute does not
         /// exist.
@@ -77,19 +88,9 @@ namespace SoftCircuits.HtmlMonkey
                     return value;
                 return null;
             }
-            set
-            {
-                if (name != null)
-                {
-                    if (value == null)
-                        Attributes.Remove(name);    // TODO: ???
-                    else
-                        Attributes[name] = value;
-                }
-
-
-                    //Attributes[name] = value;
-            }
+            // Note: Adding a setter could allow setting an attribute
+            // with a different key than the attribute name? It could also
+            // allow setting a null attribute.
         }
 
         /// <summary>
