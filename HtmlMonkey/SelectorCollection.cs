@@ -3,7 +3,6 @@
 //
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace SoftCircuits.HtmlMonkey
@@ -13,6 +12,14 @@ namespace SoftCircuits.HtmlMonkey
     /// </summary>
     public class SelectorCollection : List<Selector>
     {
+        /// <summary>
+        /// Recursively searches the given root node using this list of selectors.
+        /// Returns the matching nodes. Ensures no duplicate nodes are returned.
+        /// </summary>
+        /// <param name="rootNode">Root node of nodes to search.</param>
+        /// <returns>A set of nodes that matches this selector collection.</returns>
+        public IEnumerable<HtmlElementNode> Find(HtmlNode rootNode) => Find(new[] { rootNode });
+
         /// <summary>
         /// Recursively searches the given list of nodes using this list of selectors.
         /// Returns the matching nodes. Ensures no duplicate nodes are returned.
