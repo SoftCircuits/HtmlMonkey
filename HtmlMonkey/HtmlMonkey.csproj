@@ -27,10 +27,10 @@ Now targeting .NET Standard 2.0 or .NET 5.0 with nullable reference types.</Desc
     <PackageProjectUrl>https://github.com/SoftCircuits/HtmlMonkey</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
-    <AssemblyVersion>2.0.1.0</AssemblyVersion>
-    <FileVersion>2.0.1.0</FileVersion>
-    <Version>2.0.1</Version>
-    <PackageReleaseNotes>Added HtmlAttributeCollection.Remove(); POTENTIALLY BREAKING CHANGE: Removed HtmlAttributeCollection[string] setter as it could result in setting a null attribute or setting an attribute with a different name from the attribute key.</PackageReleaseNotes>
+    <AssemblyVersion>2.0.2.0</AssemblyVersion>
+    <FileVersion>2.0.2.0</FileVersion>
+    <Version>2.0.2</Version>
+    <PackageReleaseNotes>A number of changes related to nullable reference types, in some cases allowing nulls where previously they weren't; Minor tweaks and improvements.</PackageReleaseNotes>
     <PackageId>SoftCircuits.HtmlMonkey</PackageId>
     <PackageIcon>Logo_64x64.png</PackageIcon>
   </PropertyGroup>

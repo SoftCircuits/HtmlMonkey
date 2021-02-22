@@ -14,7 +14,7 @@ namespace SoftCircuits.HtmlMonkey
     /// </summary>
     internal class HtmlParser
     {
-        private TextParser Parser;
+        private readonly TextParser Parser;
 
         public HtmlParser()
         {
@@ -25,7 +25,7 @@ namespace SoftCircuits.HtmlMonkey
         /// Parses an HTML document string and returns a new <see cref="HtmlDocument"/>.
         /// </summary>
         /// <param name="html">The HTML text to parse.</param>
-        public HtmlDocument Parse(string html)
+        public HtmlDocument Parse(string? html)
         {
             HtmlDocument document = new HtmlDocument();
             document.RootNodes.AddRange(ParseChildren(html));
@@ -166,7 +166,7 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         /// <param name="tag">Parsed tag name.</param>
 #if NETSTANDARD2_0
-        private bool ParseTag(out string? tag)
+        private bool ParseTag(out string tag)
 #else
         private bool ParseTag([NotNullWhen(true)] out string? tag)
 #endif

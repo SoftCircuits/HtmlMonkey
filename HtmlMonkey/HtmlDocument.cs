@@ -51,7 +51,7 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         /// <param name="selector">Selector that describes the nodes to find.</param>
         /// <returns>The matching nodes.</returns>
-        public IEnumerable<HtmlElementNode> Find(string selector) => Find(RootNodes, selector);
+        public IEnumerable<HtmlElementNode> Find(string? selector) => Find(RootNodes, selector);
 
         /// <summary>
         /// Recursively searches this document's nodes for ones matching the specified compiled
@@ -99,7 +99,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="html">The HTML or XML string to parse.</param>
         /// <returns>Returns an <see cref="HtmlDocument"></see> instance that contains the parsed
         /// nodes.</returns>
-        public static HtmlDocument FromHtml(string html)
+        public static HtmlDocument FromHtml(string? html)
         {
             HtmlParser parser = new HtmlParser();
             return parser.Parse(html);
@@ -150,7 +150,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="nodes">The nodes to be searched.</param>
         /// <param name="selector">Selector that describes the nodes to find.</param>
         /// <returns>The matching nodes.</returns>
-        public static IEnumerable<HtmlElementNode> Find(IEnumerable<HtmlNode> nodes, string selector)
+        public static IEnumerable<HtmlElementNode> Find(IEnumerable<HtmlNode> nodes, string? selector)
         {
             SelectorCollection selectors = Selector.ParseSelector(selector);
             return selectors.Find(nodes);

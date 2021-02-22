@@ -11,6 +11,11 @@ namespace SoftCircuits.HtmlMonkey
     [Obsolete("This class is deprecated and will be removed from a future version. Please use AttributeSelector instead.")]
     public class SelectorAttribute : AttributeSelector
     {
+        public SelectorAttribute(string name, string? value = null, bool ignoreCase = true)
+            : base(name, value, ignoreCase)
+        {
+
+        }
     }
 
     /// <summary>
@@ -21,7 +26,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <summary>
         /// Gets or sets the name of the attribute to be compared.
         /// </summary>
-        public string? Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the value the attribute should be compared to.
@@ -58,10 +63,10 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         /// <param name="ignoreCase">If <c>true</c>, node comparisons are not case-sensitive. If <c>false</c>,
         /// node comparisons are case-sensitive.</param>
-        public AttributeSelector(bool ignoreCase = true)
+        public AttributeSelector(string name, string? value = null, bool ignoreCase = true)
         {
-            Name = null;
-            Value = null;
+            Name = name;
+            Value = value;
             Mode = AttributeSelectorMode.Match;
             NodeComparer = MatchComparer;
             StringComparison = ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;

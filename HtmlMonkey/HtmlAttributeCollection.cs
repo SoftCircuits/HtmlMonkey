@@ -66,7 +66,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="name">The name of the attribute to remove.</param>
         /// <returns>True if an attribute with the specified name is found and removed.
         /// False if no attribute was found with the given name.</returns>
-        public bool Remove(string? name)
+        public bool Remove(string name)
         {
             if (name != null)
                 return Attributes.Remove(name);
@@ -80,7 +80,7 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         /// <param name="name">Attribute name.</param>
         /// <returns>Returns the <see cref="HtmlAttribute"/> with the given name.</returns>
-        public HtmlAttribute? this[string? name]
+        public HtmlAttribute? this[string name]
         {
             get
             {

@@ -69,6 +69,14 @@ namespace SoftCircuits.HtmlMonkey
         }
 
         /// <summary>
+        /// Recursively searches the given root node and returns the nodes that match this
+        /// selector.
+        /// </summary>
+        /// <param name="node">Root node to search.</param>
+        /// <returns>The matching nodes.</returns>
+        public IEnumerable<HtmlElementNode> Find(HtmlNode node) => Find(new[] { node });
+
+        /// <summary>
         /// Recursively searches the list of nodes and returns the nodes that match this
         /// selector.
         /// </summary>
@@ -131,7 +139,7 @@ namespace SoftCircuits.HtmlMonkey
         /// Returns multiple <see cref="Selector"/>s when the selector contains commas.
         /// </remarks>
         /// <returns>The parsed selector data structures.</returns>
-        public static SelectorCollection ParseSelector(string selectorText)
+        public static SelectorCollection ParseSelector(string? selectorText)
         {
             SelectorCollection selectors = new SelectorCollection();
 
@@ -160,10 +168,8 @@ namespace SoftCircuits.HtmlMonkey
                         string value = parser.ParseWhile(IsValueCharacter);
                         if (value.Length > 0)
                         {
-                            AttributeSelector attribute = new AttributeSelector
+                            AttributeSelector attribute = new AttributeSelector(name, value)
                             {
-                                Name = name,
-                                Value = value,
                                 Mode = AttributeSelectorMode.Contains
                             };
 
@@ -179,10 +185,7 @@ namespace SoftCircuits.HtmlMonkey
                         name = parser.ParseWhile(IsNameCharacter);
                         if (name.Length > 0)
                         {
-                            AttributeSelector attribute = new AttributeSelector
-                            {
-                                Name = name
-                            };
+                            AttributeSelector attribute = new AttributeSelector(name);
 
                             // Parse attribute assignment operator
                             parser.SkipWhiteSpace();
