@@ -10,15 +10,15 @@ using System.Linq;
 namespace HtmlMonkeyTests
 {
     [TestClass]
-    public class TestNavigation
+    public class NavigationTests
     {
         private class NodeInfo
         {
-            public Type Type { get; set; }
-            public string Content { get; set; }
+            public Type? Type { get; set; }
+            public string? Content { get; set; }
         }
 
-        private readonly List<NodeInfo> ExpectedNodes = new List<NodeInfo>
+        private readonly List<NodeInfo> ExpectedNodes = new()
         {
             new NodeInfo { Type = typeof(HtmlElementNode), Content = "div" },
             new NodeInfo { Type = typeof(HtmlTextNode), Content = "\r\n    " },
@@ -86,16 +86,15 @@ namespace HtmlMonkeyTests
         public void Test()
         {
             HtmlDocument document = HtmlDocument.FromHtml(html);
-            List<HtmlNode> encounteredNodes;
 
-            encounteredNodes = new List<HtmlNode>();
-            for (HtmlNode node = document.RootNodes.First(); node != null; node = node.NavigateNextNode())
+            List<HtmlNode> encounteredNodes = new();
+            for (HtmlNode? node = document.RootNodes.First(); node != null; node = node.NavigateNextNode())
                 encounteredNodes.Add(node);
             CompareResults(encounteredNodes);
 
             HtmlNode lastNode = encounteredNodes[^1];
-            encounteredNodes = new List<HtmlNode>();
-            for (HtmlNode node = lastNode; node != null; node = node.NavigatePrevNode())
+            encounteredNodes.Clear();
+            for (HtmlNode? node = lastNode; node != null; node = node.NavigatePrevNode())
                 encounteredNodes.Add(node);
             CompareResults(encounteredNodes, true);
         }

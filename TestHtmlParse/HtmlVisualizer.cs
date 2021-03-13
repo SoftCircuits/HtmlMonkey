@@ -11,7 +11,7 @@ namespace TestHtmlMonkey
 {
     public partial class HtmlVisualizer : UserControl
     {
-        private TreeNode DisplayedNode = null;
+        private TreeNode? DisplayedNode = null;
 
         public HtmlVisualizer()
         {
@@ -134,12 +134,12 @@ namespace TestHtmlMonkey
             }
         }
 
-        public bool FindNext(string text, bool matchCase)
+        public bool FindNext(string? text, bool matchCase)
         {
             if (string.IsNullOrEmpty(text) || tvwNodes.Nodes.Count == 0)
                 return false;
 
-            TextSearch search = new TextSearch(text, matchCase);
+            TextSearch search = new(text, matchCase);
 
             TreeNode startNode = tvwNodes.SelectedNode;
             if (startNode == null)
@@ -221,7 +221,7 @@ namespace TestHtmlMonkey
             StringComparison = matchCase ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
         }
 
-        public bool IsMatch(string s)
+        public bool IsMatch(string? s)
         {
             if (string.IsNullOrEmpty(s))
                 return false;

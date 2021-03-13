@@ -27,7 +27,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="html">The HTML text to parse.</param>
         public HtmlDocument Parse(string? html)
         {
-            HtmlDocument document = new HtmlDocument();
+            HtmlDocument document = new();
             document.RootNodes.AddRange(ParseChildren(html));
             return document;
         }
@@ -39,7 +39,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="html">The HTML text to parse.</param>
         public IEnumerable<HtmlNode> ParseChildren(string? html)
         {
-            HtmlElementNode rootNode = new HtmlElementNode("[TempContainer]");
+            HtmlElementNode rootNode = new("[TempContainer]");
             HtmlElementNode parentNode = rootNode;
             Parser.Reset(html);
             bool selfClosing;
@@ -123,7 +123,7 @@ namespace SoftCircuits.HtmlMonkey
                             Parser.Next();
 
                             // Add node
-                            HtmlElementNode node = new HtmlElementNode(tag, attributes);
+                            HtmlElementNode node = new(tag, attributes);
                             while (!HtmlRules.TagMayContain(parentNode.TagName, tag) && !parentNode.IsTopLevelNode)
                                 parentNode = parentNode.ParentNode;
                             parentNode.Children.Add(node);
@@ -201,7 +201,7 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         private HtmlAttributeCollection ParseAttributes()
         {
-            HtmlAttributeCollection attributes = new HtmlAttributeCollection();
+            HtmlAttributeCollection attributes = new();
 
             // Parse tag attributes
             Parser.SkipWhiteSpace();
@@ -209,7 +209,7 @@ namespace SoftCircuits.HtmlMonkey
             while (HtmlRules.IsAttributeNameCharacter(ch) || HtmlRules.IsQuoteChar(ch))
             {
                 // Parse attribute name
-                HtmlAttribute attribute = new HtmlAttribute();
+                HtmlAttribute attribute = new();
                 if (HtmlRules.IsQuoteChar(ch))
                     attribute.Name = $"\"{Parser.ParseQuotedText()}\"";
                 else
@@ -253,7 +253,7 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         private HtmlHeaderNode ParseHtmlHeader()
         {
-            HtmlHeaderNode node = new HtmlHeaderNode(ParseAttributes());
+            HtmlHeaderNode node = new(ParseAttributes());
             string tagEnd = ">";
             Parser.SkipTo(tagEnd);
             Parser.Index += tagEnd.Length;
@@ -265,7 +265,7 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         private XmlHeaderNode ParseXmlHeader()
         {
-            XmlHeaderNode node = new XmlHeaderNode(ParseAttributes());
+            XmlHeaderNode node = new(ParseAttributes());
             string tagEnd = "?>";
             Parser.SkipTo(tagEnd);
             Parser.Index += tagEnd.Length;

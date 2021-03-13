@@ -27,10 +27,10 @@ Now targeting .NET Standard 2.0 or .NET 5.0 with nullable reference types.</Desc
     <PackageProjectUrl>https://github.com/SoftCircuits/HtmlMonkey</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
-    <AssemblyVersion>2.0.3.0</AssemblyVersion>
-    <FileVersion>2.0.3.0</FileVersion>
-    <Version>2.0.3</Version>
-    <PackageReleaseNotes>Added Selector.Find(HtmlNode rootNode) and SelectorCollection.Find(HtmlNode rootNode); A number of changes related to nullable reference types, in some cases allowing nulls where previously they weren't; Minor tweaks and improvements.</PackageReleaseNotes>
+    <AssemblyVersion>2.0.4.0</AssemblyVersion>
+    <FileVersion>2.0.4.0</FileVersion>
+    <Version>2.0.4</Version>
+    <PackageReleaseNotes>HtmlAttributeCollection now implemented as an ordered dictionary, which means attributes can be accessed by name or index and have a set order in memory; Added HtmlElementNode constructor that accepts children collection; Added parameterless constructors to HtmlHeaderNode and XmlHeaderNode; Completely reworked and added unit tests.</PackageReleaseNotes>
     <PackageId>SoftCircuits.HtmlMonkey</PackageId>
     <PackageIcon>Logo_64x64.png</PackageIcon>
   </PropertyGroup>

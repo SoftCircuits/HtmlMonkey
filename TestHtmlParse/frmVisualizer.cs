@@ -9,7 +9,7 @@ namespace TestHtmlMonkey
     public partial class frmVisualizer : Form
     {
         private readonly SoftCircuits.HtmlMonkey.HtmlDocument Document;
-        private string FindText;
+        private string? FindText;
         private bool MatchCase;
 
         public frmVisualizer(SoftCircuits.HtmlMonkey.HtmlDocument document)
@@ -43,7 +43,7 @@ namespace TestHtmlMonkey
 
         private void findNextToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (FindText.Length > 0)
+            if (!string.IsNullOrEmpty(FindText))
                 htmlVisualizer1.FindNext(FindText, MatchCase);
             else
                 findToolStripMenuItem_Click(this, e);

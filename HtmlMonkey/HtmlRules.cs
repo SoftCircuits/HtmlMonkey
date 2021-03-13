@@ -61,7 +61,7 @@ namespace SoftCircuits.HtmlMonkey
         public static readonly char DoubleQuote = '"';
         public static readonly char SingleQuote = '\'';
 
-        public static List<CDataDefinition> CDataDefinitions = new List<CDataDefinition>
+        public static List<CDataDefinition> CDataDefinitions = new()
         {
             new CDataDefinition
             {
@@ -148,7 +148,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <summary>
         /// Defines tag attributes for element tags.
         /// </summary>
-        private static readonly Dictionary<string, HtmlTagFlag> TagRules = new Dictionary<string, HtmlTagFlag>(StringComparer.CurrentCultureIgnoreCase)
+        private static readonly Dictionary<string, HtmlTagFlag> TagRules = new(StringComparer.CurrentCultureIgnoreCase)
         {
             ["!doctype"] = HtmlTagFlag.HtmlHeader,
             ["?xml"] = HtmlTagFlag.XmlHeader,
@@ -197,7 +197,7 @@ namespace SoftCircuits.HtmlMonkey
         /// Defines element tag nesting values. Tags cannot appear within tags with a lower value. Used when parsing to detected
         /// mismatches open/close tags.
         /// </summary>
-        private static readonly Dictionary<string, int> NestLevelLookup = new Dictionary<string, int>(StringComparer.CurrentCultureIgnoreCase)
+        private static readonly Dictionary<string, int> NestLevelLookup = new(StringComparer.CurrentCultureIgnoreCase)
         {
             ["div"] = 150,
             ["td"] = 160,

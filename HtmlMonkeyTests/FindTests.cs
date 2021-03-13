@@ -9,7 +9,7 @@ using System.Linq;
 namespace HtmlMonkeyTests
 {
     [TestClass]
-    public class TestFind
+    public class FindTests
     {
         private readonly string html = @"<!doctype html>
 <html>

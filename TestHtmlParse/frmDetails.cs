@@ -13,17 +13,17 @@ namespace TestHtmlMonkey
 {
     public partial class frmDetails : Form
     {
-        private HtmlNode Node;
-        private SoftCircuits.HtmlMonkey.HtmlDocument Document;
+        private HtmlNode? Node;
+        private SoftCircuits.HtmlMonkey.HtmlDocument? Document;
 
         public frmDetails(object node)
         {
             InitializeComponent();
             Debug.Assert(node != null);
-            if (node is HtmlNode)
-                Node = node as HtmlNode;
-            else if (node is SoftCircuits.HtmlMonkey.HtmlDocument)
-                Document = node as SoftCircuits.HtmlMonkey.HtmlDocument;
+            if (node is HtmlNode htmlNode)
+                Node = htmlNode;
+            else if (node is SoftCircuits.HtmlMonkey.HtmlDocument htmlDocument)
+                Document = htmlDocument;
         }
 
         private void frmDetails_Load(object sender, EventArgs e)

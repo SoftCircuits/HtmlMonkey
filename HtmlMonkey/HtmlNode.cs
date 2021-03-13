@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2019-2021 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
+using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -105,7 +106,11 @@ namespace SoftCircuits.HtmlMonkey
             {
                 node = node.PrevNode;
                 while (node is HtmlElementNode elementNode && elementNode.Children.Any())
+#if NETSTANDARD2_0
                     node = elementNode.Children[elementNode.Children.Count - 1];
+#else
+                    node = elementNode.Children[^1];
+#endif
                 return node;
             }
 
@@ -126,6 +131,14 @@ namespace SoftCircuits.HtmlMonkey
         /// <summary>
         /// Constructs a <see cref="HtmlHeaderNode"/> instance.
         /// </summary>
+        public HtmlHeaderNode()
+        {
+            Attributes = new HtmlAttributeCollection();
+        }
+
+        /// <summary>
+        /// Constructs a <see cref="HtmlHeaderNode"/> instance.
+        /// </summary>
         /// <param name="attributes">List of attributes for this node.</param>
         public HtmlHeaderNode(HtmlAttributeCollection attributes)
         {
@@ -139,7 +152,7 @@ namespace SoftCircuits.HtmlMonkey
         {
             get
             {
-                StringBuilder builder = new StringBuilder();
+                StringBuilder builder = new();
                 builder.Append(HtmlRules.TagStart);
                 builder.Append(HtmlRules.HtmlHeaderTag);
                 builder.Append(Attributes.ToString());
@@ -167,6 +180,14 @@ namespace SoftCircuits.HtmlMonkey
         /// <summary>
         /// Constructs an <see cref="XmlHeaderNode"/> instance.
         /// </summary>
+        public XmlHeaderNode()
+        {
+            Attributes = new HtmlAttributeCollection();
+        }
+
+        /// <summary>
+        /// Constructs an <see cref="XmlHeaderNode"/> instance.
+        /// </summary>
         /// <param name="attributes">List of attributes for this node.</param>
         public XmlHeaderNode(HtmlAttributeCollection attributes)
         {
@@ -180,7 +201,7 @@ namespace SoftCircuits.HtmlMonkey
         {
             get
             {
-                StringBuilder builder = new StringBuilder();
+                StringBuilder builder = new();
                 builder.Append(HtmlRules.TagStart);
                 builder.Append(HtmlRules.XmlHeaderTag);
                 builder.Append(Attributes.ToString());
@@ -229,6 +250,19 @@ namespace SoftCircuits.HtmlMonkey
         }
 
         /// <summary>
+        /// Constructs a new <see cref="HtmlElementNode"/> instance.
+        /// </summary>
+        /// <param name="tagName">Element tag name.</param>
+        /// <param name="attributes">Optional element attributes.</param>
+        /// <param name="children">Child nodes for this node. Cannot be null.</param>
+        public HtmlElementNode(string tagName, HtmlAttributeCollection? attributes, HtmlNodeCollection children)
+        {
+            TagName = tagName ?? string.Empty;
+            Attributes = attributes ?? new HtmlAttributeCollection();
+            Children = children ?? throw new ArgumentNullException(nameof(children));
+        }
+
+        /// <summary>
         /// Returns true if this element is self-closing and has no children.
         /// </summary>
         public bool IsSelfClosing => !Children.Any() && !HtmlRules.GetTagFlags(TagName).HasFlag(HtmlTagFlag.NoSelfClosing);
@@ -243,7 +277,7 @@ namespace SoftCircuits.HtmlMonkey
             {
                 if (!Children.Any())
                     return string.Empty;
-                StringBuilder builder = new StringBuilder();
+                StringBuilder builder = new();
                 foreach (var node in Children)
                     builder.Append(node.OuterHtml);
                 return builder.ToString();
@@ -267,7 +301,7 @@ namespace SoftCircuits.HtmlMonkey
         {
             get
             {
-                StringBuilder builder = new StringBuilder();
+                StringBuilder builder = new();
 
                 // Open tag
                 builder.Append(HtmlRules.TagStart);
@@ -307,7 +341,7 @@ namespace SoftCircuits.HtmlMonkey
             {
                 if (!Children.Any())
                     return string.Empty;
-                StringBuilder builder = new StringBuilder();
+                StringBuilder builder = new();
                 foreach (var node in Children)
                     builder.Append(node.Text);
                 return builder.ToString();

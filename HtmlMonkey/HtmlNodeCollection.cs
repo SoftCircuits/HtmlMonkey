@@ -14,7 +14,7 @@ namespace SoftCircuits.HtmlMonkey
     {
         private readonly HtmlElementNode? ParentNode;
 
-        public HtmlNodeCollection(HtmlElementNode? parentNode)
+        public HtmlNodeCollection(HtmlElementNode? parentNode = null)
         {
             ParentNode = parentNode;
         }

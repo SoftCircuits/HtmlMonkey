@@ -95,7 +95,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="selector">Selector from which to remove child selectors.</param>
         /// <returns>The new parent selector, which may be the same as
         /// <paramref name="selector"/>.</returns>
-        private Selector? RemoveEmptyChildSelectors(Selector? selector)
+        private static Selector? RemoveEmptyChildSelectors(Selector? selector)
         {
             Selector? parent = selector;
             Selector? prev = null;

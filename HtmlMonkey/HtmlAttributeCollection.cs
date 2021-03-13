@@ -3,24 +3,29 @@
 //
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace SoftCircuits.HtmlMonkey
 {
     /// <summary>
-    /// Class to represent a collection of element attributes.
+    /// Class to represent a collection of element attributes. Implemented as an ordered
+    /// dictionary that can be used for fast look ups or iterating a set sequence.
     /// </summary>
     public class HtmlAttributeCollection : IEnumerable<HtmlAttribute>
     {
-        // Internal attribute collection
-        private readonly Dictionary<string, HtmlAttribute> Attributes;
+        // Internal attribute collections
+        private readonly List<HtmlAttribute> Attributes;        // Ordered list of attributes
+        private readonly Dictionary<string, int> IndexLookup;   // Attribute name to index lookup
 
         /// <summary>
         /// Constructs an <see cref="HtmlAttributeCollection"/> instance.
         /// </summary>
         public HtmlAttributeCollection()
         {
-            Attributes = new Dictionary<string, HtmlAttribute>(HtmlRules.TagStringComparer);
+            Attributes = new List<HtmlAttribute>();
+            IndexLookup = new Dictionary<string, int>(HtmlRules.TagStringComparer);
         }
 
         /// <summary>
@@ -30,7 +35,8 @@ namespace SoftCircuits.HtmlMonkey
         /// collection.</param>
         public HtmlAttributeCollection(HtmlAttributeCollection attributes)
         {
-            Attributes = new Dictionary<string, HtmlAttribute>(attributes.Attributes, HtmlRules.TagStringComparer);
+            Attributes = new List<HtmlAttribute>(attributes);
+            IndexLookup = new Dictionary<string, int>(attributes.IndexLookup);
         }
 
         /// <summary>
@@ -51,13 +57,30 @@ namespace SoftCircuits.HtmlMonkey
             if (attribute == null)
                 throw new ArgumentNullException(nameof(attribute));
             if (string.IsNullOrEmpty(attribute.Name))
-                throw new ArgumentException("Attribute name cannot be null or empty.");
+                throw new ArgumentException("An attribute name is required.");
 
             // Determine if we already have this attribute
-            if (Attributes.TryGetValue(attribute.Name, out HtmlAttribute? existingAttribute))
-                existingAttribute.Value = attribute.Value;
+            if (IndexLookup.TryGetValue(attribute.Name, out int existingIndex))
+            {
+                Attributes[existingIndex] = attribute;
+            }
             else
-                Attributes.Add(attribute.Name, attribute);
+            {
+                int index = Attributes.Count;
+                Attributes.Add(attribute);
+                IndexLookup.Add(attribute.Name, index);
+            }
+        }
+
+        /// <summary>
+        /// Adds a collection of <see cref="HtmlAttribute"/>s to this collection. If any of the
+        /// attributes already exists, the value of the existing attribute is updated.
+        /// </summary>
+        /// <param name="attributes">The collection of attributes to be added.</param>
+        public void AddRange(IEnumerable<HtmlAttribute> attributes)
+        {
+            foreach (HtmlAttribute attribute in attributes)
+                Add(attribute);
         }
 
         /// <summary>
@@ -68,9 +91,41 @@ namespace SoftCircuits.HtmlMonkey
         /// False if no attribute was found with the given name.</returns>
         public bool Remove(string name)
         {
-            if (name != null)
-                return Attributes.Remove(name);
+            if (IndexLookup.TryGetValue(name, out int index))
+            {
+                RemoveIndexLookup(index);
+                Attributes.RemoveAt(index);
+                return true;
+            }
             return false;
+        }
+
+        /// <summary>
+        /// Removes the attribute at the specified position from the collection.
+        /// </summary>
+        /// <param name="index">The 0-based index position of the item to be removed.</param>
+        public void RemoveAt(int index)
+        {
+            if (index >= 0 && index < Attributes.Count)
+            {
+                RemoveIndexLookup(index);
+                Attributes.RemoveAt(index);
+            }
+        }
+
+        /// <summary>
+        /// Removes the item with the given index from the <see cref="IndexLookup"/> dictionary.
+        /// </summary>
+        private void RemoveIndexLookup(int index)
+        {
+            Debug.Assert(index >= 0 && index < IndexLookup.Count);
+            foreach (KeyValuePair<string, int> pair in IndexLookup)
+            {
+                if (pair.Value > index)
+                    IndexLookup[pair.Key]--;
+                else if (pair.Value == index)
+                    IndexLookup.Remove(pair.Key);
+            }
         }
 
         /// <summary>
@@ -79,19 +134,21 @@ namespace SoftCircuits.HtmlMonkey
         /// exist.
         /// </summary>
         /// <param name="name">Attribute name.</param>
-        /// <returns>Returns the <see cref="HtmlAttribute"/> with the given name.</returns>
-        public HtmlAttribute? this[string name]
-        {
-            get
-            {
-                if (name != null && Attributes.TryGetValue(name, out HtmlAttribute? value))
-                    return value;
-                return null;
-            }
-            // Note: Adding a setter could allow setting an attribute
-            // with a different key than the attribute name? It could also
-            // allow setting a null attribute.
-        }
+        /// <returns>Returns the <see cref="HtmlAttribute"/> with the specified name.</returns>
+        // NOTE: Adding a setter here could allow setting an attribute
+        // with a different key than the attribute name? It could also
+        // allow setting a null attribute.
+        public HtmlAttribute? this[string name] => (name != null && IndexLookup.TryGetValue(name, out int index)) ? Attributes[index] : default;
+
+        /// <summary>
+        /// Returns the <see cref="HtmlAttribute"/> at the specified index.
+        /// </summary>
+        /// <param name="index">The 0-based index of the attribute to return.</param>
+        /// <returns>Returns the <see cref="HtmlAttribute"/> at the specified index.</returns>
+        // NOTE: Adding a setter here could allow setting an attribute
+        // with a different key than the attribute name? It could also
+        // allow setting a null attribute.
+        public HtmlAttribute this[int index] => Attributes[index];
 
         /// <summary>
         /// Gets the <see cref="HtmlAttribute"/> with the given name. Returns <c>true</c>
@@ -100,7 +157,20 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="name">Attribute name.</param>
         /// <param name="value">Returns the attribute with the specified name, if successful.</param>
         /// <returns>True if successful, false if no matching attribute was found.</returns>
-        public bool TryGetValue(string name, out HtmlAttribute? value) => Attributes.TryGetValue(name, out value);
+#if NETSTANDARD2_0
+        public bool TryGetValue(string name, out HtmlAttribute value)
+#else
+        public bool TryGetValue(string name, [MaybeNullWhen(false)] out HtmlAttribute value)
+#endif
+        {
+            if (IndexLookup.TryGetValue(name, out int index))
+            {
+                value = Attributes[index];
+                return true;
+            }
+            value = default;
+            return false;
+        }
 
         /// <summary>
         /// Converts this <see cref="HtmlAttributeCollection"></see> to a string.
@@ -115,12 +185,12 @@ namespace SoftCircuits.HtmlMonkey
         /// <summary>
         /// Gets an enumerable on the attribute names.
         /// </summary>
-        public IEnumerable<string?> Names => Attributes.Values.Select(a => a.Name);
+        public IEnumerable<string> Names => Attributes.Select(a => a.Name);
 
         /// <summary>
         /// Gets an enumerable on the attribute values.
         /// </summary>
-        public IEnumerable<string?> Values => Attributes.Values.Select(a => a.Value);
+        public IEnumerable<string?> Values => Attributes.Select(a => a.Value);
 
         #region IEnumerable
 
@@ -130,7 +200,7 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         public IEnumerator<HtmlAttribute> GetEnumerator()
         {
-            return Attributes.Values.GetEnumerator();
+            return Attributes.GetEnumerator();
         }
 
         /// <summary>
@@ -139,7 +209,7 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return Attributes.Values.GetEnumerator();
+            return Attributes.GetEnumerator();
         }
 
         #endregion

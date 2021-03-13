@@ -124,7 +124,7 @@ namespace SoftCircuits.HtmlMonkey
 
         #region Parsing
 
-        private readonly static Dictionary<char, string> SpecialCharacters = new Dictionary<char, string>
+        private readonly static Dictionary<char, string> SpecialCharacters = new()
         {
             { '#', "id" },
             { '.', "class" },
@@ -141,11 +141,11 @@ namespace SoftCircuits.HtmlMonkey
         /// <returns>The parsed selector data structures.</returns>
         public static SelectorCollection ParseSelector(string? selectorText)
         {
-            SelectorCollection selectors = new SelectorCollection();
+            SelectorCollection selectors = new();
 
             if (!string.IsNullOrWhiteSpace(selectorText))
             {
-                TextParser parser = new TextParser(selectorText);
+                TextParser parser = new(selectorText);
                 parser.SkipWhiteSpace();
 
                 while (!parser.EndOfText)
@@ -168,7 +168,7 @@ namespace SoftCircuits.HtmlMonkey
                         string value = parser.ParseWhile(IsValueCharacter);
                         if (value.Length > 0)
                         {
-                            AttributeSelector attribute = new AttributeSelector(name, value)
+                            AttributeSelector attribute = new(name, value)
                             {
                                 Mode = AttributeSelectorMode.Contains
                             };
@@ -185,7 +185,7 @@ namespace SoftCircuits.HtmlMonkey
                         name = parser.ParseWhile(IsNameCharacter);
                         if (name.Length > 0)
                         {
-                            AttributeSelector attribute = new AttributeSelector(name);
+                            AttributeSelector attribute = new(name);
 
                             // Parse attribute assignment operator
                             parser.SkipWhiteSpace();

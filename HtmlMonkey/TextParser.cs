@@ -239,7 +239,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <returns>Returns the text within the quotes.</returns>
         public string ParseQuotedText()
         {
-            StringBuilder builder = new StringBuilder();
+            StringBuilder builder = new();
 
             // Get and skip quote character
             char quote = Get();

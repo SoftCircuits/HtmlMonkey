@@ -15,9 +15,9 @@ namespace TestHtmlMonkey
     /// </summary>
     public class Visualizer
     {
-        public Func<object, string> ShortDescription { get; set; }
-        public Func<object, string> LongDescription { get; set; }
-        public Action<object, ListView> PopulateProperties { get; set; }
+        public Func<object, string> ShortDescription { get; set; } = (o) => string.Empty;
+        public Func<object, string> LongDescription { get; set; } = (o) => string.Empty;
+        public Action<object, ListView> PopulateProperties { get; set; } = (o, l) => { };
     }
 
     /// <summary>
@@ -32,43 +32,43 @@ namespace TestHtmlMonkey
         private static readonly string[] DocumentColumns = { "Property", "Value" };
 
         // Note: To work correctly, derived types must appear before base types.
-        private static readonly Dictionary<Type, Visualizer> VisualizerLookup = new Dictionary<Type, Visualizer>
+        private static readonly Dictionary<Type, Visualizer> VisualizerLookup = new()
         {
             [typeof(SoftCircuits.HtmlMonkey.HtmlDocument)] = new Visualizer
             {
-                ShortDescription = n => ShortDescriptionDocument(n as SoftCircuits.HtmlMonkey.HtmlDocument),
-                LongDescription = n => LongDescriptionDocument(n as SoftCircuits.HtmlMonkey.HtmlDocument),
-                PopulateProperties = (n, lvw) => PopulatePropertiesDocument(n as SoftCircuits.HtmlMonkey.HtmlDocument, lvw)
+                ShortDescription = n => ShortDescriptionDocument((SoftCircuits.HtmlMonkey.HtmlDocument)n),
+                LongDescription = n => LongDescriptionDocument((SoftCircuits.HtmlMonkey.HtmlDocument)n),
+                PopulateProperties = (n, lvw) => PopulatePropertiesDocument((SoftCircuits.HtmlMonkey.HtmlDocument)n, lvw)
             },
             [typeof(HtmlCDataNode)] = new Visualizer
             {
-                ShortDescription = n => ShortDescriptionCData(n as HtmlCDataNode),
-                LongDescription = n => LongDescriptionCData(n as HtmlCDataNode),
-                PopulateProperties = (n, lvw) => PopulatePropertiesCData(n as HtmlCDataNode, lvw)
+                ShortDescription = n => ShortDescriptionCData((HtmlCDataNode)n),
+                LongDescription = n => LongDescriptionCData((HtmlCDataNode)n),
+                PopulateProperties = (n, lvw) => PopulatePropertiesCData((HtmlCDataNode)n, lvw)
             },
             [typeof(HtmlTextNode)] = new Visualizer
             {
-                ShortDescription = n => ShortDescriptionText(n as HtmlTextNode),
-                LongDescription = n => LongDescriptionText(n as HtmlTextNode),
-                PopulateProperties = (n, lvw) => PopulatePropertiesText(n as HtmlTextNode, lvw)
+                ShortDescription = n => ShortDescriptionText((HtmlTextNode)n),
+                LongDescription = n => LongDescriptionText((HtmlTextNode)n),
+                PopulateProperties = (n, lvw) => PopulatePropertiesText((HtmlTextNode)n, lvw)
             },
             [typeof(HtmlElementNode)] = new Visualizer
             {
-                ShortDescription = n => ShortDescriptionElement(n as HtmlElementNode),
-                LongDescription = n => LongDescriptionElement(n as HtmlElementNode),
-                PopulateProperties = (n, lvw) => PopulatePropertiesElement(n as HtmlElementNode, lvw)
+                ShortDescription = n => ShortDescriptionElement((HtmlElementNode)n),
+                LongDescription = n => LongDescriptionElement((HtmlElementNode)n),
+                PopulateProperties = (n, lvw) => PopulatePropertiesElement((HtmlElementNode)n, lvw)
             },
             [typeof(XmlHeaderNode)] = new Visualizer
             {
-                ShortDescription = n => ShortDescriptionXmlHeader(n as XmlHeaderNode),
-                LongDescription = n => LongDescriptionXmlHeader(n as XmlHeaderNode),
-                PopulateProperties = (n, lvw) => PopulatePropertiesXmlHeader(n as XmlHeaderNode, lvw)
+                ShortDescription = n => ShortDescriptionXmlHeader((XmlHeaderNode)n),
+                LongDescription = n => LongDescriptionXmlHeader((XmlHeaderNode)n),
+                PopulateProperties = (n, lvw) => PopulatePropertiesXmlHeader((XmlHeaderNode)n, lvw)
             },
             [typeof(HtmlHeaderNode)] = new Visualizer
             {
-                ShortDescription = n => ShortDescriptionDocTypeHeader(n as HtmlHeaderNode),
-                LongDescription = n => LongDescriptionDocTypeHeader(n as HtmlHeaderNode),
-                PopulateProperties = (n, lvw) => PopulatePropertiesDocTypeHeader(n as HtmlHeaderNode, lvw)
+                ShortDescription = n => ShortDescriptionDocTypeHeader((HtmlHeaderNode)n),
+                LongDescription = n => LongDescriptionDocTypeHeader((HtmlHeaderNode)n),
+                PopulateProperties = (n, lvw) => PopulatePropertiesDocTypeHeader((HtmlHeaderNode)n, lvw)
             }
         };
 
@@ -78,7 +78,7 @@ namespace TestHtmlMonkey
         /// <param name="node">Node for which to return a visualizer.</param>
         public static Visualizer GetVisualizer(object node)
         {
-            if (VisualizerLookup.TryGetValue(node.GetType(), out Visualizer visualizer))
+            if (VisualizerLookup.TryGetValue(node.GetType(), out Visualizer? visualizer))
                 return visualizer;
             Debug.Assert(false);
             return null;
@@ -204,7 +204,7 @@ namespace TestHtmlMonkey
 
             foreach (char c in s)
             {
-                if (EncodeLookup.TryGetValue(c, out string value))
+                if (EncodeLookup.TryGetValue(c, out string? value))
                     builder.Append(value);
                 else if (char.IsControl(c))
                     builder.Append($"\\u{((int)c).ToString("x4")}");

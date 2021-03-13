@@ -13,7 +13,7 @@ namespace HtmlMonkey
 {
     public partial class Form1 : Form
     {
-        protected string Url;
+        protected string? Url;
 
         public Form1()
         {
@@ -45,7 +45,7 @@ namespace HtmlMonkey
 
         private async void downloadToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string url = Interaction.InputBox("Url to download:", "Download HTML", Url);
+            string url = Interaction.InputBox("Url to download:", "Download HTML", Url ?? string.Empty);
             if (!string.IsNullOrWhiteSpace(url))
             {
                 try
@@ -54,10 +54,8 @@ namespace HtmlMonkey
                     Enabled = false;
 
                     Url = url;
-                    using (HttpClient client = new HttpClient())
-                    {
-                        txtHtml.Text = await client.GetStringAsync(url);
-                    }
+                    using HttpClient client = new HttpClient();
+                    txtHtml.Text = await client.GetStringAsync(url);
                 }
                 catch (Exception ex)
                 {

@@ -101,7 +101,7 @@ namespace SoftCircuits.HtmlMonkey
         /// nodes.</returns>
         public static HtmlDocument FromHtml(string? html)
         {
-            HtmlParser parser = new HtmlParser();
+            HtmlParser parser = new();
             return parser.Parse(html);
         }
 

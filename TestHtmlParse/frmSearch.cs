@@ -8,7 +8,7 @@ namespace TestHtmlMonkey
 {
     public partial class frmSearch : Form
     {
-        public string FindText { get; set; }
+        public string? FindText { get; set; }
         public bool MatchCase { get; set; }
 
         public frmSearch()
