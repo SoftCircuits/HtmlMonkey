@@ -187,5 +187,46 @@ namespace HtmlMonkeyTests
             // Values iterator
             CollectionAssert.AreEqual(Values, attributes.Values.ToList());
         }
+
+        [TestMethod]
+        public void FindTests()
+        {
+            string html = @"<table>
+    <thead>
+        <tr>
+            <th><p>Abc</p></td>
+            <th><p>Def</p></td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><p>Ghi</p></td>
+            <td><p class=""abc"">Jkl</p></td>
+        </tr>
+        <tr>
+            <td><p>Mno</p></td>
+            <td><p class=""abc"">Pqr</p></td>
+        </tr>
+    </tbody>
+</table>";
+
+            HtmlElementNode? node = HtmlDocument.FromHtml(html).RootNodes.First() as HtmlElementNode;
+            Assert.IsNotNull(node);
+
+            IEnumerable<HtmlElementNode> nodes = node.Children.FindOfType<HtmlElementNode>();
+            Assert.AreEqual(17, nodes.Count());
+
+            nodes = node.Children.Find("p");
+            Assert.AreEqual(6, nodes.Count());
+
+            nodes = node.Children.Find("tr");
+            Assert.AreEqual(3, nodes.Count());
+
+            nodes = node.Children.Find("td");
+            Assert.AreEqual(4, nodes.Count());
+
+            nodes = node.Children.Find(".abc");
+            Assert.AreEqual(2, nodes.Count());
+        }
     }
 }

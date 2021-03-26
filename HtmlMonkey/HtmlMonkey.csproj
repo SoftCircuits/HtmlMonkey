@@ -27,10 +27,10 @@ Now targeting .NET Standard 2.0 or .NET 5.0 with nullable reference types.</Desc
     <PackageProjectUrl>https://github.com/SoftCircuits/HtmlMonkey</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
-    <AssemblyVersion>2.0.4.0</AssemblyVersion>
-    <FileVersion>2.0.4.0</FileVersion>
-    <Version>2.0.4</Version>
-    <PackageReleaseNotes>HtmlAttributeCollection now implemented as an ordered dictionary, which means attributes can be accessed by name or index and have a set order in memory; Added HtmlElementNode constructor that accepts children collection; Added parameterless constructors to HtmlHeaderNode and XmlHeaderNode; Completely reworked and added unit tests.</PackageReleaseNotes>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <FileVersion>2.0.5.0</FileVersion>
+    <Version>2.0.5</Version>
+    <PackageReleaseNotes>Now implementing Find methods in HtmlNodeCollection to provide this functionality when you don't have an HtmlDocument; This change allows you, for example, to easily search the HtmlElementNode.Children collection; HtmlDocument Find methods defer to new HtmlNodeCollection methods; HtmlDocument static Find methods now deprecated; Reworked core Find method code to be implemented without recursion, providing better performance on deeply nested collections.</PackageReleaseNotes>
     <PackageId>SoftCircuits.HtmlMonkey</PackageId>
     <PackageIcon>Logo_64x64.png</PackageIcon>
   </PropertyGroup>

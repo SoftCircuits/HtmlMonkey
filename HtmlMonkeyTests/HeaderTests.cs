@@ -59,8 +59,7 @@ namespace HtmlMonkeyTests
                 string header = string.Format($"<!DOCTYPE {string.Join(" ", htmlAttributes)}>");
                 HtmlDocument document = HtmlDocument.FromHtml(header);
                 Assert.AreEqual(1, document.RootNodes.Count);
-                HtmlHeaderNode? node = document.RootNodes[0] as HtmlHeaderNode;
-                if (node == null)
+                if (document.RootNodes[0] is not HtmlHeaderNode node)
                     Assert.Fail();
                 else
                     CollectionAssert.AreEqual(htmlAttributes.ToList(), node.Attributes.ToList(), new AttributeComparer());
@@ -87,8 +86,7 @@ namespace HtmlMonkeyTests
                 string header = string.Format($"<?XML {string.Join(" ", htmlAttributes)}?>");
                 HtmlDocument document = HtmlDocument.FromHtml(header);
                 Assert.AreEqual(1, document.RootNodes.Count);
-                XmlHeaderNode? node = document.RootNodes[0] as XmlHeaderNode;
-                if (node == null)
+                if (document.RootNodes[0] is not XmlHeaderNode node)
                     Assert.Fail();
                 else
                     CollectionAssert.AreEqual(htmlAttributes.ToList(), node.Attributes.ToList(), new AttributeComparer());
