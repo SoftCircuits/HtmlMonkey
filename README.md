@@ -67,7 +67,7 @@ You can specify a tag name to return all the nodes with that tag.
 // Search is not case-sensitive
 IEnumerable<HtmlElementNode> nodes = document.Find("p");
 
-// Get all nodes in the document
+// Get all HtmlElementNode nodes (tags) in the document
 // Same result as not specifying the tag name
 // Also the same result as document.FindOfType<HtmlElementNode>();
 nodes = document.Find("*");
