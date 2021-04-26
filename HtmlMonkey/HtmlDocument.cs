@@ -124,8 +124,8 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="nodes">The nodes to be searched.</param>
         /// <param name="predicate">A function that determines if the item should be included in the results.</param>
         /// <returns>The matching nodes.</returns>
-        [Obsolete("This method is deprecated and will be removed in a future version. Use HtmlNodeCollection.Find() instead.")]
-        public static IEnumerable<HtmlNode> Find(IEnumerable<HtmlNode> nodes, Func<HtmlNode, bool> predicate) => HtmlNodeCollection.Find(nodes, predicate);
+        [Obsolete("This method is deprecated and will be removed in a future version. Use IEnumerable<HtmlNode>.Find() extension methods instead.")]
+        public static IEnumerable<HtmlNode> Find(IEnumerable<HtmlNode> nodes, Func<HtmlNode, bool> predicate) => nodes.Find(predicate);
 
         /// <summary>
         /// Recursively searches the given nodes for ones matching the specified selectors.
@@ -133,8 +133,8 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="nodes">The nodes to be searched.</param>
         /// <param name="selector">Selector that describes the nodes to find.</param>
         /// <returns>The matching nodes.</returns>
-        [Obsolete("This method is deprecated and will be removed in a future version. Use HtmlNodeCollection.Find() instead.")]
-        public static IEnumerable<HtmlElementNode> Find(IEnumerable<HtmlNode> nodes, string? selector) => HtmlNodeCollection.Find(nodes, selector);
+        [Obsolete("This method is deprecated and will be removed in a future version. Use IEnumerable<HtmlNode>.Find() extension methods instead.")]
+        public static IEnumerable<HtmlElementNode> Find(IEnumerable<HtmlNode> nodes, string? selector) => nodes.Find(selector);
 
         /// <summary>
         /// Recursively searches the given nodes for ones matching the specified compiled selectors.
@@ -142,16 +142,16 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="nodes">The nodes to be searched.</param>
         /// <param name="selectors">Compiled selectors that describe the nodes to find.</param>
         /// <returns>The matching nodes.</returns>
-        [Obsolete("This method is deprecated and will be removed in a future version. Use HtmlNodeCollection.Find() instead.")]
-        public static IEnumerable<HtmlElementNode> Find(IEnumerable<HtmlNode> nodes, SelectorCollection selectors) => HtmlNodeCollection.Find(nodes, selectors);
+        [Obsolete("This method is deprecated and will be removed in a future version. Use IEnumerable<HtmlNode>.Find() extension methods instead.")]
+        public static IEnumerable<HtmlElementNode> Find(IEnumerable<HtmlNode> nodes, SelectorCollection selectors) => nodes.Find(selectors);
 
         /// <summary>
         /// Recursively finds all nodes of the specified type.
         /// </summary>
         /// <param name="nodes">The nodes to be searched.</param>
         /// <returns>The matching nodes.</returns>
-        [Obsolete("This method is deprecated and will be removed in a future version. Use HtmlNodeCollection.FindOfType() instead.")]
-        public static IEnumerable<T> FindOfType<T>(IEnumerable<HtmlNode> nodes) where T : HtmlNode => HtmlNodeCollection.FindOfType<T>(nodes);
+        [Obsolete("This method is deprecated and will be removed in a future version. Use IEnumerable<HtmlNode>.FindOfType() extension methods instead.")]
+        public static IEnumerable<T> FindOfType<T>(IEnumerable<HtmlNode> nodes) where T : HtmlNode => nodes.FindOfType<T>();
 
         /// <summary>
         /// Recursively finds all nodes of the specified type filtered by the given predicate.
@@ -159,8 +159,8 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="nodes">The nodes to be searched.</param>
         /// <param name="predicate">A function that determines if the item should be included in the results.</param>
         /// <returns>The matching nodes.</returns>
-        [Obsolete("This method is deprecated and will be removed in a future version. Use HtmlNodeCollection.FindOfType() instead.")]
-        public static IEnumerable<T> FindOfType<T>(IEnumerable<HtmlNode> nodes, Func<T, bool> predicate) where T : HtmlNode => HtmlNodeCollection.FindOfType<T>(nodes, predicate);
+        [Obsolete("This method is deprecated and will be removed in a future version. Use IEnumerable<HtmlNode>.FindOfType() extension methods instead.")]
+        public static IEnumerable<T> FindOfType<T>(IEnumerable<HtmlNode> nodes, Func<T, bool> predicate) where T : HtmlNode => nodes.FindOfType<T>(predicate);
 
         #endregion
 

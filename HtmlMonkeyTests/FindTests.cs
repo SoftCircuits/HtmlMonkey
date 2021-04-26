@@ -124,5 +124,64 @@ namespace HtmlMonkeyTests
             IEnumerable<HtmlCDataNode> cDataNodes = document.FindOfType<HtmlCDataNode>();
             Assert.AreEqual(4, cDataNodes.Count());
         }
+
+        [TestMethod]
+        public void TestExtensionMethods()
+        {
+            HtmlDocument document = HtmlDocument.FromHtml(html);
+            IEnumerable<HtmlNode> nodes = new List<HtmlNode>(document.RootNodes);
+
+            IEnumerable<HtmlElementNode> elements = nodes.Find("p");
+            Assert.AreEqual(5, elements.Count());
+
+            elements = nodes.Find("#one-of-many");
+            Assert.AreEqual(1, elements.Count());
+
+            elements = nodes.Find("p#one-of-many");
+            Assert.AreEqual(1, elements.Count());
+
+            elements = nodes.Find(".last-para");
+            Assert.AreEqual(1, elements.Count());
+
+            elements = nodes.Find("p.last-para");
+            Assert.AreEqual(1, elements.Count());
+
+            elements = nodes.Find(":text");
+            Assert.AreEqual(1, elements.Count());
+
+            elements = nodes.Find("input:text");
+            Assert.AreEqual(1, elements.Count());
+
+            elements = nodes.Find("p[data-id=123]");
+            Assert.AreEqual(3, elements.Count());
+
+            elements = nodes.Find("p[data-id:=\"123\"]");
+            Assert.AreEqual(3, elements.Count());
+
+            elements = nodes.Find("p[data-id:=\"[0-9]{3}\"]");
+            Assert.AreEqual(3, elements.Count());
+
+            elements = nodes.Find("body > h1");
+            Assert.AreEqual(1, elements.Count());
+            Assert.AreEqual("h1", elements.First().TagName);
+            Assert.AreEqual("Test Document", elements.First().Text);
+
+            elements = nodes.Find("body>h1");
+            Assert.AreEqual(1, elements.Count());
+            Assert.AreEqual("h1", elements.First().TagName);
+            Assert.AreEqual("Test Document", elements.First().Text);
+
+            elements = nodes.Find("#div3");
+            Assert.AreEqual(1, elements.Count());
+
+            elements = nodes.Find("#div1   >   p#test-paragraph");
+            Assert.AreEqual(0, elements.Count());
+
+            elements = document.Find("#div1   p#test-paragraph");
+            Assert.AreEqual(1, elements.Count());
+
+            IEnumerable<HtmlCDataNode> cDataNodes = nodes.FindOfType<HtmlCDataNode>();
+            Assert.AreEqual(4, cDataNodes.Count());
+        }
     }
 }
