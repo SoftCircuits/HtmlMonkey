@@ -37,6 +37,16 @@ namespace SoftCircuits.HtmlMonkey
         public HtmlNodeCollection RootNodes { get; private set; }
 
         /// <summary>
+        /// Gets or sets whether the library enforces HTML rules when parsing markup.
+        /// This setting is global for all instances of this class.
+        /// </summary>
+        public static bool IgnoreHtmlRules
+        {
+            get => HtmlRules.IgnoreHtmlRules;
+            set => HtmlRules.IgnoreHtmlRules = value;
+        }
+
+        /// <summary>
         /// Initializes an empty <see cref="HtmlDocument"> instance.
         /// </summary>
         public HtmlDocument()

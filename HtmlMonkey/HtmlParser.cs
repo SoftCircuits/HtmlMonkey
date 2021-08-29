@@ -37,7 +37,7 @@ namespace SoftCircuits.HtmlMonkey
         /// children.
         /// </summary>
         /// <param name="html">The HTML text to parse.</param>
-        public IEnumerable<HtmlNode> ParseChildren(string? html)
+        public IEnumerable<HtmlNode> ParseChildren(string? html, bool ignoreHtmlRules = false)
         {
             HtmlElementNode rootNode = new("[TempContainer]");
             HtmlElementNode parentNode = rootNode;
@@ -94,7 +94,7 @@ namespace SoftCircuits.HtmlMonkey
                     // Open tag
                     if (ParseTag(out tag))
                     {
-                        HtmlTagFlag flags = HtmlRules.GetTagFlags(tag);
+                        HtmlTagFlag flags = ignoreHtmlRules ? HtmlTagFlag.None : HtmlRules.GetTagFlags(tag);
                         if (flags.HasFlag(HtmlTagFlag.HtmlHeader))
                         {
                             parentNode.Children.Add(ParseHtmlHeader());

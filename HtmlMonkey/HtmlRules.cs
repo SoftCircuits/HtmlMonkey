@@ -146,6 +146,12 @@ namespace SoftCircuits.HtmlMonkey
         #region Tag classification
 
         /// <summary>
+        /// Specifies whether or not HTML rules are enforced. When true, <see cref="GetTagFlags(string)"/>
+        /// always returns <see cref="HtmlTagFlag.None"/>.
+        /// </summary>
+        public static bool IgnoreHtmlRules = false;
+
+        /// <summary>
         /// Defines tag attributes for element tags.
         /// </summary>
         private static readonly Dictionary<string, HtmlTagFlag> TagRules = new(StringComparer.CurrentCultureIgnoreCase)
@@ -191,7 +197,12 @@ namespace SoftCircuits.HtmlMonkey
         /// <summary>
         /// Returns the attribute flags for the given tag.
         /// </summary>
-        public static HtmlTagFlag GetTagFlags(string tag) => TagRules.TryGetValue(tag, out HtmlTagFlag flags) ? flags : HtmlTagFlag.None;
+        public static HtmlTagFlag GetTagFlags(string tag)
+        {
+            if (IgnoreHtmlRules == false && TagRules.TryGetValue(tag, out HtmlTagFlag flags))
+                return flags;
+            return HtmlTagFlag.None;
+        }
 
         /// <summary>
         /// Defines element tag nesting values. Tags cannot appear within tags with a lower value. Used when parsing to detected
