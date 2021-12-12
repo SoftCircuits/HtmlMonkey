@@ -157,10 +157,10 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="name">Attribute name.</param>
         /// <param name="value">Returns the attribute with the specified name, if successful.</param>
         /// <returns>True if successful, false if no matching attribute was found.</returns>
-#if NETSTANDARD2_0
-        public bool TryGetValue(string name, out HtmlAttribute value)
-#else
+#if !NETSTANDARD2_0
         public bool TryGetValue(string name, [MaybeNullWhen(false)] out HtmlAttribute value)
+#else
+        public bool TryGetValue(string name, out HtmlAttribute value)
 #endif
         {
             if (IndexLookup.TryGetValue(name, out int index))

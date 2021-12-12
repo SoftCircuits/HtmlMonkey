@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFrameworks>net5.0;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net5.0;netstandard2.0</TargetFrameworks>
     <Nullable>annotations</Nullable>
     <Nullable Condition="'$(TargetFramework)' == 'net5.0'">enable</Nullable>
     <LangVersion>9.0</LangVersion>
@@ -13,9 +13,7 @@
     <OutputTypeEx>library</OutputTypeEx>
     <StartupObject />
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Description>HtmlMonkey is a lightweight HTML/XML parser written in C#. It allows you to parse an HTML or XML string into a hierarchy of node objects, which can then be traversed or queried using jQuery-like selectors. The library also supports creating node objects from code and producing HTML or XML from those objects.
-
-Now targeting .NET Standard 2.0 or .NET 5.0 with nullable reference types.</Description>
+    <Description>HtmlMonkey is a lightweight HTML/XML parser written in C#. It allows you to parse an HTML or XML string into a hierarchy of node objects, which can then be traversed or queried using jQuery-like selectors. The library also supports creating node objects from code and producing HTML or XML from those objects.</Description>
     <Copyright>Copyright © 2019-2021 SoftCircuits</Copyright>
     <NeutralLanguage>en-US</NeutralLanguage>
     <PackageTags>html-parser xml-parser html xml parse parser crawler spider</PackageTags>
@@ -27,12 +25,13 @@ Now targeting .NET Standard 2.0 or .NET 5.0 with nullable reference types.</Desc
     <PackageProjectUrl>https://github.com/SoftCircuits/HtmlMonkey</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
-    <AssemblyVersion>2.0.7.0</AssemblyVersion>
-    <FileVersion>2.0.7.0</FileVersion>
-    <Version>2.0.7</Version>
-    <PackageReleaseNotes>Added static IgnoreHtmlRules property to HtmlDocument to disable HTML rules--may be useful when parsing XML.</PackageReleaseNotes>
+    <AssemblyVersion></AssemblyVersion>
+    <FileVersion></FileVersion>
+    <Version>2.1.0</Version>
+    <PackageReleaseNotes>Added asynchronous file methods (.NET 5.0 and later only); Now also targeting .NET 6.0.</PackageReleaseNotes>
     <PackageId>SoftCircuits.HtmlMonkey</PackageId>
     <PackageIcon>Logo_64x64.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -49,6 +48,10 @@ Now targeting .NET Standard 2.0 or .NET 5.0 with nullable reference types.</Desc
     <None Include="..\Logo_64x64.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
 

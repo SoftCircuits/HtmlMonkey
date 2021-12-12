@@ -39,7 +39,7 @@ namespace SoftCircuits.HtmlMonkey
         /// Sets the text to be parsed and sets the current position to the start of that text.
         /// </summary>
         /// <param name="text">The text to be parsed. Can be <c>null</c>.</param>
-#if NET5_0
+#if !NETSTANDARD2_0
         [MemberNotNull(nameof(Text))]
 #endif
         public void Reset(string? text)
@@ -321,10 +321,10 @@ namespace SoftCircuits.HtmlMonkey
                 throw new ArgumentOutOfRangeException(nameof(start));
             if (end < start || end > Text.Length)
                 throw new ArgumentOutOfRangeException(nameof(end));
-#if NETSTANDARD2_0
-            return Text.Substring(start, end - start);
-#else
+#if !NETSTANDARD2_0
             return Text[start..end];
+#else
+            return Text.Substring(start, end - start);
 #endif
         }
     }

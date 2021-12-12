@@ -165,10 +165,10 @@ namespace SoftCircuits.HtmlMonkey
         /// Otherwise, false is returned and the current parser position does not change.
         /// </summary>
         /// <param name="tag">Parsed tag name.</param>
-#if NETSTANDARD2_0
-        private bool ParseTag(out string tag)
-#else
+#if !NETSTANDARD2_0
         private bool ParseTag([NotNullWhen(true)] out string? tag)
+#else
+        private bool ParseTag(out string tag)
 #endif
         {
             tag = null;
@@ -280,10 +280,10 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="tag">Tag name for which the closing tag is being searched.</param>
         /// <param name="content">Returns the content before the closing tag.</param>
         /// <returns></returns>
-#if NETSTANDARD2_0
-        private bool ParseToClosingTag(string tag, out string? content)
-#else
+#if !NETSTANDARD2_0
         private bool ParseToClosingTag(string tag, [NotNullWhen(true)] out string? content)
+#else
+        private bool ParseToClosingTag(string tag, out string? content)
 #endif
         {
             string endTag = $"</{tag}";

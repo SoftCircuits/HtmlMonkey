@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SoftCircuits.HtmlMonkey
 {
@@ -118,6 +119,17 @@ namespace SoftCircuits.HtmlMonkey
         /// nodes.</returns>
         public static HtmlDocument FromFile(string path) => FromHtml(File.ReadAllText(path));
 
+#if !NETSTANDARD2_0
+        /// <summary>
+        /// Asynchronously parses an HTML or XML file and returns an <see cref="HtmlDocument"></see> instance that
+        /// contains the parsed nodes.
+        /// </summary>
+        /// <param name="path">The HTML or XML file to parse.</param>
+        /// <returns>Returns an <see cref="HtmlDocument"></see> instance that contains the parsed
+        /// nodes.</returns>
+        public static async Task<HtmlDocument> FromFileAsync(string path) => FromHtml(await File.ReadAllTextAsync(path));
+#endif
+
         /// <summary>
         /// Parses an HTML or XML file and returns an <see cref="HtmlDocument"></see> instance that
         /// contains the parsed nodes.
@@ -127,6 +139,18 @@ namespace SoftCircuits.HtmlMonkey
         /// <returns>Returns an <see cref="HtmlDocument"></see> instance that contains the parsed
         /// nodes.</returns>
         public static HtmlDocument FromFile(string path, Encoding encoding) => FromHtml(File.ReadAllText(path, encoding));
+
+#if !NETSTANDARD2_0
+        /// <summary>
+        /// Asynchronously parses an HTML or XML file and returns an <see cref="HtmlDocument"></see> instance that
+        /// contains the parsed nodes.
+        /// </summary>
+        /// <param name="path">The HTML or XML file to parse.</param>
+        /// <param name="encoding">The encoding applied to the contents of the file.</param>
+        /// <returns>Returns an <see cref="HtmlDocument"></see> instance that contains the parsed
+        /// nodes.</returns>
+        public static async Task<HtmlDocument> FromFileAsync(string path, Encoding encoding) => FromHtml(await File.ReadAllTextAsync(path, encoding));
+#endif
 
         /// <summary>
         /// Recursively finds all HtmlNodes filtered by the given predicate.

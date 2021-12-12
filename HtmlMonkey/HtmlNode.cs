@@ -36,7 +36,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <summary>
         /// Returns <c>true</c> if this node is a top-level node and has no parent.
         /// </summary>
-#if NET5_0
+#if !NETSTANDARD2_0
         [MemberNotNullWhen(false, nameof(ParentNode))]
 #endif
         public bool IsTopLevelNode => ParentNode == null;
@@ -106,10 +106,10 @@ namespace SoftCircuits.HtmlMonkey
             {
                 node = node.PrevNode;
                 while (node is HtmlElementNode elementNode && elementNode.Children.Any())
-#if NETSTANDARD2_0
-                    node = elementNode.Children[elementNode.Children.Count - 1];
-#else
+#if !NETSTANDARD2_0
                     node = elementNode.Children[^1];
+#else
+                    node = elementNode.Children[elementNode.Children.Count - 1];
 #endif
                 return node;
             }

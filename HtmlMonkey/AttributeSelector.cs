@@ -146,10 +146,10 @@ namespace SoftCircuits.HtmlMonkey
                     if (inWord)
                     {
                         inWord = false;
-#if NETSTANDARD2_0
-                        yield return s.Substring(wordStart, i - wordStart);
-#else
+#if !NETSTANDARD2_0
                         yield return s[wordStart..i];
+#else
+                        yield return s.Substring(wordStart, i - wordStart);
 #endif
                     }
                 }
@@ -162,14 +162,14 @@ namespace SoftCircuits.HtmlMonkey
 
             // Check for last word
             if (inWord)
-#if NETSTANDARD2_0
-                yield return s.Substring(wordStart);
-#else
+#if !NETSTANDARD2_0
                 yield return s[wordStart..];
+#else
+                yield return s.Substring(wordStart);
 #endif
         }
 
-#endregion
+        #endregion
 
         public override string ToString()
         {
