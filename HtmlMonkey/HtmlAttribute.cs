@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2021 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2022 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 
@@ -44,14 +44,23 @@ namespace SoftCircuits.HtmlMonkey
         }
 
         /// <summary>
+        /// Constructs an <see cref="HtmlAttribute"/> instance.
+        /// </summary>
+        /// <param name="attribute"><see cref="HtmlAttribute"/> that contains the initial value
+        /// for this attribute.</param>
+        public HtmlAttribute(HtmlAttribute attribute)
+        {
+            Name = attribute.Name;
+            Value = attribute.Value;
+        }
+
+        /// <summary>
         /// Converts this <see cref="HtmlAttribute"></see> to a string.
         /// </summary>
         public override string ToString()
         {
-            string attribute = Name ?? "(null)";
-            if (Value != null)
-                attribute += $"=\"{Value}\"";
-            return attribute;
+            string name = Name ?? "(null)";
+            return (Value != null) ? $"{name ?? "(null)"}=\"{Value}\"" : name;
         }
     }
 }

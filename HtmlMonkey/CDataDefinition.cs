@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2021 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2022 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System;
@@ -14,7 +14,7 @@ namespace SoftCircuits.HtmlMonkey
     {
         /// <summary>
         /// Text that marks the start of the CData block. Must start with <see cref="HtmlRules.TagStart"/>
-        /// or else the HTML parser will miss the segment.
+        /// in order for the HTML parser to recognize this segment.
         /// </summary>
         public string StartText { get; set; }
 

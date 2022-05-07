@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2021 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2022 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System;
@@ -21,15 +21,31 @@ namespace SoftCircuits.HtmlMonkey
 
         /// <summary>
         /// Appends the specified node to the end of the collection. If both the last node in the
-        /// collection and the node being added are of type <see cref="HtmlTextNode"></see>, then
-        /// the two text nodes are combined into one text node.
+        /// collection and the node being added are of type <see cref="HtmlTextNode"></see>, the
+        /// two text nodes are combined into one text node.
+        /// </summary>
+        /// <param name="node">Node to add.</param>
+        public new void Add(HtmlNode node) => AddNode(node);
+
+        /// <summary>
+        /// Appends the specified node to the end of the collection. If both the last node in the
+        /// collection and the node being added are of type <see cref="HtmlTextNode"></see>, the
+        /// two text nodes are combined into one text node.
         /// </summary>
         /// <param name="node">Node to add.</param>
         /// <returns>Returns <paramref name="node"/> unless the text node was appended to the last
         /// node, in which case the last node is returned.</returns>
-        public T Add<T>(T node) where T : HtmlNode
+        public T Add<T>(T node) where T : HtmlNode => (T)AddNode(node);
+
+        /// <summary>
+        /// Adds a node to this collection and fixes up relationships with the new node.
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        private HtmlNode AddNode(HtmlNode node)
         {
             Debug.Assert(!Contains(node));
+
             if (Count > 0)
             {
                 HtmlNode lastNode = this[Count - 1];
@@ -39,7 +55,7 @@ namespace SoftCircuits.HtmlMonkey
                 {
                     // Combine if two consecutive HtmlTextNodes
                     lastNode.InnerHtml += node.InnerHtml;
-                    return (T)lastNode;
+                    return lastNode;
                 }
                 else
                 {
@@ -50,9 +66,7 @@ namespace SoftCircuits.HtmlMonkey
             else node.PrevNode = null;
             node.NextNode = null;
             node.ParentNode = ParentNode;
-
             base.Add(node);
-
             return node;
         }
 
@@ -64,7 +78,17 @@ namespace SoftCircuits.HtmlMonkey
         public new void AddRange(IEnumerable<HtmlNode> nodes)
         {
             foreach (HtmlNode node in nodes)
-                Add(node);
+                AddNode(node);
+        }
+
+        /// <summary>
+        /// Sets the nodes in this collection. Clears any existing nodes.
+        /// </summary>
+        /// <param name="nodes">List of nodes to add.</param>
+        internal void SetNodes(IEnumerable<HtmlNode> nodes)
+        {
+            Clear();
+            AddRange(nodes);
         }
 
         /// <summary>

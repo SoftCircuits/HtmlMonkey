@@ -1,8 +1,9 @@
-﻿// Copyright (c) 2019-2021 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2022 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace SoftCircuits.HtmlMonkey
@@ -13,7 +14,6 @@ namespace SoftCircuits.HtmlMonkey
         public SelectorAttribute(string name, string? value = null, bool ignoreCase = true)
             : base(name, value, ignoreCase)
         {
-
         }
     }
 
@@ -22,6 +22,9 @@ namespace SoftCircuits.HtmlMonkey
     /// </summary>
     public class AttributeSelector
     {
+        private readonly StringComparison StringComparison;
+        private readonly RegexOptions RegexOptions;
+
         /// <summary>
         /// Gets or sets the name of the attribute to be compared.
         /// </summary>
@@ -42,7 +45,7 @@ namespace SoftCircuits.HtmlMonkey
             set
             {
                 _mode = value;
-                NodeComparer = _mode switch
+                IsMatch = _mode switch
                 {
                     AttributeSelectorMode.RegEx => RegExComparer,
                     AttributeSelectorMode.Contains => ContainsComparer,
@@ -52,10 +55,13 @@ namespace SoftCircuits.HtmlMonkey
             }
         }
         private AttributeSelectorMode _mode;
-        private Func<HtmlElementNode, bool> NodeComparer;
 
-        private readonly StringComparison StringComparison;
-        private readonly RegexOptions RegexOptions;
+        /// <summary>
+        /// Compares the given node against this selector attribute.
+        /// </summary>
+        /// <param name="node">Node to be compared.</param>
+        /// <returns>True if the node matches, false otherwise.</returns>
+        public Func<HtmlElementNode, bool> IsMatch { get; private set; }
 
         /// <summary>
         /// Constructs a <see cref="AttributeSelector"></see> instance.
@@ -67,19 +73,12 @@ namespace SoftCircuits.HtmlMonkey
             Name = name;
             Value = value;
             Mode = AttributeSelectorMode.Match;
-            NodeComparer = MatchComparer;
+            IsMatch = MatchComparer;
             StringComparison = ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
             RegexOptions = ignoreCase ? RegexOptions.IgnoreCase : RegexOptions.None;
         }
 
         #region Matching routines
-
-        /// <summary>
-        /// Compares the given node against this selector attribute.
-        /// </summary>
-        /// <param name="node">Node to be compared.</param>
-        /// <returns>True if the node matches, false otherwise.</returns>
-        public bool IsMatch(HtmlElementNode node) => NodeComparer(node);
 
         /// <summary>
         /// Implements <see cref="SelectorAttributeMode.Match"></see> comparer.
@@ -88,9 +87,8 @@ namespace SoftCircuits.HtmlMonkey
         {
             if (Value != null)
             {
-                string? attributeValue = node.Attributes[Name]?.Value;
-                if (attributeValue != null)
-                    return string.Equals(attributeValue, Value, StringComparison);
+                if (node.Attributes.TryGetValue(Name, out HtmlAttribute? attribute) && attribute.Value != null)
+                    return string.Equals(attribute.Value, Value, StringComparison);
             }
             return false;
         }
@@ -102,9 +100,8 @@ namespace SoftCircuits.HtmlMonkey
         {
             if (Value != null)
             {
-                string? attributeValue = node.Attributes[Name]?.Value;
-                if (attributeValue != null)
-                    return Regex.IsMatch(attributeValue, Value, RegexOptions);
+                if (node.Attributes.TryGetValue(Name, out HtmlAttribute? attribute) && attribute.Value != null)
+                    return Regex.IsMatch(attribute.Value, Value, RegexOptions);
             }
             return false;
         }
@@ -116,15 +113,8 @@ namespace SoftCircuits.HtmlMonkey
         {
             if (Value != null)
             {
-                string? attributeValue = node.Attributes[Name]?.Value;
-                if (attributeValue != null)
-                {
-                    foreach (string value in ParseWords(attributeValue))
-                    {
-                        if (string.Equals(Value, value, StringComparison))
-                            return true;
-                    }
-                }
+                if (node.Attributes.TryGetValue(Name, out HtmlAttribute? attribute) && attribute.Value != null)
+                    return ParseWords(attribute.Value).Any(a => string.Equals(Value, a, StringComparison));
             }
             return false;
         }
@@ -132,7 +122,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <summary>
         /// Implements <see cref="SelectorAttributeMode.ExistsOnly"></see> comparer.
         /// </summary>
-        private bool ExistsOnlyComparer(HtmlElementNode node) => node.Attributes[Name] != null;
+        private bool ExistsOnlyComparer(HtmlElementNode node) => node.Attributes.Contains(Name);
 
         private static IEnumerable<string> ParseWords(string s)
         {
@@ -146,10 +136,10 @@ namespace SoftCircuits.HtmlMonkey
                     if (inWord)
                     {
                         inWord = false;
-#if !NETSTANDARD2_0
-                        yield return s[wordStart..i];
-#else
+#if NETSTANDARD
                         yield return s.Substring(wordStart, i - wordStart);
+#else
+                        yield return s[wordStart..i];
 #endif
                     }
                 }
@@ -162,19 +152,15 @@ namespace SoftCircuits.HtmlMonkey
 
             // Check for last word
             if (inWord)
-#if !NETSTANDARD2_0
-                yield return s[wordStart..];
-#else
+#if NETSTANDARD
                 yield return s.Substring(wordStart);
+#else
+                yield return s[wordStart..];
 #endif
         }
 
         #endregion
 
-        public override string ToString()
-        {
-            const string nullString = "(null)";
-            return $"{Name ?? nullString}={Value ?? nullString}";
-        }
+        public override string ToString() => $"{Name ?? "(null)"}={Value ?? "(null)"}";
     }
 }

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2021 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2022 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -95,22 +95,17 @@ namespace HtmlMonkeyTests
             HtmlNode lastNode = encounteredNodes[^1];
             encounteredNodes.Clear();
             for (HtmlNode? node = lastNode; node != null; node = node.NavigatePrevNode())
-                encounteredNodes.Add(node);
-            CompareResults(encounteredNodes, true);
+                encounteredNodes.Insert(0, node);
+            CompareResults(encounteredNodes);
         }
 
-        void CompareResults(List<HtmlNode> nodes, bool reverse = false)
+        void CompareResults(List<HtmlNode> nodes)
         {
             Assert.AreEqual(ExpectedNodes.Count, nodes.Count);
-            Func<int, int> getExpectedIndex;
-            if (reverse)
-                getExpectedIndex = i => ExpectedNodes.Count - 1 - i;
-            else
-                getExpectedIndex = i => i;
 
             for (int i = 0; i < ExpectedNodes.Count; i++)
             {
-                NodeInfo expected = ExpectedNodes[getExpectedIndex(i)];
+                NodeInfo expected = ExpectedNodes[i];
                 HtmlNode node = nodes[i];
 
                 if (node is HtmlElementNode elementNode)

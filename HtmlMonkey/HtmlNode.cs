@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2021 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2022 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System;
@@ -36,7 +36,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <summary>
         /// Returns <c>true</c> if this node is a top-level node and has no parent.
         /// </summary>
-#if !NETSTANDARD2_0
+#if !NETSTANDARD
         [MemberNotNullWhen(false, nameof(ParentNode))]
 #endif
         public bool IsTopLevelNode => ParentNode == null;
@@ -106,10 +106,10 @@ namespace SoftCircuits.HtmlMonkey
             {
                 node = node.PrevNode;
                 while (node is HtmlElementNode elementNode && elementNode.Children.Any())
-#if !NETSTANDARD2_0
-                    node = elementNode.Children[^1];
-#else
+#if NETSTANDARD
                     node = elementNode.Children[elementNode.Children.Count - 1];
+#else
+                    node = elementNode.Children[^1];
 #endif
                 return node;
             }
@@ -148,18 +148,10 @@ namespace SoftCircuits.HtmlMonkey
         /// <summary>
         /// Gets the outer markup.
         /// </summary>
-        public override string OuterHtml
-        {
-            get
-            {
-                StringBuilder builder = new();
-                builder.Append(HtmlRules.TagStart);
-                builder.Append(HtmlRules.HtmlHeaderTag);
-                builder.Append(Attributes.ToString());
-                builder.Append(HtmlRules.TagEnd);
-                return builder.ToString();
-            }
-        }
+        public override string OuterHtml => string.Concat(HtmlRules.TagStart,
+            HtmlRules.HtmlHeaderTag,
+            Attributes.ToString(),
+            HtmlRules.TagEnd);
 
         /// <summary>
         /// Converts this node to a string.
@@ -197,19 +189,11 @@ namespace SoftCircuits.HtmlMonkey
         /// <summary>
         /// Gets the outer markup.
         /// </summary>
-        public override string OuterHtml
-        {
-            get
-            {
-                StringBuilder builder = new();
-                builder.Append(HtmlRules.TagStart);
-                builder.Append(HtmlRules.XmlHeaderTag);
-                builder.Append(Attributes.ToString());
-                builder.Append('?');
-                builder.Append(HtmlRules.TagEnd);
-                return builder.ToString();
-            }
-        }
+        public override string OuterHtml => string.Concat(HtmlRules.TagStart,
+            HtmlRules.XmlHeaderTag,
+            Attributes.ToString(),
+            "?",
+            HtmlRules.TagEnd);
 
         /// <summary>
         /// Converts this node to a string.
@@ -289,7 +273,7 @@ namespace SoftCircuits.HtmlMonkey
                 if (!string.IsNullOrEmpty(value))
                 {
                     var parser = new HtmlParser();
-                    Children.AddRange(parser.ParseChildren(value));
+                    Children.SetNodes(parser.ParseChildren(value));
                 }
             }
         }

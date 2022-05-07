@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2021 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2022 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System;
@@ -28,7 +28,7 @@ namespace SoftCircuits.HtmlMonkey
         public HtmlDocument Parse(string? html)
         {
             HtmlDocument document = new();
-            document.RootNodes.AddRange(ParseChildren(html));
+            document.RootNodes.SetNodes(ParseChildren(html));
             return document;
         }
 
@@ -94,12 +94,12 @@ namespace SoftCircuits.HtmlMonkey
                     // Open tag
                     if (ParseTag(out tag))
                     {
-                        HtmlTagFlag flags = ignoreHtmlRules ? HtmlTagFlag.None : HtmlRules.GetTagFlags(tag);
-                        if (flags.HasFlag(HtmlTagFlag.HtmlHeader))
+                        HtmlTagFlag tagFlags = ignoreHtmlRules ? HtmlTagFlag.None : HtmlRules.GetTagFlags(tag);
+                        if (tagFlags.HasFlag(HtmlTagFlag.HtmlHeader))
                         {
                             parentNode.Children.Add(ParseHtmlHeader());
                         }
-                        else if (flags.HasFlag(HtmlTagFlag.XmlHeader))
+                        else if (tagFlags.HasFlag(HtmlTagFlag.XmlHeader))
                         {
                             parentNode.Children.Add(ParseXmlHeader());
                         }
@@ -128,7 +128,7 @@ namespace SoftCircuits.HtmlMonkey
                                 parentNode = parentNode.ParentNode;
                             parentNode.Children.Add(node);
 
-                            if (flags.HasFlag(HtmlTagFlag.CData))
+                            if (tagFlags.HasFlag(HtmlTagFlag.CData))
                             {
                                 // CDATA tags are treated as elements but we store and do not parse the inner content
                                 if (!selfClosing)
@@ -139,9 +139,9 @@ namespace SoftCircuits.HtmlMonkey
                             }
                             else
                             {
-                                if (selfClosing && flags.HasFlag(HtmlTagFlag.NoSelfClosing))
+                                if (selfClosing && tagFlags.HasFlag(HtmlTagFlag.NoSelfClosing))
                                     selfClosing = false;
-                                if (!selfClosing && !flags.HasFlag(HtmlTagFlag.NoChildren))
+                                if (!selfClosing && !tagFlags.HasFlag(HtmlTagFlag.NoChildren))
                                     parentNode = node;  // Node becomes new parent
                             }
                         }
@@ -155,8 +155,10 @@ namespace SoftCircuits.HtmlMonkey
                 parentNode.Children.Add(new HtmlTextNode(text));
             }
 
-            // Return top-level nodes from nodes just parsed
-            return rootNode.Children;
+            // Return collection of top-level nodes from nodes just parsed
+            // Note: Leaves nodes' references to parentNode. Caller is expected
+            // to fixup the parent node of each node.
+            return parentNode.Children;
         }
 
         /// <summary>
@@ -165,10 +167,10 @@ namespace SoftCircuits.HtmlMonkey
         /// Otherwise, false is returned and the current parser position does not change.
         /// </summary>
         /// <param name="tag">Parsed tag name.</param>
-#if !NETSTANDARD2_0
-        private bool ParseTag([NotNullWhen(true)] out string? tag)
-#else
+#if NETSTANDARD
         private bool ParseTag(out string tag)
+#else
+        private bool ParseTag([NotNullWhen(true)] out string? tag)
 #endif
         {
             tag = null;
@@ -280,10 +282,10 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="tag">Tag name for which the closing tag is being searched.</param>
         /// <param name="content">Returns the content before the closing tag.</param>
         /// <returns></returns>
-#if !NETSTANDARD2_0
-        private bool ParseToClosingTag(string tag, [NotNullWhen(true)] out string? content)
-#else
+#if NETSTANDARD
         private bool ParseToClosingTag(string tag, out string? content)
+#else
+        private bool ParseToClosingTag(string tag, [NotNullWhen(true)] out string? content)
 #endif
         {
             string endTag = $"</{tag}";

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2021 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2022 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System;
@@ -39,7 +39,7 @@ namespace SoftCircuits.HtmlMonkey
         /// Sets the text to be parsed and sets the current position to the start of that text.
         /// </summary>
         /// <param name="text">The text to be parsed. Can be <c>null</c>.</param>
-#if !NETSTANDARD2_0
+#if !NETSTANDARD
         [MemberNotNull(nameof(Text))]
 #endif
         public void Reset(string? text)
@@ -321,10 +321,10 @@ namespace SoftCircuits.HtmlMonkey
                 throw new ArgumentOutOfRangeException(nameof(start));
             if (end < start || end > Text.Length)
                 throw new ArgumentOutOfRangeException(nameof(end));
-#if !NETSTANDARD2_0
-            return Text[start..end];
-#else
+#if NETSTANDARD
             return Text.Substring(start, end - start);
+#else
+            return Text[start..end];
 #endif
         }
     }

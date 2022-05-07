@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2021 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2022 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System;
@@ -13,9 +13,24 @@ namespace SoftCircuits.HtmlMonkey
     /// </summary>
     public enum AttributeSelectorMode
     {
+        /// <summary>
+        /// Matches by comparing the attribute value to a string.
+        /// </summary>
         Match,
+
+        /// <summary>
+        /// Matches by comparing the attribute value to a regular expression.
+        /// </summary>
         RegEx,
+
+        /// <summary>
+        /// Matches if any word in the attribute value matches a string.
+        /// </summary>
         Contains,
+
+        /// <summary>
+        /// Matches if the attribute exists, regardless of the attribute value.
+        /// </summary>
         ExistsOnly,
     }
 }

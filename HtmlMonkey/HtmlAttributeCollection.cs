@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2021 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2022 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System;
@@ -36,7 +36,7 @@ namespace SoftCircuits.HtmlMonkey
         public HtmlAttributeCollection(HtmlAttributeCollection attributes)
         {
             Attributes = new List<HtmlAttribute>(attributes);
-            IndexLookup = new Dictionary<string, int>(attributes.IndexLookup);
+            IndexLookup = new Dictionary<string, int>(attributes.IndexLookup, HtmlRules.TagStringComparer);
         }
 
         /// <summary>
@@ -157,10 +157,10 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="name">Attribute name.</param>
         /// <param name="value">Returns the attribute with the specified name, if successful.</param>
         /// <returns>True if successful, false if no matching attribute was found.</returns>
-#if !NETSTANDARD2_0
-        public bool TryGetValue(string name, [MaybeNullWhen(false)] out HtmlAttribute value)
-#else
+#if NETSTANDARD
         public bool TryGetValue(string name, out HtmlAttribute value)
+#else
+        public bool TryGetValue(string name, [MaybeNullWhen(false)] out HtmlAttribute value)
 #endif
         {
             if (IndexLookup.TryGetValue(name, out int index))
@@ -181,6 +181,12 @@ namespace SoftCircuits.HtmlMonkey
         /// Gets the number of <see cref="HtmlAttribute"/>s in this collection.
         /// </summary>
         public int Count => Attributes.Count;
+
+        /// <summary>
+        /// Returns true if this collection contains an attribute with the given name.
+        /// </summary>
+        /// <param name="name">The name of the attribute to compare.</param>
+        public bool Contains(string name) => IndexLookup.ContainsKey(name);
 
         /// <summary>
         /// Gets an enumerable on the attribute names.

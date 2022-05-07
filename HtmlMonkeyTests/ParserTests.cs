@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2021 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2022 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -78,7 +78,7 @@ namespace HtmlMonkeyTests
         <hr />
         <footer>
             <p>
-                Copyright &copy; 2021 <a href=""http://www.softcircuits.com"">SoftCircuits</a><br />
+                Copyright &copy; 2022 <a href=""http://www.softcircuits.com"">SoftCircuits</a><br />
                 <a href=""http://www.scwebgroup.com"">SC Web Group</a> |
                 <a href=""http://www.insiderarticles.com""> Insider Articles</a>
             </p>

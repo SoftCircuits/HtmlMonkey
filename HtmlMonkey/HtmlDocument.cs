@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2021 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2022 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System;
@@ -27,7 +27,7 @@ namespace SoftCircuits.HtmlMonkey
     public class HtmlDocument
     {
         /// <summary>
-        /// Gets the source document path. May be empty or <c>null</c> if there is no
+        /// Gets the source document path. May be empty or <c>null</c> if there was no
         /// source file.
         /// </summary>
         public string? Path { get; private set; }
@@ -119,7 +119,7 @@ namespace SoftCircuits.HtmlMonkey
         /// nodes.</returns>
         public static HtmlDocument FromFile(string path) => FromHtml(File.ReadAllText(path));
 
-#if !NETSTANDARD2_0
+#if !NETSTANDARD
         /// <summary>
         /// Asynchronously parses an HTML or XML file and returns an <see cref="HtmlDocument"></see> instance that
         /// contains the parsed nodes.
@@ -140,7 +140,7 @@ namespace SoftCircuits.HtmlMonkey
         /// nodes.</returns>
         public static HtmlDocument FromFile(string path, Encoding encoding) => FromHtml(File.ReadAllText(path, encoding));
 
-#if !NETSTANDARD2_0
+#if !NETSTANDARD
         /// <summary>
         /// Asynchronously parses an HTML or XML file and returns an <see cref="HtmlDocument"></see> instance that
         /// contains the parsed nodes.
