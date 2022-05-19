@@ -39,7 +39,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="html">The HTML text to parse.</param>
         public IEnumerable<HtmlNode> ParseChildren(string? html, bool ignoreHtmlRules = false)
         {
-            HtmlElementNode rootNode = new("[TempContainer]");
+            HtmlElementNode rootNode = new("[Temp]");
             HtmlElementNode parentNode = rootNode;
             Parser.Reset(html);
             bool selfClosing;
@@ -149,15 +149,16 @@ namespace SoftCircuits.HtmlMonkey
                     }
                 }
 
-                // Text node: must be at least 1 character (handles '<' that was not a tag)
+                // Text node: must be at least 1 character (includes '<' that was not part of a tag)
                 string text = Parser.ParseCharacter();
                 text += Parser.ParseTo(HtmlRules.TagStart);
                 parentNode.Children.Add(new HtmlTextNode(text));
             }
 
+            // Remove references to temporary parent node
+            parentNode.Children.ForEach(n => n.ParentNode = null);
+
             // Return collection of top-level nodes from nodes just parsed
-            // Note: Leaves nodes' references to parentNode. Caller is expected
-            // to fixup the parent node of each node.
             return parentNode.Children;
         }
 
@@ -311,6 +312,11 @@ namespace SoftCircuits.HtmlMonkey
             return false;
         }
 
+        /// <summary>
+        /// Parses a CDATA block, which includes any comment, etc. where we do not process its content.
+        /// </summary>
+        /// <param name="definition">Definition for this type of CDATA.</param>
+        /// <returns></returns>
         private HtmlCDataNode ParseCDataNode(CDataDefinition definition)
         {
             Debug.Assert(Parser.MatchesCurrentPosition(definition.StartText, definition.StartComparison));

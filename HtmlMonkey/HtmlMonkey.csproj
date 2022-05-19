@@ -27,8 +27,8 @@
     <PackageLicenseFile>License.txt</PackageLicenseFile>
     <AssemblyVersion></AssemblyVersion>
     <FileVersion></FileVersion>
-    <Version>2.1.1</Version>
-    <PackageReleaseNotes>Many minor tweaks and enhancements.</PackageReleaseNotes>
+    <Version>2.1.2</Version>
+    <PackageReleaseNotes>Additional tweaks and enhancements.</PackageReleaseNotes>
     <PackageId>SoftCircuits.HtmlMonkey</PackageId>
     <PackageIcon>Logo_64x64.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>

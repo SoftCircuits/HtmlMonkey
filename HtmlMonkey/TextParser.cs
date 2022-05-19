@@ -28,7 +28,6 @@ namespace SoftCircuits.HtmlMonkey
         /// and sets the current position to the start of that text.
         /// </summary>
         /// <param name="text">The text to be parsed. Can be <c>null</c>.</param>
-        /// <param name="regularExpressionOptions">Specifies regular expression options used by
         /// all methods that use regular expressions.</param>
         public TextParser(string? text)
         {
