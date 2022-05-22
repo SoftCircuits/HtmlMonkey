@@ -8,9 +8,7 @@ Install-Package SoftCircuits.HtmlMonkey
 
 ## Overview
 
-HtmlMonkey is a lightweight HTML/XML parser written in C#. It allows you to parse HTML or XML into a hierarchy of document node objects, which can then be traversed, or queried using jQuery-like selectors. The node objects can be modified or even built from scratch using code. Finally, you can use the classes to generate HTML or XML strings from the data.
-
-The code also include a WinForms application to display the parsed data nodes. This was mostly done for testing the parser, but offers some functionality that may be useful for inspecting the original markup.
+HtmlMonkey is a lightweight HTML/XML parser written in C#. It parses HTML or XML into a hierarchy of node objects, which can then be traversed. It also supports searching those nodes using jQuery-like selectors. The library can also be used to create and modify the nodes. And it can generate new HTML or XML from the current nodes.
 
 ## Getting Started
 
@@ -23,15 +21,23 @@ string html = "...";   // HTML markup
 HtmlDocument document = HtmlDocument.FromHtml(html);
 ```
 
-This code parses the HTML document into a hierarchy of nodes, which are then stored in the `HtmlDocument` object.
+This code parses the HTML document into a hierarchy of nodes and returns a new `HtmlDocument` object. The `HtmlDocument.RootNodes` property contains the top-level nodes that were parsed.
 
-The node types include `HtmlElementNode`, which represents an HTML tag with attributes and any number of child nodes. `HtmlTextNode` nodes contain only text. And `HtmlCDataNode` nodes contain text from the document that was parsed but is otherwise ignored. Examples of content placed in `HtmlCDataNode` nodes include CDATA content, comments and the content of `<script>` tags.
+#### Types of Nodes
 
-The code also supports the specialized `HtmlHeaderNode` and `XmlHeaderNode` nodes.
+The parsed nodes can include several different types of nodes, as outlined in the table below. All node types derive from the abstract class `HtmlNode`.
+
+| Node Type | Description |
+| --------- | ----------- |
+| `HtmlElementNode` | Represents an HTML element, or tag. This is the only node type that can contain child nodes. |
+| `HtmlTextNode` | Represents raw text in the document. |
+| `HtmlCDataNode` | Represents any block of data like a comment or CDATA section. The library creates a node for these blocks but does not parse their contents. |
+| `HtmlHeaderNode` | Represents an HTML document header. |
+| `XmlHeaderNode` | Represents an XML document header. |
 
 ## Navigating Parsed Nodes
 
-HtmlMonkey provides a number of ways to navigate parsed nodes. The `HtmlDocument.RootNodes` property contains the root nodes in the document. Each `HtmlElementNode` node includes a `Children` property, which can be used to access all the other nodes in the document. In addition, all nodes have `NextNode`, `PrevNode`, and `ParentNode` properties, which you can use to navigate the nodes in every direction.
+HtmlMonkey provides several ways to navigate parsed nodes. Each `HtmlElementNode` node includes a `Children` property, which can be used to access that node's children. In addition, all nodes have `NextNode`, `PrevNode`, and `ParentNode` properties, which you can use to navigate the nodes in every direction.
 
 The `HtmlDocument` class also includes a `Find()` method, which accepts a predicate argument. This method will recursively find all the nodes in the document for which the predicate returns true, and return those nodes in a flat list.
 
