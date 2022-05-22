@@ -94,7 +94,7 @@ nodes = document.Find("div.align-right");
 nodes = document.Find("input:button");
 ```
 
-For greater control over attributes, you can use square brackets ([]). This is similar to specifying attributes in jQuery, but there are some differences. The first difference is that all the variations for finding a match at the start, middle or end are not supported by HtmlMonkey. However, to make up for this limitation, you can use the `:=` operator to specify that the value is a regular expression and the code will match if the attribute value matches that regular expression.
+For greater control over attributes, you can use square brackets ([]). This is similar to specifying attributes in jQuery, but there are some differences. The first difference is that all the variations for finding a match at the start, middle or end are not supported by HtmlMonkey. Instead, HtmlMonkey allows you to use the `:=` operator to specify that the value is a regular expression and the code will match if the attribute value matches that regular expression.
 
 ```cs
 // Get any <p> tags with the attribute id="center-ad"
@@ -151,7 +151,3 @@ IEnumerable<HtmlElementNode> containerNodes = containerSelectors.Find(document.R
 // Finally, search container nodes for item nodes
 IEnumerable<HtmlElementNode> itemNodes = itemSelectors.Find(containerNodes);
 ```
-
-## Enhancing the Library
-
-This is my initial attempt at this library and I would appreciate and be responsive to any feedback from people working with it. I want to keep the library small but would like to see more testing done on a wide variety of input markup. What sort of scenarios does the library not handle correctly? This is the type of information I'd be curious about.
