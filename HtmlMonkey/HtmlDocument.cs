@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2022 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2024 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System;
@@ -111,8 +111,8 @@ namespace SoftCircuits.HtmlMonkey
         public static HtmlDocument FromHtml(string? html) => new HtmlParser().Parse(html);
 
         /// <summary>
-        /// Parses an HTML or XML string asynchronously and returns an <see cref="HtmlDocument"></see> instance that
-        /// contains the parsed nodes.
+        /// Parses an HTML or XML string asynchronously and returns an <see cref="HtmlDocument"></see>
+        /// instance that contains the parsed nodes.
         /// </summary>
         /// <param name="html">The HTML or XML string to parse.</param>
         /// <returns>Returns an <see cref="HtmlDocument"></see> instance that contains the parsed
@@ -129,17 +129,17 @@ namespace SoftCircuits.HtmlMonkey
         public static HtmlDocument FromFile(string path) => FromHtml(File.ReadAllText(path));
 
         /// <summary>
-        /// Asynchronously parses an HTML or XML file and returns an <see cref="HtmlDocument"></see> instance that
-        /// contains the parsed nodes.
+        /// Asynchronously parses an HTML or XML file and returns an <see cref="HtmlDocument"></see>
+        /// instance that contains the parsed nodes.
         /// </summary>
         /// <param name="path">The HTML or XML file to parse.</param>
         /// <returns>Returns an <see cref="HtmlDocument"></see> instance that contains the parsed
         /// nodes.</returns>
         public static async Task<HtmlDocument> FromFileAsync(string path) {
-#if !NETSTANDARD || NETCOREAPP2_0_OR_GREATER
-            return await FromHtmlAsync(await File.ReadAllTextAsync(path));
-#else
+#if NETSTANDARD
             return await Task.Run(() => FromHtml(File.ReadAllText(path)));
+#else
+            return await FromHtmlAsync(await File.ReadAllTextAsync(path));
 #endif
         }
 
@@ -154,18 +154,18 @@ namespace SoftCircuits.HtmlMonkey
         public static HtmlDocument FromFile(string path, Encoding encoding) => FromHtml(File.ReadAllText(path, encoding));
 
         /// <summary>
-        /// Asynchronously parses an HTML or XML file and returns an <see cref="HtmlDocument"></see> instance that
-        /// contains the parsed nodes.
+        /// Asynchronously parses an HTML or XML file and returns an <see cref="HtmlDocument"></see>
+        /// instance that contains the parsed nodes.
         /// </summary>
         /// <param name="path">The HTML or XML file to parse.</param>
         /// <param name="encoding">The encoding applied to the contents of the file.</param>
         /// <returns>Returns an <see cref="HtmlDocument"></see> instance that contains the parsed
         /// nodes.</returns>
         public static async Task<HtmlDocument> FromFileAsync(string path, Encoding encoding) {
-#if !NETSTANDARD || NETCOREAPP2_0_OR_GREATER
-            return FromHtml(await File.ReadAllTextAsync(path, encoding));
-#else
+#if NETSTANDARD
             return await Task.Run(() => FromHtml(File.ReadAllText(path, encoding)));
+#else
+            return FromHtml(await File.ReadAllTextAsync(path, encoding));
 #endif
         }
 
@@ -213,7 +213,7 @@ namespace SoftCircuits.HtmlMonkey
         [Obsolete("This method is deprecated and will be removed in a future version. Use IEnumerable<HtmlNode>.FindOfType() extension methods instead.")]
         public static IEnumerable<T> FindOfType<T>(IEnumerable<HtmlNode> nodes, Func<T, bool> predicate) where T : HtmlNode => nodes.FindOfType<T>(predicate);
 
-        #endregion
+#endregion
 
     }
 }

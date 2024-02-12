@@ -1,9 +1,10 @@
-﻿// Copyright (c) 2019-2022 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2024 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SoftCircuits.HtmlMonkey;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace HtmlMonkeyTests
 {
@@ -78,7 +79,7 @@ namespace HtmlMonkeyTests
         <hr />
         <footer>
             <p>
-                Copyright &copy; 2022 <a href=""http://www.softcircuits.com"">SoftCircuits</a><br />
+                Copyright &copy; 2024 <a href=""http://www.softcircuits.com"">SoftCircuits</a><br />
                 <a href=""http://www.scwebgroup.com"">SC Web Group</a> |
                 <a href=""http://www.insiderarticles.com""> Insider Articles</a>
             </p>
@@ -138,6 +139,20 @@ namespace HtmlMonkeyTests
 
             // Convert from XML and back to XML
             HtmlDocument xmlDoc = HtmlDocument.FromHtml(Xml);
+            string xml = xmlDoc.ToHtml();
+            Assert.AreEqual(Xml, xml);
+        }
+
+        [TestMethod]
+        public async Task ConvertFromMarkupTestsAsync()
+        {
+            // Convert from HTML and back to HTML
+            HtmlDocument htmlDoc = await HtmlDocument.FromHtmlAsync(Html);
+            string html = htmlDoc.ToHtml();
+            Assert.AreEqual(Html, html);
+
+            // Convert from XML and back to XML
+            HtmlDocument xmlDoc = await HtmlDocument.FromHtmlAsync(Xml);
             string xml = xmlDoc.ToHtml();
             Assert.AreEqual(Xml, xml);
         }

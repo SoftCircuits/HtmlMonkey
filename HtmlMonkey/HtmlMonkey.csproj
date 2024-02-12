@@ -14,7 +14,7 @@
     <StartupObject />
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>HtmlMonkey is a lightweight HTML/XML parser written in C#. It allows you to parse an HTML or XML string into a hierarchy of node objects, which can then be traversed or queried using jQuery-like selectors. The library also supports creating node objects from code and producing HTML or XML from those objects.</Description>
-    <Copyright>Copyright © 2019-2022 SoftCircuits</Copyright>
+    <Copyright>Copyright © 2019-2024 SoftCircuits</Copyright>
     <NeutralLanguage>en-US</NeutralLanguage>
     <PackageTags>html-parser xml-parser html xml parse parser crawler spider</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -27,8 +27,8 @@
     <PackageLicenseFile>License.txt</PackageLicenseFile>
     <AssemblyVersion></AssemblyVersion>
     <FileVersion></FileVersion>
-    <Version>2.1.2</Version>
-    <PackageReleaseNotes>Additional tweaks and enhancements.</PackageReleaseNotes>
+    <Version>2.1.3</Version>
+    <PackageReleaseNotes>Added asynchronous versions of FromHtml() and FromFile() in HtmlDocument class, miscellaneous changes.</PackageReleaseNotes>
     <PackageId>SoftCircuits.HtmlMonkey</PackageId>
     <PackageIcon>Logo_64x64.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>

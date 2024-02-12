@@ -1,13 +1,10 @@
-﻿// Copyright (c) 2019-2022 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2024 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using Microsoft.VisualBasic;
 using System;
-using System.Diagnostics;
 using System.IO;
-using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using TestHtmlMonkey;
 
@@ -16,7 +13,6 @@ namespace HtmlMonkey
     public partial class Form1 : Form
     {
         protected string? Url;
-        protected Task<SoftCircuits.HtmlMonkey.HtmlDocument> ParseTask = Task.FromResult<SoftCircuits.HtmlMonkey.HtmlDocument>(null!);
 
         public Form1()
         {
@@ -57,7 +53,7 @@ namespace HtmlMonkey
                     Enabled = false;
 
                     Url = url;
-                    using HttpClient client = new HttpClient();
+                    using HttpClient client = new();
                     txtHtml.Text = await client.GetStringAsync(url);
                 }
                 catch (Exception ex)
@@ -84,34 +80,11 @@ namespace HtmlMonkey
                 SoftCircuits.HtmlMonkey.HtmlDocument document = SoftCircuits.HtmlMonkey.HtmlDocument.FromHtml(txtHtml.Text);
                 Cursor = Cursors.Default;
 
-                frmVisualizer frm = new frmVisualizer(document);
+                frmVisualizer frm = new(document);
                 frm.ShowDialog();
             }
             catch (Exception ex)
             {
-                Cursor = Cursors.Default;
-                ex.ShowError();
-            }
-        }
-
-        private async void parseHTMLAsyncToolStripMenuItem_Click(object sender, EventArgs e) {
-            if (!ParseTask.IsCompleted)
-            {
-                return;
-            }
-
-            try
-            {
-                Cursor = Cursors.WaitCursor;
-                ParseTask = SoftCircuits.HtmlMonkey.HtmlDocument.FromHtmlAsync(txtHtml.Text);
-                await ParseTask;
-                Cursor = Cursors.Default;
-
-                Debug.Print("Async operation completed");
-                frmVisualizer frm = new frmVisualizer(ParseTask.Result);
-                frm.ShowDialog();
-            }
-            catch (Exception ex) {
                 Cursor = Cursors.Default;
                 ex.ShowError();
             }
