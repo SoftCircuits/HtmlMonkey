@@ -1,4 +1,4 @@
-﻿namespace HtmlMonkey
+﻿namespace TestApplication
 {
     partial class Form1
     {
@@ -29,92 +29,93 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            txtHtml = new System.Windows.Forms.TextBox();
-            menuStrip1 = new System.Windows.Forms.MenuStrip();
-            fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            downloadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            parseHTMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            txtHtml = new TextBox();
+            menuStrip1 = new MenuStrip();
+            fileToolStripMenuItem = new ToolStripMenuItem();
+            openToolStripMenuItem = new ToolStripMenuItem();
+            downloadToolStripMenuItem = new ToolStripMenuItem();
+            toolStripMenuItem1 = new ToolStripSeparator();
+            exitToolStripMenuItem = new ToolStripMenuItem();
+            parseHTMLToolStripMenuItem = new ToolStripMenuItem();
+            openFileDialog1 = new OpenFileDialog();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // txtHtml
             // 
-            txtHtml.Dock = System.Windows.Forms.DockStyle.Fill;
-            txtHtml.Location = new System.Drawing.Point(0, 30);
-            txtHtml.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            txtHtml.Dock = DockStyle.Fill;
+            txtHtml.Font = new Font("Courier New", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtHtml.Location = new Point(0, 30);
+            txtHtml.Margin = new Padding(5, 4, 5, 4);
             txtHtml.Multiline = true;
             txtHtml.Name = "txtHtml";
-            txtHtml.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            txtHtml.Size = new System.Drawing.Size(895, 871);
+            txtHtml.ScrollBars = ScrollBars.Both;
+            txtHtml.Size = new Size(895, 871);
             txtHtml.TabIndex = 0;
             txtHtml.Text = resources.GetString("txtHtml.Text");
             txtHtml.WordWrap = false;
             // 
             // menuStrip1
             // 
-            menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { fileToolStripMenuItem, parseHTMLToolStripMenuItem });
-            menuStrip1.Location = new System.Drawing.Point(0, 0);
+            menuStrip1.ImageScalingSize = new Size(20, 20);
+            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, parseHTMLToolStripMenuItem });
+            menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Padding = new System.Windows.Forms.Padding(8, 3, 0, 3);
-            menuStrip1.Size = new System.Drawing.Size(895, 30);
+            menuStrip1.Padding = new Padding(8, 3, 0, 3);
+            menuStrip1.Size = new Size(895, 30);
             menuStrip1.TabIndex = 0;
             menuStrip1.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { openToolStripMenuItem, downloadToolStripMenuItem, toolStripMenuItem1, exitToolStripMenuItem });
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { openToolStripMenuItem, downloadToolStripMenuItem, toolStripMenuItem1, exitToolStripMenuItem });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            fileToolStripMenuItem.Size = new System.Drawing.Size(46, 24);
+            fileToolStripMenuItem.Size = new Size(46, 24);
             fileToolStripMenuItem.Text = "&File";
             // 
             // openToolStripMenuItem
             // 
             openToolStripMenuItem.Name = "openToolStripMenuItem";
-            openToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            openToolStripMenuItem.Size = new Size(170, 26);
             openToolStripMenuItem.Text = "&Open...";
             openToolStripMenuItem.Click += openToolStripMenuItem_Click;
             // 
             // downloadToolStripMenuItem
             // 
             downloadToolStripMenuItem.Name = "downloadToolStripMenuItem";
-            downloadToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            downloadToolStripMenuItem.Size = new Size(170, 26);
             downloadToolStripMenuItem.Text = "&Download...";
             downloadToolStripMenuItem.Click += downloadToolStripMenuItem_Click;
             // 
             // toolStripMenuItem1
             // 
             toolStripMenuItem1.Name = "toolStripMenuItem1";
-            toolStripMenuItem1.Size = new System.Drawing.Size(221, 6);
+            toolStripMenuItem1.Size = new Size(167, 6);
             // 
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            exitToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            exitToolStripMenuItem.Size = new Size(170, 26);
             exitToolStripMenuItem.Text = "E&xit";
             exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
             // 
             // parseHTMLToolStripMenuItem
             // 
             parseHTMLToolStripMenuItem.Name = "parseHTMLToolStripMenuItem";
-            parseHTMLToolStripMenuItem.Size = new System.Drawing.Size(104, 24);
+            parseHTMLToolStripMenuItem.Size = new Size(104, 24);
             parseHTMLToolStripMenuItem.Text = "Parse HTML!";
             parseHTMLToolStripMenuItem.Click += parseHTMLToolStripMenuItem_Click;
             // 
             // Form1
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(895, 901);
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(895, 901);
             Controls.Add(txtHtml);
             Controls.Add(menuStrip1);
-            Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            Margin = new Padding(5, 4, 5, 4);
             Name = "Form1";
-            Text = "HTML Monkey Test Program";
+            Text = "HtmlMonkey Test Application";
             Load += Form1_Load;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();

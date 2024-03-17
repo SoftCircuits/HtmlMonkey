@@ -54,8 +54,12 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="attribute">The attribute to add.</param>
         public void Add(HtmlAttribute attribute)
         {
+#if !NETSTANDARD2_0
+            ArgumentNullException.ThrowIfNull(attribute);
+#else
             if (attribute == null)
                 throw new ArgumentNullException(nameof(attribute));
+#endif
             if (string.IsNullOrEmpty(attribute.Name))
                 throw new ArgumentException("An attribute name is required.");
 
@@ -175,7 +179,9 @@ namespace SoftCircuits.HtmlMonkey
         /// <summary>
         /// Converts this <see cref="HtmlAttributeCollection"></see> to a string.
         /// </summary>
-        public override string ToString() => Attributes.Any() ? $" {string.Join(" ", this)}" : string.Empty;
+        public override string ToString() => (Attributes.Count > 0) ?
+            $" {string.Join(" ", this)}" :
+            string.Empty;
 
         /// <summary>
         /// Gets the number of <see cref="HtmlAttribute"/>s in this collection.

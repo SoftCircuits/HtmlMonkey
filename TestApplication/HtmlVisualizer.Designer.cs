@@ -1,4 +1,4 @@
-﻿namespace TestHtmlMonkey
+﻿namespace TestApplication
 {
     partial class HtmlVisualizer
     {

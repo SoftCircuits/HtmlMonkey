@@ -2,19 +2,15 @@
 // Licensed under the MIT license.
 //
 using SoftCircuits.HtmlMonkey;
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
-using System.Linq;
-using System.Windows.Forms;
 
-namespace TestHtmlMonkey
+namespace TestApplication
 {
     public partial class frmDetails : Form
     {
-        private HtmlNode? Node;
-        private SoftCircuits.HtmlMonkey.HtmlDocument? Document;
+        private readonly HtmlNode? Node;
+        private readonly SoftCircuits.HtmlMonkey.HtmlDocument? Document;
 
         public frmDetails(object node)
         {
@@ -58,7 +54,7 @@ namespace TestHtmlMonkey
                         else if (value == 3)
                             values = Document.RootNodes.Select(n => n.Text);
                         else
-                            values = Enumerable.Empty<string>();
+                            values = [];
                         txtText.Text = string.Join(string.Empty, values);
                     }
                 }

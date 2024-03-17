@@ -2,13 +2,8 @@
 // Licensed under the MIT license.
 //
 using Microsoft.VisualBasic;
-using System;
-using System.IO;
-using System.Net.Http;
-using System.Windows.Forms;
-using TestHtmlMonkey;
 
-namespace HtmlMonkey
+namespace TestApplication
 {
     public partial class Form1 : Form
     {

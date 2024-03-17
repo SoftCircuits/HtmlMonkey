@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 namespace SoftCircuits.HtmlMonkey
 {
     /// <summary>
-    /// Holds the nodes of a parsed HTML or XML document. Use the <see cref="RootNodes"/>
-    /// property to access these nodes. Use the <see cref="ToHtml"/> method to convert the
+    /// Holds the nodes of a parsed HTML or XML document. Use the <see cref="HtmlDocument.RootNodes"/>
+    /// property to access these nodes. Use the <see cref="HtmlDocument.ToHtml"/> method to convert the
     /// nodes back to markup.
     /// </summary>
     [Obsolete("This class has been deprecated and will be removed in a future version. Please use HtmlDocument instead.")]
@@ -48,7 +48,7 @@ namespace SoftCircuits.HtmlMonkey
         }
 
         /// <summary>
-        /// Initializes an empty <see cref="HtmlDocument"> instance.
+        /// Initializes an empty <see cref="HtmlDocument" /> instance.
         /// </summary>
         public HtmlDocument()
         {

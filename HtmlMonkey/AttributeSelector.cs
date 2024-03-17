@@ -59,13 +59,14 @@ namespace SoftCircuits.HtmlMonkey
         /// <summary>
         /// Compares the given node against this selector attribute.
         /// </summary>
-        /// <param name="node">Node to be compared.</param>
         /// <returns>True if the node matches, false otherwise.</returns>
         public Func<HtmlElementNode, bool> IsMatch { get; private set; }
 
         /// <summary>
         /// Constructs a <see cref="AttributeSelector"></see> instance.
         /// </summary>
+        /// <param name="name">Spectifies the attribute name.</param>
+        /// <param name="value">Specifies the attribute value.</param>
         /// <param name="ignoreCase">If <c>true</c>, node comparisons are not case-sensitive. If <c>false</c>,
         /// node comparisons are case-sensitive.</param>
         public AttributeSelector(string name, string? value = null, bool ignoreCase = true)

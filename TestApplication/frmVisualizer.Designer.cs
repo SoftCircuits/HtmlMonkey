@@ -1,4 +1,4 @@
-﻿namespace TestHtmlMonkey
+﻿namespace TestApplication
 {
     partial class frmVisualizer
     {
@@ -35,7 +35,7 @@
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.expandAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.collapseAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.htmlVisualizer1 = new TestHtmlMonkey.HtmlVisualizer();
+            this.htmlVisualizer1 = new TestApplication.HtmlVisualizer();
             this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.findToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();

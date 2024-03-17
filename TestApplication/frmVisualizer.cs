@@ -1,10 +1,7 @@
 ﻿// Copyright (c) 2019-2024 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
-using System;
-using System.Windows.Forms;
-
-namespace TestHtmlMonkey
+namespace TestApplication
 {
     public partial class frmVisualizer : Form
     {
@@ -30,9 +27,11 @@ namespace TestHtmlMonkey
 
         private void findToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmSearch frm = new frmSearch();
-            frm.FindText = FindText;
-            frm.MatchCase = MatchCase;
+            frmSearch frm = new()
+            {
+                FindText = FindText,
+                MatchCase = MatchCase
+            };
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 FindText = frm.FindText;

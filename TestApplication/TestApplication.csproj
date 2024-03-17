@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HtmlMonkey\HtmlMonkey.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="frmDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="frmMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="frmSearch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="frmVisualizer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="HtmlVisualizer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="frmMain.resx">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="frmVisualizer.resx">
+      <DependentUpon>frmVisualizer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="HtmlVisualizer.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>HtmlVisualizer.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

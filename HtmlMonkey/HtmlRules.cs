@@ -223,10 +223,10 @@ namespace SoftCircuits.HtmlMonkey
             ["html"] = 220,
         };
 
-        [Obsolete("This method is deprecated and will be removed in a future version. Please use GetTagNestLevel() instead.")]
         /// <summary>
         /// Returns a value that signifies the relative priority of the specified tag.
         /// </summary>
+        [Obsolete("This method is deprecated and will be removed in a future version. Please use GetTagNestLevel() instead.")]
         public static int GetTagPriority(string tag) => GetTagNestLevel(tag);
 
         /// <summary>

@@ -2,13 +2,10 @@
 // Licensed under the MIT license.
 //
 using SoftCircuits.HtmlMonkey;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
-using System.Windows.Forms;
 
-namespace TestHtmlMonkey
+namespace TestApplication
 {
     /// <summary>
     /// Class that provides visualization data for a particular node type.
@@ -25,11 +22,11 @@ namespace TestHtmlMonkey
     /// </summary>
     public class NodeVisualizer
     {
-        private static readonly string[] EmptyColumns = { };
-        private static readonly string[] AttributeColumns = { "Attribute", "Value" };
-        private static readonly string[] ParameterColumns = { "Parameter" };
-        private static readonly string[] CDataColumns = { "Delimiter", "Value" };
-        private static readonly string[] DocumentColumns = { "Property", "Value" };
+        private static readonly string[] EmptyColumns = [];
+        private static readonly string[] AttributeColumns = [ "Attribute", "Value" ];
+        private static readonly string[] ParameterColumns = [ "Parameter" ];
+        private static readonly string[] CDataColumns = [ "Delimiter", "Value" ];
+        private static readonly string[] DocumentColumns = [ "Property", "Value" ];
 
         // Note: To work correctly, derived types must appear before base types.
         private static readonly Dictionary<Type, Visualizer> VisualizerLookup = new()
@@ -84,17 +81,17 @@ namespace TestHtmlMonkey
             return null;
         }
 
-        private static string ShortDescriptionDocument(SoftCircuits.HtmlMonkey.HtmlDocument document) => $"[{document.GetType().ToString()}]";
-        private static string ShortDescriptionDocTypeHeader(HtmlHeaderNode node) => "<!doctype>";
-        private static string ShortDescriptionXmlHeader(XmlHeaderNode node) => "<?xml>";
+        private static string ShortDescriptionDocument(SoftCircuits.HtmlMonkey.HtmlDocument document) => $"[{document.GetType()}]";
+        private static string ShortDescriptionDocTypeHeader(HtmlHeaderNode _) => "<!doctype>";
+        private static string ShortDescriptionXmlHeader(XmlHeaderNode _) => "<?xml>";
         private static string ShortDescriptionElement(HtmlElementNode node) => $"<{node.TagName}>";
         private static string ShortDescriptionText(HtmlTextNode node) => $"\"{TruncateEncoded(node.Text, 32)}\"";
         private static string ShortDescriptionCData(HtmlCDataNode node) => $"\"{TruncateEncoded(node.InnerHtml, 32)}\"";
 
-        private static string LongDescriptionDocument(SoftCircuits.HtmlMonkey.HtmlDocument document) => string.Empty;
-        private static string LongDescriptionDocTypeHeader(HtmlHeaderNode node) => string.Empty;
-        private static string LongDescriptionXmlHeader(XmlHeaderNode node) => string.Empty;
-        private static string LongDescriptionElement(HtmlElementNode node) => string.Empty;
+        private static string LongDescriptionDocument(SoftCircuits.HtmlMonkey.HtmlDocument _) => string.Empty;
+        private static string LongDescriptionDocTypeHeader(HtmlHeaderNode _) => string.Empty;
+        private static string LongDescriptionXmlHeader(XmlHeaderNode _) => string.Empty;
+        private static string LongDescriptionElement(HtmlElementNode _) => string.Empty;
         private static string LongDescriptionText(HtmlTextNode node) => node.InnerHtml;
         private static string LongDescriptionCData(HtmlCDataNode node) => node.InnerHtml;
 
@@ -167,7 +164,7 @@ namespace TestHtmlMonkey
                 return string.Empty;
             if (s.Length > maxLength)
             {
-                s = s.Substring(0, maxLength);
+                s = s[..maxLength];
                 isTruncated = true;
             }
             s = CStringEncoder.EncodeString(s);
@@ -185,7 +182,7 @@ namespace TestHtmlMonkey
     /// </summary>
     public static class CStringEncoder
     {
-        private static Dictionary<char, string> EncodeLookup = new Dictionary<char, string>
+        private static readonly Dictionary<char, string> EncodeLookup = new()
         {
             ['\\'] = "\\\\",
             ['"'] = "\\\"",
@@ -200,7 +197,7 @@ namespace TestHtmlMonkey
 
         public static string EncodeString(string s)
         {
-            StringBuilder builder = new StringBuilder(s.Length + (s.Length / 4));
+            StringBuilder builder = new(s.Length + (s.Length / 4));
 
             foreach (char c in s)
             {

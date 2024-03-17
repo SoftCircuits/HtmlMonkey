@@ -37,6 +37,8 @@ namespace SoftCircuits.HtmlMonkey
         /// children.
         /// </summary>
         /// <param name="html">The HTML text to parse.</param>
+        /// <param name="ignoreHtmlRules">Set to true to parse the given HTML without
+        /// regard to any HTML rules.</param>
         public IEnumerable<HtmlNode> ParseChildren(string? html, bool ignoreHtmlRules = false)
         {
             HtmlElementNode rootNode = new("[Temp]");

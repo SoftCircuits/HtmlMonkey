@@ -2,12 +2,9 @@
 // Licensed under the MIT license.
 //
 using SoftCircuits.HtmlMonkey;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Windows.Forms;
 
-namespace TestHtmlMonkey
+namespace TestApplication
 {
     public partial class HtmlVisualizer : UserControl
     {
@@ -44,7 +41,7 @@ namespace TestHtmlMonkey
         /// </summary>
         /// <param name="nodes"></param>
         /// <param name="parent"></param>
-        public void LoadNodes(HtmlNodeCollection nodes, TreeNode parent)
+        public static void LoadNodes(HtmlNodeCollection nodes, TreeNode parent)
         {
             // Populate 
             foreach (HtmlNode node in nodes)
@@ -96,7 +93,7 @@ namespace TestHtmlMonkey
             }
         }
 
-        private static readonly Dictionary<Type, int> ImageIndexLookup = new Dictionary<Type, int>
+        private static readonly Dictionary<Type, int> ImageIndexLookup = new()
         {
             [typeof(HtmlCDataNode)] = 5,
             [typeof(HtmlTextNode)] = 4,
@@ -106,7 +103,7 @@ namespace TestHtmlMonkey
             [typeof(SoftCircuits.HtmlMonkey.HtmlDocument)] = 0
         };
 
-        public int GetImageIndex(object node)
+        public static int GetImageIndex(object node)
         {
             if (ImageIndexLookup.TryGetValue(node.GetType(), out int index))
                 return index;
@@ -129,7 +126,7 @@ namespace TestHtmlMonkey
             TreeNode treeNode = tvwNodes.SelectedNode;
             if (treeNode.Tag is object node)
             {
-                frmDetails frm = new frmDetails(node);
+                frmDetails frm = new(node);
                 frm.ShowDialog();
             }
         }
@@ -158,8 +155,7 @@ namespace TestHtmlMonkey
                 // Get next node
                 node = node.NextVisibleNode;
                 // Wrap to start if needed
-                if (node == null)
-                    node = tvwNodes.Nodes[0];
+                node ??= tvwNodes.Nodes[0];
                 // Check if we're back to starting node
                 if (node == startNode)
                     break;
@@ -168,7 +164,7 @@ namespace TestHtmlMonkey
             return false;
         }
 
-        private bool MatchesNode(object node, TextSearch search)
+        private static bool MatchesNode(object node, TextSearch search)
         {
             if (node is HtmlElementNode htmlElementNode)
             {
@@ -199,7 +195,7 @@ namespace TestHtmlMonkey
             return false;
         }
 
-        private bool MatchesAttributes(HtmlAttributeCollection attributes, TextSearch search)
+        private static bool MatchesAttributes(HtmlAttributeCollection attributes, TextSearch search)
         {
             foreach (var attribute in attributes)
             {
@@ -210,22 +206,16 @@ namespace TestHtmlMonkey
         }
     }
 
-    class TextSearch
+    class TextSearch(string text, bool matchCase)
     {
-        private readonly string Text;
-        private readonly StringComparison StringComparison;
-
-        public TextSearch(string text, bool matchCase)
-        {
-            Text = text;
-            StringComparison = matchCase ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
-        }
+        private readonly string Text = text;
+        private readonly StringComparison StringComparison = matchCase ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
 
         public bool IsMatch(string? s)
         {
             if (string.IsNullOrEmpty(s))
                 return false;
-            return s.IndexOf(Text, StringComparison) >= 0;
+            return s.Contains(Text, StringComparison);
         }
     }
 }
