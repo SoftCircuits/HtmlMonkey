@@ -24,7 +24,7 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         public HtmlAttributeCollection()
         {
-            Attributes = new List<HtmlAttribute>();
+            Attributes = [];
             IndexLookup = new Dictionary<string, int>(HtmlRules.TagStringComparer);
         }
 

@@ -10,14 +10,9 @@ namespace SoftCircuits.HtmlMonkey
     /// <summary>
     /// Represents a collection of nodes.
     /// </summary>
-    public class HtmlNodeCollection : List<HtmlNode>
+    public class HtmlNodeCollection(HtmlElementNode? parentNode = null) : List<HtmlNode>
     {
-        private readonly HtmlElementNode? ParentNode;
-
-        public HtmlNodeCollection(HtmlElementNode? parentNode = null)
-        {
-            ParentNode = parentNode;
-        }
+        private readonly HtmlElementNode? ParentNode = parentNode;
 
         /// <summary>
         /// Appends the specified node to the end of the collection. If both the last node in the

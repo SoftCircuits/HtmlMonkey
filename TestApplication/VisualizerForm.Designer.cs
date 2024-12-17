@@ -1,6 +1,6 @@
 ﻿namespace TestApplication
 {
-    partial class frmVisualizer
+    partial class VisualizerForm
     {
         /// <summary>
         /// Required designer variable.

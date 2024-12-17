@@ -3,13 +3,13 @@
 //
 namespace TestApplication
 {
-    public partial class frmVisualizer : Form
+    public partial class VisualizerForm : Form
     {
         private readonly SoftCircuits.HtmlMonkey.HtmlDocument Document;
         private string? FindText;
         private bool MatchCase;
 
-        public frmVisualizer(SoftCircuits.HtmlMonkey.HtmlDocument document)
+        public VisualizerForm(SoftCircuits.HtmlMonkey.HtmlDocument document)
         {
             InitializeComponent();
             Document = document;
@@ -27,7 +27,7 @@ namespace TestApplication
 
         private void findToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmSearch frm = new()
+            SearchForm frm = new()
             {
                 FindText = FindText,
                 MatchCase = MatchCase

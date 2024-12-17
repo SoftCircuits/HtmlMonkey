@@ -1,6 +1,6 @@
 ﻿namespace TestApplication
 {
-    partial class frmDetails
+    partial class DetailsForm
     {
         /// <summary>
         /// Required designer variable.

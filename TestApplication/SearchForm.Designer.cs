@@ -1,6 +1,6 @@
 ﻿namespace TestApplication
 {
-    partial class frmSearch
+    partial class SearchForm
     {
         /// <summary>
         /// Required designer variable.
@@ -52,7 +52,7 @@
             txtFind.Name = "txtFind";
             txtFind.Size = new Size(429, 27);
             txtFind.TabIndex = 1;
-            txtFind.TextChanged += txtFind_TextChanged;
+            txtFind.TextChanged += TxtFind_TextChanged;
             // 
             // btnOk
             // 
@@ -63,7 +63,7 @@
             btnOk.TabIndex = 3;
             btnOk.Text = "OK";
             btnOk.UseVisualStyleBackColor = true;
-            btnOk.Click += btnOk_Click;
+            btnOk.Click += OkButton_Click;
             // 
             // btnCancel
             // 
@@ -106,7 +106,7 @@
             Name = "frmSearch";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Search";
-            Load += frmSearch_Load;
+            Load += SearchForm_Load;
             ResumeLayout(false);
             PerformLayout();
         }

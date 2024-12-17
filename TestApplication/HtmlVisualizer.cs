@@ -56,7 +56,7 @@ namespace TestApplication
             }
         }
 
-        private void tvwNodes_AfterSelect(object sender, TreeViewEventArgs e)
+        private void TvwNodes_AfterSelect(object sender, TreeViewEventArgs e)
         {
             // Restart timer
             // Because the code could fall behind trying to update the selected
@@ -67,11 +67,11 @@ namespace TestApplication
             timer1.Start();
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        private void Timer1_Tick(object sender, EventArgs e)
         {
             timer1.Stop();
 
-            TreeNode treeNode = tvwNodes.SelectedNode;
+            TreeNode? treeNode = tvwNodes.SelectedNode;
             if (DisplayedNode != treeNode)
             {
                 if (treeNode?.Tag is object node)
@@ -110,23 +110,23 @@ namespace TestApplication
             return -1;
         }
 
-        private void tvwNodes_MouseDown(object sender, MouseEventArgs e)
+        private void TvwNodes_MouseDown(object sender, MouseEventArgs e)
         {
             var info = tvwNodes.HitTest(e.Location);
             tvwNodes.SelectedNode = info.Node;
         }
 
-        private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
+        private void MenuItem_Click(object sender, EventArgs e)
         {
             ShowProperties();
         }
 
         public void ShowProperties()
         {
-            TreeNode treeNode = tvwNodes.SelectedNode;
-            if (treeNode.Tag is object node)
+            TreeNode? treeNode = tvwNodes.SelectedNode;
+            if (treeNode?.Tag is object node)
             {
-                frmDetails frm = new(node);
+                DetailsForm frm = new(node);
                 frm.ShowDialog();
             }
         }
@@ -138,15 +138,16 @@ namespace TestApplication
 
             TextSearch search = new(text, matchCase);
 
-            TreeNode startNode = tvwNodes.SelectedNode;
+            TreeNode? startNode = tvwNodes.SelectedNode;
             if (startNode == null)
                 startNode = tvwNodes.Nodes[0];
             else
                 startNode = startNode.NextVisibleNode;
 
-            TreeNode node = startNode;
+            TreeNode? node = startNode;
             while (node != null)
             {
+                Debug.Assert(node.Tag != null);
                 if (MatchesNode(node.Tag, search))
                 {
                     tvwNodes.SelectedNode = node;

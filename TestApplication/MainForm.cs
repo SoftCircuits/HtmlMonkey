@@ -5,11 +5,11 @@ using Microsoft.VisualBasic;
 
 namespace TestApplication
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         protected string? Url;
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
         }
@@ -75,7 +75,7 @@ namespace TestApplication
                 SoftCircuits.HtmlMonkey.HtmlDocument document = SoftCircuits.HtmlMonkey.HtmlDocument.FromHtml(txtHtml.Text);
                 Cursor = Cursors.Default;
 
-                frmVisualizer frm = new(document);
+                VisualizerForm frm = new(document);
                 frm.ShowDialog();
             }
             catch (Exception ex)

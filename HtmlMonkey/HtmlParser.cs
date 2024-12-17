@@ -206,7 +206,7 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         private HtmlAttributeCollection ParseAttributes()
         {
-            HtmlAttributeCollection attributes = new();
+            HtmlAttributeCollection attributes = [];
 
             // Parse tag attributes
             Parser.SkipWhiteSpace();

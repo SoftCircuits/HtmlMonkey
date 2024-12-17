@@ -107,7 +107,7 @@ namespace TestApplication
             foreach (var attribute in node.Attributes)
             {
                 var item = listView.Items.Add(attribute.Name);
-                item.SubItems.Add(attribute.Value != null ? attribute.Value : "(null)");
+                item.SubItems.Add(attribute.Value ?? "(null)");
             }
         }
 
@@ -117,7 +117,7 @@ namespace TestApplication
             foreach (var attribute in node.Attributes)
             {
                 var item = listView.Items.Add(attribute.Name);
-                item.SubItems.Add(attribute.Value != null ? attribute.Value : "(null)");
+                item.SubItems.Add(attribute.Value ?? "(null)");
             }
         }
 
@@ -127,11 +127,11 @@ namespace TestApplication
             foreach (var attribute in node.Attributes)
             {
                 var item = listView.Items.Add(attribute.Name);
-                item.SubItems.Add(attribute.Value != null ? attribute.Value : "(null)");
+                item.SubItems.Add(attribute.Value ?? "(null)");
             }
         }
 
-        private static void PopulatePropertiesText(HtmlTextNode node, ListView listView)
+        private static void PopulatePropertiesText(HtmlTextNode _, ListView listView)
         {
             InitializeListView(EmptyColumns, listView);
         }

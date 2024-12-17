@@ -85,8 +85,8 @@
             this.tvwNodes.SelectedImageIndex = 0;
             this.tvwNodes.Size = new System.Drawing.Size(295, 632);
             this.tvwNodes.TabIndex = 0;
-            this.tvwNodes.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvwNodes_AfterSelect);
-            this.tvwNodes.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tvwNodes_MouseDown);
+            this.tvwNodes.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TvwNodes_AfterSelect);
+            this.tvwNodes.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TvwNodes_MouseDown);
             // 
             // contextMenuStrip1
             // 
@@ -100,7 +100,7 @@
             this.propertiesToolStripMenuItem.Name = "propertiesToolStripMenuItem";
             this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
             this.propertiesToolStripMenuItem.Text = "&Properties";
-            this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.propertiesToolStripMenuItem_Click);
+            this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // imageList1
             // 
@@ -187,7 +187,7 @@
             // 
             // timer1
             // 
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.timer1.Tick += new System.EventHandler(this.Timer1_Tick);
             // 
             // HtmlVisualizer
             // 

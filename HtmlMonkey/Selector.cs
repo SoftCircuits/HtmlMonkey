@@ -40,7 +40,7 @@ namespace SoftCircuits.HtmlMonkey
         public Selector()
         {
             Tag = null;
-            Attributes = new List<AttributeSelector>();
+            Attributes = [];
             ChildSelector = null;
         }
 
@@ -48,7 +48,7 @@ namespace SoftCircuits.HtmlMonkey
         /// Returns true if selector has no data. Child selectors are not included in this
         /// evaluation.
         /// </summary>
-        public bool IsEmpty => string.IsNullOrWhiteSpace(Tag) && !Attributes.Any();
+        public bool IsEmpty => string.IsNullOrWhiteSpace(Tag) && Attributes.Count == 0;
 
         /// <summary>
         /// Returns true if this selector matches the specified <see cref="HtmlElementNode"/>.
@@ -74,7 +74,7 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         /// <param name="rootNode">Root node to search.</param>
         /// <returns>The matching nodes.</returns>
-        public IEnumerable<HtmlElementNode> Find(HtmlNode rootNode) => Find(new[] { rootNode });
+        public IEnumerable<HtmlElementNode> Find(HtmlNode rootNode) => Find([rootNode]);
 
         /// <summary>
         /// Recursively searches the list of nodes and returns the nodes that match this
@@ -90,19 +90,19 @@ namespace SoftCircuits.HtmlMonkey
             // Search from this selector on down through its child selectors
             for (Selector? selector = this; selector != null; selector = selector.ChildSelector)
             {
-                results = new List<HtmlElementNode>();
+                results = [];
                 FindRecursive(nodes, selector, matchTopLevelNodes, true, results);
                 // In next iteration, apply nodes that matched this iteration
                 nodes = results;
                 matchTopLevelNodes = false;
             }
-            return results?.Distinct() ?? Enumerable.Empty<HtmlElementNode>();
+            return results?.Distinct() ?? [];
         }
 
         /// <summary>
         /// Resursive portion of Find().
         /// </summary>
-        private void FindRecursive(IEnumerable<HtmlNode> nodes, Selector selector,
+        private static void FindRecursive(IEnumerable<HtmlNode> nodes, Selector selector,
             bool matchTopLevelNodes, bool recurse, List<HtmlElementNode> results)
         {
             Debug.Assert(matchTopLevelNodes || recurse);
@@ -141,7 +141,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <returns>The parsed selector data structures.</returns>
         public static SelectorCollection ParseSelector(string? selectorText)
         {
-            SelectorCollection selectors = new();
+            SelectorCollection selectors = [];
 
             if (!string.IsNullOrWhiteSpace(selectorText))
             {

@@ -18,7 +18,7 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         /// <param name="rootNode">Root node of nodes to search.</param>
         /// <returns>A set of nodes that matches this selector collection.</returns>
-        public IEnumerable<HtmlElementNode> Find(HtmlNode rootNode) => Find(new[] { rootNode });
+        public IEnumerable<HtmlElementNode> Find(HtmlNode rootNode) => Find([rootNode]);
 
         /// <summary>
         /// Recursively searches the given list of nodes using this list of selectors.

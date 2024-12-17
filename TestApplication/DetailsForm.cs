@@ -7,12 +7,12 @@ using System.Diagnostics;
 
 namespace TestApplication
 {
-    public partial class frmDetails : Form
+    public partial class DetailsForm : Form
     {
         private readonly HtmlNode? Node;
         private readonly SoftCircuits.HtmlMonkey.HtmlDocument? Document;
 
-        public frmDetails(object node)
+        public DetailsForm(object node)
         {
             InitializeComponent();
             Debug.Assert(node != null);

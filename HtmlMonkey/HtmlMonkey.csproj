@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0;net7.0;net6.0;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net9.0;net8.0;net7.0;net6.0;netstandard2.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Nullable>annotations</Nullable>
-    <Nullable Condition="'$(TargetFramework)' == 'net5.0'">enable</Nullable>
-    <LangVersion>9.0</LangVersion>
+    <Nullable Condition="'$(TargetFramework)' != 'netstandard2.0'">enable</Nullable>
+    <LangVersion>latest</LangVersion>
     <ApplicationIcon />
     <OutputTypeEx>library</OutputTypeEx>
     <StartupObject />
@@ -28,8 +28,8 @@
     <PackageLicenseFile>License.txt</PackageLicenseFile>
     <AssemblyVersion></AssemblyVersion>
     <FileVersion></FileVersion>
-    <Version>2.2.0</Version>
-    <PackageReleaseNotes>Added direct support for .NET 8; Removed direct support for deprecated .NET 5; Now including XML comment files; Minor tweaks and fixes.</PackageReleaseNotes>
+    <Version>2.3.0</Version>
+    <PackageReleaseNotes>Added direct support for .NET 9.0; Code clean up.</PackageReleaseNotes>
     <PackageId>SoftCircuits.HtmlMonkey</PackageId>
     <PackageIcon>Logo_64x64.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>

@@ -1,31 +1,36 @@
-﻿// Copyright (c) 2019-2024 Jonathan Wood (www.softcircuits.com)
+﻿using System.ComponentModel;
+// Copyright (c) 2019-2024 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
+
 namespace TestApplication
 {
-    public partial class frmSearch : Form
+    public partial class SearchForm : Form
     {
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string? FindText { get; set; }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool MatchCase { get; set; }
 
-        public frmSearch()
+        public SearchForm()
         {
             InitializeComponent();
             EnableButtons();
         }
 
-        private void frmSearch_Load(object sender, EventArgs e)
+        private void SearchForm_Load(object sender, EventArgs e)
         {
             txtFind.Text = FindText;
             chkMatchCase.Checked = MatchCase;
         }
 
-        private void txtFind_TextChanged(object sender, EventArgs e)
+        private void TxtFind_TextChanged(object sender, EventArgs e)
         {
             EnableButtons();
         }
 
-        private void btnOk_Click(object sender, EventArgs e)
+        private void OkButton_Click(object sender, EventArgs e)
         {
             FindText = txtFind.Text;
             MatchCase = chkMatchCase.Checked;

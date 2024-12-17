@@ -133,7 +133,7 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         public HtmlHeaderNode()
         {
-            Attributes = new HtmlAttributeCollection();
+            Attributes = [];
         }
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         public XmlHeaderNode()
         {
-            Attributes = new HtmlAttributeCollection();
+            Attributes = [];
         }
 
         /// <summary>
@@ -229,7 +229,7 @@ namespace SoftCircuits.HtmlMonkey
         public HtmlElementNode(string tagName, HtmlAttributeCollection? attributes = null)
         {
             TagName = tagName ?? string.Empty;
-            Attributes = attributes ?? new HtmlAttributeCollection();
+            Attributes = attributes ?? [];
             Children = new HtmlNodeCollection(this);
         }
 
@@ -242,7 +242,7 @@ namespace SoftCircuits.HtmlMonkey
         public HtmlElementNode(string tagName, HtmlAttributeCollection? attributes, HtmlNodeCollection children)
         {
             TagName = tagName ?? string.Empty;
-            Attributes = attributes ?? new HtmlAttributeCollection();
+            Attributes = attributes ?? [];
             Children = children ?? throw new ArgumentNullException(nameof(children));
         }
 
@@ -348,18 +348,13 @@ namespace SoftCircuits.HtmlMonkey
     /// <summary>
     /// Represents a text node.
     /// </summary>
-    public class HtmlTextNode : HtmlNode
+    /// <remarks>
+    /// Constructs a new <see cref="HtmlTextNode"/> instance.
+    /// </remarks>
+    /// <param name="html">Optional markup for this node.</param>
+    public class HtmlTextNode(string? html = null) : HtmlNode
     {
-        protected string Content;
-
-        /// <summary>
-        /// Constructs a new <see cref="HtmlTextNode"/> instance.
-        /// </summary>
-        /// <param name="html">Optional markup for this node.</param>
-        public HtmlTextNode(string? html = null)
-        {
-            Content = html ?? string.Empty;
-        }
+        protected string Content = html ?? string.Empty;
 
         /// <summary>
         /// Gets or sets this node's raw text.
@@ -398,30 +393,23 @@ namespace SoftCircuits.HtmlMonkey
     /// Represents a node that contains CDATA. This data is saved but not parsed.
     /// Examples include CDATA, comments and the content of SCRIPT and STYLE tags.
     /// </summary>
-    public class HtmlCDataNode : HtmlTextNode
+    /// <remarks>
+    /// Constructs a new <see cref="HtmlCDataNode"/> instance.
+    /// </remarks>
+    /// <param name="prefix">CDATA prefix markup.</param>
+    /// <param name="suffix">CDATA suffix markup.</param>
+    /// <param name="html">CDATA content.</param>
+    public class HtmlCDataNode(string prefix, string suffix, string html) : HtmlTextNode(html)
     {
         /// <summary>
         /// Gets or sets this node's CDATA prefix markup.
         /// </summary>
-        public string Prefix { get; set; }
+        public string Prefix { get; set; } = prefix;
 
         /// <summary>
         /// Gets or sets this node's CDATA suffix markup.
         /// </summary>
-        public string Suffix { get; set; }
-
-        /// <summary>
-        /// Constructs a new <see cref="HtmlCDataNode"/> instance.
-        /// </summary>
-        /// <param name="prefix">CDATA prefix markup.</param>
-        /// <param name="suffix">CDATA suffix markup.</param>
-        /// <param name="html">CDATA content.</param>
-        public HtmlCDataNode(string prefix, string suffix, string html)
-            : base(html)
-        {
-            Prefix = prefix;
-            Suffix = suffix;
-        }
+        public string Suffix { get; set; } = suffix;
 
         /// <summary>
         /// Gets or sets this node's inner content.

@@ -9,12 +9,9 @@ using System.Text.RegularExpressions;
 namespace SoftCircuits.HtmlMonkey
 {
     [Obsolete("This class is deprecated and will be removed from a future version. Please use AttributeSelector instead.")]
-    public class SelectorAttribute : AttributeSelector
+    public class SelectorAttribute(string name, string? value = null, bool ignoreCase = true)
+        : AttributeSelector(name, value, ignoreCase)
     {
-        public SelectorAttribute(string name, string? value = null, bool ignoreCase = true)
-            : base(name, value, ignoreCase)
-        {
-        }
     }
 
     /// <summary>

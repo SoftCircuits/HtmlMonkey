@@ -61,8 +61,8 @@ namespace SoftCircuits.HtmlMonkey
         public static readonly char DoubleQuote = '"';
         public static readonly char SingleQuote = '\'';
 
-        public static List<CDataDefinition> CDataDefinitions = new()
-        {
+        public static List<CDataDefinition> CDataDefinitions =
+        [
             new CDataDefinition
             {
                 StartText = "<!--",
@@ -77,7 +77,7 @@ namespace SoftCircuits.HtmlMonkey
                 StartComparison = StringComparison.OrdinalIgnoreCase,
                 EndComparison = StringComparison.Ordinal
             },
-        };
+        ];
 
         public static readonly StringComparison TagStringComparison = StringComparison.CurrentCultureIgnoreCase;
         public static readonly StringComparer TagStringComparer = StringComparer.CurrentCultureIgnoreCase;
@@ -97,8 +97,8 @@ namespace SoftCircuits.HtmlMonkey
         static HtmlRules()
         {
             // Characters that are not valid within tag and attribute names (excluding whitespace and control characters)
-            InvalidChars = new HashSet<char>
-            {
+            InvalidChars =
+            [
                 '!',
                 '?',
                 '<',
@@ -107,7 +107,7 @@ namespace SoftCircuits.HtmlMonkey
                 '>',
                 '/',
                 '='
-            };
+            ];
             for (int i = 0xfdd0; i <= 0xfdef; i++)
                 InvalidChars.Add((char)i);
             InvalidChars.Add('\ufffe');

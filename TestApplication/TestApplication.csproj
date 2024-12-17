@@ -2,10 +2,11 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net9.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateResourceWarnOnBinaryFormatterUse>false</GenerateResourceWarnOnBinaryFormatterUse>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,16 +14,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="frmDetails.cs">
+    <Compile Update="DetailsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="frmMain.cs">
+    <Compile Update="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="frmSearch.cs">
+    <Compile Update="SearchForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="frmVisualizer.cs">
+    <Compile Update="VisualizerForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="HtmlVisualizer.cs">
@@ -31,11 +32,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="frmMain.resx">
-      <DependentUpon>frmMain.cs</DependentUpon>
+    <EmbeddedResource Update="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Update="frmVisualizer.resx">
-      <DependentUpon>frmVisualizer.cs</DependentUpon>
+    <EmbeddedResource Update="VisualizerForm.resx">
+      <DependentUpon>VisualizerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Update="HtmlVisualizer.resx">
       <SubType>Designer</SubType>
