@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2024 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2025 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System;
@@ -103,5 +103,30 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         /// <returns>A string with the markup for this node collection.</returns>
         public static string ToHtml(this IEnumerable<HtmlNode> nodes) => string.Concat(nodes.Select(n => n.OuterHtml));
+
+        /// <summary>
+        /// Starting with this node and navigating up the parent chain, this method returns the
+        /// first <see cref="HtmlElementNode"/> that matches the specified <paramref name="tag"/>.
+        /// Returns <c>null</c> if no match is found.
+        /// </summary>
+        /// <param name="node">The node</param>
+        /// <param name="tag">The name of the tag to find.</param>
+        public static HtmlElementNode? FindClosest(this HtmlNode node, string tag)
+        {
+            // Return this node if match
+            if (node is HtmlElementNode thisNode && thisNode.TagName.Equals(tag, HtmlRules.TagStringComparison))
+                return thisNode;
+
+            // Else traverse parent nodes
+            HtmlElementNode? elementNode = node.ParentNode;
+            while (elementNode != null)
+            {
+                if (elementNode.TagName.Equals(tag, HtmlRules.TagStringComparison))
+                    return elementNode;
+                elementNode = elementNode.ParentNode;
+            }
+
+            return null;
+        }
     }
 }

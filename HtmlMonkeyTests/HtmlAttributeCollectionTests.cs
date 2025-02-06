@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2024 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2025 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -44,14 +44,14 @@ namespace HtmlMonkeyTests
             Assert.AreEqual(15, attributes.Count);
 
             // Add range
-            attributes.AddRange(new[]
-            {
+            attributes.AddRange(
+            [
                 new HtmlAttribute("Sixteen", "16"),
                 new HtmlAttribute("Seventeen", "17"),
                 new HtmlAttribute("Eighteen", "18"),
                 new HtmlAttribute("Nineteen", "19"),
                 new HtmlAttribute("Twenty", "20"),
-            });
+            ]);
             Assert.AreEqual(20, attributes.Count);
 
             // By name
@@ -150,21 +150,21 @@ namespace HtmlMonkeyTests
             Assert.AreEqual("15", attributes[9].Value);
         }
 
-        private readonly List<string> Names = new()
-        {
+        private readonly List<string> Names =
+        [
             "href",
             "target",
             "class",
             "title"
-        };
+        ];
 
-        private readonly List<string> Values = new()
-        {
+        private readonly List<string> Values =
+        [
             "http://www.domain.com",
             "_blank",
             "cool-style",
             "Toolip here!"
-        };
+        ];
 
         [TestMethod]
         public void OrderingTest()

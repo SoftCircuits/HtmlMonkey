@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2024 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2025 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System;
@@ -208,8 +208,12 @@ namespace SoftCircuits.HtmlMonkey
         /// Defines element tag nesting values. Tags cannot appear within tags with a lower value. Used when parsing to detected
         /// mismatches open/close tags.
         /// </summary>
+        /// <remarks>
+        /// This needs to be reworked. Something more sophisticated is needed.
+        /// </remarks>
         private static readonly Dictionary<string, int> NestLevelLookup = new(StringComparer.CurrentCultureIgnoreCase)
         {
+            ["p"] = 140,
             ["div"] = 150,
             ["td"] = 160,
             ["th"] = 160,
@@ -224,44 +228,24 @@ namespace SoftCircuits.HtmlMonkey
         };
 
         /// <summary>
-        /// Returns a value that signifies the relative priority of the specified tag.
-        /// </summary>
-        [Obsolete("This method is deprecated and will be removed in a future version. Please use GetTagNestLevel() instead.")]
-        public static int GetTagPriority(string tag) => GetTagNestLevel(tag);
-
-        /// <summary>
-        /// Returns a value that signifies the relative nest level of the specified tag. Tags with higher values
-        /// cannot be contained within tags with lower levels.
-        /// </summary>
-        /// <param name="tag">The element tag for which to get the nest level.</param>
-        public static int GetTagNestLevel(string tag) => NestLevelLookup.TryGetValue(tag, out int priority) ? priority : 100;
-
-        #endregion
-
-        #region Tag nesting rules logic
-
-        /// <summary>
-        /// Returns true if it is valid for the given parent tag to contain the given child tag.
+        /// Returns true if it is considered valid for the given parent tag to contain the
+        /// given child tag.
         /// </summary>
         public static bool TagMayContain(string parentTag, string childTag)
         {
-            return TagMayContain(parentTag, childTag, GetTagFlags(parentTag));
-        }
+            HtmlTagFlag parentFlags = GetTagFlags(parentTag);
 
-        /// <summary>
-        /// Returns true if it is considered valid for the given parent tag to contain the
-        /// given child tag. Provide the parent flags, if available, to improve performance.
-        /// </summary>
-        public static bool TagMayContain(string parentTag, string childTag, HtmlTagFlag parentFlags)
-        {
             if (parentFlags.HasFlag(HtmlTagFlag.NoChildren))
                 return false;
             if (parentFlags.HasFlag(HtmlTagFlag.NoNested) && parentTag.Equals(childTag, TagStringComparison))
                 return false;
-            // Attempt to catch mismatched open/close tags
-            if (GetTagNestLevel(childTag) > GetTagNestLevel(parentTag))
-                return false;
-            return true;
+
+            if (!NestLevelLookup.TryGetValue(parentTag, out int parentLevel))
+                return true;
+            if (!NestLevelLookup.TryGetValue(childTag, out int childLevel))
+                return true;
+
+            return parentLevel >= childLevel;
         }
 
         #endregion

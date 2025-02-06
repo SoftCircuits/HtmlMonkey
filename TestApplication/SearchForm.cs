@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-// Copyright (c) 2019-2024 Jonathan Wood (www.softcircuits.com)
+// Copyright (c) 2019-2025 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 

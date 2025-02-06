@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2024 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2025 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -16,10 +16,11 @@ namespace HtmlMonkeyTests
         {
             public Type? Type { get; set; }
             public string? Content { get; set; }
+            public override string ToString() => Content ?? string.Empty;
         }
 
-        private readonly List<NodeInfo> ExpectedNodes = new()
-        {
+        private readonly List<NodeInfo> ExpectedNodes =
+        [
             new NodeInfo { Type = typeof(HtmlElementNode), Content = "div" },
             new NodeInfo { Type = typeof(HtmlTextNode), Content = "\r\n    " },
             new NodeInfo { Type = typeof(HtmlElementNode), Content = "table" },
@@ -58,28 +59,31 @@ namespace HtmlMonkeyTests
             new NodeInfo { Type = typeof(HtmlTextNode), Content = "\r\n        " },
             new NodeInfo { Type = typeof(HtmlTextNode), Content = "\r\n    " },
             new NodeInfo { Type = typeof(HtmlTextNode), Content = "\r\n" },
-        };
+        ];
 
-        private readonly string html = @"<div>
-    <table>
-        <thead>
-            <tr>
-                <th>Header1</th>
-                <th>Header2</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Cell1-1</td>
-                <td>Cell1-2</td>
-            </tr>
-            <tr>
-                <td>Cell2-1</td>
-                <td>Cell2-2</td>
-            </tr>
-        </tbody>
-    </table>
-</div>";
+        private readonly string html =
+            """
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Header1</th>
+                            <th>Header2</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cell1-1</td>
+                            <td>Cell1-2</td>
+                        </tr>
+                        <tr>
+                            <td>Cell2-1</td>
+                            <td>Cell2-2</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            """;
 
 
         [TestMethod]
@@ -87,7 +91,7 @@ namespace HtmlMonkeyTests
         {
             HtmlDocument document = HtmlDocument.FromHtml(html);
 
-            List<HtmlNode> encounteredNodes = new();
+            List<HtmlNode> encounteredNodes = [];
             for (HtmlNode? node = document.RootNodes.First(); node != null; node = node.NavigateNextNode())
                 encounteredNodes.Add(node);
             CompareResults(encounteredNodes);

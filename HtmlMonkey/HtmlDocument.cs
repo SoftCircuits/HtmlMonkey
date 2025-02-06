@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2024 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2025 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System;
@@ -9,16 +9,6 @@ using System.Threading.Tasks;
 
 namespace SoftCircuits.HtmlMonkey
 {
-    /// <summary>
-    /// Holds the nodes of a parsed HTML or XML document. Use the <see cref="HtmlDocument.RootNodes"/>
-    /// property to access these nodes. Use the <see cref="HtmlDocument.ToHtml"/> method to convert the
-    /// nodes back to markup.
-    /// </summary>
-    [Obsolete("This class has been deprecated and will be removed in a future version. Please use HtmlDocument instead.")]
-    public class HtmlMonkeyDocument : HtmlDocument
-    {
-    }
-
     /// <summary>
     /// Holds the nodes of a parsed HTML or XML document. Use the <see cref="RootNodes"/>
     /// property to access these nodes. Use the <see cref="ToHtml"/> method to convert the

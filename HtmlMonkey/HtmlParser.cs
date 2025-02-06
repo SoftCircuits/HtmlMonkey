@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2024 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2025 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System;
@@ -41,7 +41,7 @@ namespace SoftCircuits.HtmlMonkey
         /// regard to any HTML rules.</param>
         public IEnumerable<HtmlNode> ParseChildren(string? html, bool ignoreHtmlRules = false)
         {
-            HtmlElementNode rootNode = new("[Temp]");
+            HtmlElementNode rootNode = new(string.Empty);
             HtmlElementNode parentNode = rootNode;
             Parser.Reset(html);
             bool selfClosing;
@@ -75,16 +75,14 @@ namespace SoftCircuits.HtmlMonkey
                             }
                             else
                             {
-                                // Handle mismatched closing tag
-                                int tagPriority = HtmlRules.GetTagNestLevel(tag);
-
-                                while (!parentNode.IsTopLevelNode && tagPriority > HtmlRules.GetTagNestLevel(parentNode.TagName))
-                                    parentNode = parentNode.ParentNode;
-
-                                if (parentNode.TagName.Equals(tag, HtmlRules.TagStringComparison))
+                                // Closing tag does not match, so look up the parent chain
+                                // for a matching element tag to close
+                                HtmlElementNode? node = parentNode.FindClosest(tag);
+                                if (node != null)
                                 {
-                                    if (!parentNode.IsTopLevelNode)
-                                        parentNode = parentNode.ParentNode;
+                                    Debug.Assert(node.IsTopLevelNode == false);
+                                    Debug.Assert(node.ParentNode != null);
+                                    parentNode = node.ParentNode;
                                 }
                             }
                         }
@@ -158,10 +156,10 @@ namespace SoftCircuits.HtmlMonkey
             }
 
             // Remove references to temporary parent node
-            parentNode.Children.ForEach(n => n.ParentNode = null);
+            rootNode.Children.ForEach(n => n.ParentNode = null);
 
             // Return collection of top-level nodes from nodes just parsed
-            return parentNode.Children;
+            return rootNode.Children;
         }
 
         /// <summary>

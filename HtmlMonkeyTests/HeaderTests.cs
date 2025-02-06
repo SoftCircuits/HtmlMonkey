@@ -1,4 +1,4 @@
-// Copyright (c) 2019-2024 Jonathan Wood (www.softcircuits.com)
+// Copyright (c) 2019-2025 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,45 +14,54 @@ namespace HtmlMonkeyTests
         [TestMethod]
         public void TestHtmlHeader()
         {
-            List<HtmlAttribute>[] htmlHeaders = new List<HtmlAttribute>[]
-            {
-                new() { new("html") },
-                new() { new("HTML"),
+            List<HtmlAttribute>[] htmlHeaders =
+            [
+                [
+                    new("html")
+                ],
+                [
+                    new("HTML"),
                     new HtmlAttribute("PUBLIC"),
                     new HtmlAttribute("\"-//W3C//DTD HTML 4.01//EN\""),
                     new HtmlAttribute("\"http://www.w3.org/TR/html4/strict.dtd\""),
-                },
-                new() { new HtmlAttribute("html"),
+                ],
+                [
+                    new HtmlAttribute("html"),
                     new HtmlAttribute("PUBLIC"),
                     new HtmlAttribute("\"-//W3C//DTD HTML 4.01 Transitional//EN\""),
                     new HtmlAttribute("\"http://www.w3.org/TR/html4/loose.dtd\""),
-                },
-                new() { new HtmlAttribute("html"),
+                ],
+                [
+                    new HtmlAttribute("html"),
                     new HtmlAttribute("PUBLIC"),
                     new HtmlAttribute("\"-//W3C//DTD HTML 4.01 Frameset//EN\""),
                     new HtmlAttribute("\"http://www.w3.org/TR/html4/frameset.dtd\""),
-                },
-                new() { new HtmlAttribute("html"),
+                ],
+                [
+                    new HtmlAttribute("html"),
                     new HtmlAttribute("PUBLIC"),
                     new HtmlAttribute("\"-//W3C//DTD XHTML 1.0 Strict//EN\""),
                     new HtmlAttribute("\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\""),
-                },
-                new() { new HtmlAttribute("html"),
+                ],
+                [
+                    new HtmlAttribute("html"),
                     new HtmlAttribute("PUBLIC"),
                     new HtmlAttribute("\"-//W3C//DTD XHTML 1.0 Transitional//EN\""),
                     new HtmlAttribute("\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\""),
-                },
-                new() { new HtmlAttribute("html"),
+                ],
+                [
+                    new HtmlAttribute("html"),
                     new HtmlAttribute("PUBLIC"),
                     new HtmlAttribute("\"-//W3C//DTD XHTML 1.0 Frameset//EN\""),
                     new HtmlAttribute("\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd\""),
-                },
-                new() { new HtmlAttribute("html"),
+                ],
+                [
+                    new HtmlAttribute("html"),
                     new HtmlAttribute("PUBLIC"),
                     new HtmlAttribute("\"-//W3C//DTD XHTML 1.1//EN\""),
                     new HtmlAttribute("\"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\""),
-                },
-            };
+                ],
+            ];
 
             foreach (List<HtmlAttribute> htmlAttributes in htmlHeaders)
             {
@@ -69,17 +78,21 @@ namespace HtmlMonkeyTests
         [TestMethod]
         public void TestXmlHeader()
         {
-            List<HtmlAttribute>[] xmlHeaders = new List<HtmlAttribute>[]
-            {
-                new() { new HtmlAttribute("version", "1.0") },
-                new() { new HtmlAttribute("version", "1.0"),
+            List<HtmlAttribute>[] xmlHeaders =
+            [
+                [
+                    new HtmlAttribute("version", "1.0")
+                ],
+                [
+                    new HtmlAttribute("version", "1.0"),
                     new HtmlAttribute("encoding", "UTF-8"),
-                },
-                new() { new HtmlAttribute("version", "1.0"),
+                ],
+                [
+                    new HtmlAttribute("version", "1.0"),
                     new HtmlAttribute("encoding", "UTF-8"),
                     new HtmlAttribute("standalone", "no"),
-                },
-            };
+                ],
+            ];
 
             foreach (List<HtmlAttribute> htmlAttributes in xmlHeaders)
             {

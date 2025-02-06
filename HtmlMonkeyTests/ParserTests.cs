@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2024 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2025 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -11,123 +11,127 @@ namespace HtmlMonkeyTests
     [TestClass]
     public class ParserTests
     {
-        private readonly static string Html = @"<!doctype html>
-<html>
-<head>
-    <meta charset=""utf-8"" />
-    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"" />
-    <title>Home Page - SoftCircuits Programming</title>
-    <link href=""/Content/css?v=ZuEFEXhF0MuCq9xXg11nzmzR2Ax_M-qKsw3zKCy9i8U1"" rel=""stylesheet"" />
-    <script src=""/bundles/modernizr?v=wBEWDufH_8Md-Pbioxomt90vm6tJN2Pyy9u9zHtWsPo1"" />
-</head>
-<body>
-    <div class=""navbar navbar-inverse navbar-fixed-top"">
-        <div class=""container"">
-            <div class=""navbar-header"">
-                <button type=""button"" class=""navbar-toggle"" data-toggle=""collapse"" data-target="".navbar-collapse"">
-                    <span class=""icon-bar"" />
-                    <span class=""icon-bar"" />
-                    <span class=""icon-bar"" />
-                </button>
-                <a class=""navbar-brand"" href=""/"">SoftCircuits</a>
+        private readonly static string Html =
+            """
+            <!doctype html>
+            <html>
+            <head>
+                <meta charset="utf-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <title>Home Page - SoftCircuits Programming</title>
+                <link href="/Content/css?v=ZuEFEXhF0MuCq9xXg11nzmzR2Ax_M-qKsw3zKCy9i8U1" rel="stylesheet" />
+                <script src="/bundles/modernizr?v=wBEWDufH_8Md-Pbioxomt90vm6tJN2Pyy9u9zHtWsPo1" />
+            </head>
+            <body>
+                <div class="navbar navbar-inverse navbar-fixed-top">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                                <span class="icon-bar" />
+                                <span class="icon-bar" />
+                                <span class="icon-bar" />
+                            </button>
+                            <a class="navbar-brand" href="/">SoftCircuits</a>
+                        </div>
+                        <div class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav">
+                                <li><a href="/Consulting">Consulting</a></li>
+                                <li><a href="/Products">Products</a></li>
+                                <li><a href="/Company/About">About</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="container body-content">
+                    <div class="company-logo">
+                        <a href="http://www.softcircuits.com">
+                        </a>
+                    </div>
+                <div>
+
+                <h1>SoftCircuits</h1>
+                <p>SoftCircuits develops desktop and website applications for the Windows platform.</p>
+
+                <h2>Software Consulting</h2>
+                <p>
+                    SoftCircuits has decades of experience developing websites and desktop software for the
+                    Windows platform.We also work with a network of developers with expertise in various
+                    technologies. Please<a href="/Company/Contact">contact us</a> if you'd like to discuss
+                    one of your own projects.We'd be happy to help with projects big or small.
+                </p>
+                <p><a class="btn btn-primary" href="/Consulting">Learn more &raquo;</a></p>
+
+                <h2>Products</h2>
+                <p>
+                    SoftCircuits currently has a range of products available for the Windows platform.Some of
+                    them are available in the Microsoft store.These products include our Cygnus Hex Editor,
+                    Snippets text database and several other Windows applications.
+                </p>
+                <p><a class="btn btn-primary" href="/Products">Learn more &raquo;</a></p>
+
+                <h2>Websites</h2>
+                <p>
+                    SoftCircuits also maintains a number of web properties under the
+                    <a href="http://www.scwebgroup.com">SC Web Group brand</a>.
+                </p>
+                <p><a class="btn btn-primary" href="http://www.scwebgroup.com">Learn more &raquo;</a></p>
+
             </div>
-            <div class=""navbar-collapse collapse"">
-                <ul class=""nav navbar-nav"">
-                    <li><a href=""/Consulting"">Consulting</a></li>
-                    <li><a href=""/Products"">Products</a></li>
-                    <li><a href=""/Company/About"">About</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class=""container body-content"">
-        <div class=""company-logo"">
-            <a href=""http://www.softcircuits.com"">
-            </a>
-        </div>
-    <div>
 
-    <h1>SoftCircuits</h1>
-    <p>SoftCircuits develops desktop and website applications for the Windows platform.</p>
+                    <hr />
+                    <footer>
+                        <p>
+                            Copyright &copy; 2024 <a href="http://www.softcircuits.com">SoftCircuits</a><br />
+                            <a href="http://www.scwebgroup.com">SC Web Group</a> |
+                            <a href="http://www.insiderarticles.com"> Insider Articles</a>
+                        </p>
+                    </footer>
+                </div>
 
-    <h2>Software Consulting</h2>
-    <p>
-        SoftCircuits has decades of experience developing websites and desktop software for the
-        Windows platform.We also work with a network of developers with expertise in various
-        technologies. Please<a href=""/Company/Contact"">contact us</a> if you'd like to discuss
-        one of your own projects.We'd be happy to help with projects big or small.
-    </p>
-    <p><a class=""btn btn-primary"" href=""/Consulting"">Learn more &raquo;</a></p>
+                <script src="/bundles/jquery?v=FVs3ACwOLIVInrAl5sdzR2jrCDmVOWFbZMY6g6Q0ulE1" />
 
-    <h2>Products</h2>
-    <p>
-        SoftCircuits currently has a range of products available for the Windows platform.Some of
-        them are available in the Microsoft store.These products include our Cygnus Hex Editor,
-        Snippets text database and several other Windows applications.
-    </p>
-    <p><a class=""btn btn-primary"" href=""/Products"">Learn more &raquo;</a></p>
+                <script src="/bundles/bootstrap?v=2Fz3B0iizV2NnnamQFrx-NbYJNTFeBJ2GM05SilbtQU1" />
 
-    <h2>Websites</h2>
-    <p>
-        SoftCircuits also maintains a number of web properties under the
-        <a href=""http://www.scwebgroup.com"">SC Web Group brand</a>.
-    </p>
-    <p><a class=""btn btn-primary"" href=""http://www.scwebgroup.com"">Learn more &raquo;</a></p>
+            </body>
+            </html>
+            """;
 
-</div>
-
-        <hr />
-        <footer>
-            <p>
-                Copyright &copy; 2024 <a href=""http://www.softcircuits.com"">SoftCircuits</a><br />
-                <a href=""http://www.scwebgroup.com"">SC Web Group</a> |
-                <a href=""http://www.insiderarticles.com""> Insider Articles</a>
-            </p>
-        </footer>
-    </div>
-
-    <script src=""/bundles/jquery?v=FVs3ACwOLIVInrAl5sdzR2jrCDmVOWFbZMY6g6Q0ulE1"" />
-
-    <script src=""/bundles/bootstrap?v=2Fz3B0iizV2NnnamQFrx-NbYJNTFeBJ2GM05SilbtQU1"" />
-
-</body>
-</html>
-";
-
-        private readonly string Xml = @"<?xml version=""1.0"" encoding=""UTF-8""?>
-<breakfast_menu>
-  <food>
-    <name>Belgian Waffles</name>
-    <price>$5.95</price>
-    <description>Two of our famous Belgian Waffles with plenty of real maple syrup</description>
-    <calories>650</calories>
-  </food>
-  <food>
-    <name>Strawberry Belgian Waffles</name>
-    <price>$7.95</price>
-    <description>Light Belgian waffles covered with strawberries and whipped cream</description>
-    <calories>900</calories>
-  </food>
-  <food>
-    <name>Berry-Berry Belgian Waffles</name>
-    <price>$8.95</price>
-    <description>Light Belgian waffles covered with an assortment of fresh berries and whipped cream</description>
-    <calories>900</calories>
-  </food>
-  <food>
-    <name>French Toast</name>
-    <price>$4.50</price>
-    <description>Thick slices made from our homemade sourdough bread</description>
-    <calories>600</calories>
-  </food>
-  <food>
-    <name>Homestyle Breakfast</name>
-    <price>$6.95</price>
-    <description>Two eggs, bacon or sausage, toast, and our ever-popular hash browns</description>
-    <calories>950</calories>
-  </food>
-</breakfast_menu>
-";
+        private readonly string Xml =
+            """
+            <?xml version="1.0" encoding="UTF-8"?>
+            <breakfast_menu>
+              <food>
+                <name>Belgian Waffles</name>
+                <price>$5.95</price>
+                <description>Two of our famous Belgian Waffles with plenty of real maple syrup</description>
+                <calories>650</calories>
+              </food>
+              <food>
+                <name>Strawberry Belgian Waffles</name>
+                <price>$7.95</price>
+                <description>Light Belgian waffles covered with strawberries and whipped cream</description>
+                <calories>900</calories>
+              </food>
+              <food>
+                <name>Berry-Berry Belgian Waffles</name>
+                <price>$8.95</price>
+                <description>Light Belgian waffles covered with an assortment of fresh berries and whipped cream</description>
+                <calories>900</calories>
+              </food>
+              <food>
+                <name>French Toast</name>
+                <price>$4.50</price>
+                <description>Thick slices made from our homemade sourdough bread</description>
+                <calories>600</calories>
+              </food>
+              <food>
+                <name>Homestyle Breakfast</name>
+                <price>$6.95</price>
+                <description>Two eggs, bacon or sausage, toast, and our ever-popular hash browns</description>
+                <calories>950</calories>
+              </food>
+            </breakfast_menu>
+            """;
 
         [TestMethod]
         public void ConvertFromMarkupTests()
@@ -176,7 +180,7 @@ namespace HtmlMonkeyTests
             HtmlDocument document = new();
 
             // HTML header
-            document.RootNodes.Add(new HtmlHeaderNode(new HtmlAttributeCollection { new HtmlAttribute("html") }));
+            document.RootNodes.Add(new HtmlHeaderNode([new HtmlAttribute("html")]));
             document.RootNodes.Add(new HtmlTextNode("\r\n"));
 
             // HTML element
@@ -193,11 +197,11 @@ namespace HtmlMonkeyTests
 
             // Meta element
             headNode.Children.Add(new HtmlTextNode("\r\n    "));
-            headNode.Children.Add(new HtmlElementNode("meta", new HtmlAttributeCollection
-            {
+            headNode.Children.Add(new HtmlElementNode("meta",
+            [
                 new HtmlAttribute("name", "description"),
                 new HtmlAttribute("content", "This is my test meta description node!")
-            }));
+            ]));
             headNode.Children.Add(new HtmlTextNode("\r\n  "));
 
             // Body element
@@ -210,20 +214,20 @@ namespace HtmlMonkeyTests
 
             // First paragraph
             bodyNode.Children.Add(new HtmlTextNode("\r\n    "));
-            node = bodyNode.Children.Add(new HtmlElementNode("p", new HtmlAttributeCollection
-            {
+            node = bodyNode.Children.Add(new HtmlElementNode("p",
+            [
                 new HtmlAttribute("id", "par1")
-            }));
+            ]));
             node.Children.Add(new HtmlTextNode("\r\n      "));
             node.Children.Add(new HtmlTextNode("This is my first paragraph"));
             node.Children.Add(new HtmlTextNode("\r\n    "));
 
             // Second paragraph
             bodyNode.Children.Add(new HtmlTextNode("\r\n    "));
-            node = bodyNode.Children.Add(new HtmlElementNode("p", new HtmlAttributeCollection
-            {
+            node = bodyNode.Children.Add(new HtmlElementNode("p",
+            [
                 new HtmlAttribute("id", "par2")
-            }));
+            ]));
             node.Children.Add(new HtmlTextNode("\r\n      "));
             node.Children.Add(new HtmlTextNode("This is my second paragraph"));
             node.Children.Add(new HtmlTextNode("\r\n    "));
@@ -239,12 +243,12 @@ namespace HtmlMonkeyTests
             HtmlDocument document = new();
 
             // XML header
-            document.RootNodes.Add(new XmlHeaderNode(new HtmlAttributeCollection
-            {
+            document.RootNodes.Add(new XmlHeaderNode(
+            [
                 new HtmlAttribute("xml"),
                 new HtmlAttribute("version", "1.0"),
                 new HtmlAttribute("encoding", "UTF-8")
-            }));
+            ]));
             document.RootNodes.Add(new HtmlTextNode("\r\n"));
 
             // Catalog element
@@ -254,15 +258,15 @@ namespace HtmlMonkeyTests
             // Item element
             HtmlElementNode xmlNode = new("plant");
             xmlNode.Children.Add(new HtmlTextNode("\r\n    "));
-            xmlNode.Children.Add(new HtmlElementNode("common", null, new HtmlNodeCollection { new HtmlTextNode("Bloodroot") }));
+            xmlNode.Children.Add(new HtmlElementNode("common", null, [new HtmlTextNode("Bloodroot")]));
             xmlNode.Children.Add(new HtmlTextNode("\r\n    "));
-            xmlNode.Children.Add(new HtmlElementNode("botanical", null, new HtmlNodeCollection { new HtmlTextNode("Sanguinaria canadensis") }));
+            xmlNode.Children.Add(new HtmlElementNode("botanical", null, [new HtmlTextNode("Sanguinaria canadensis")]));
             xmlNode.Children.Add(new HtmlTextNode("\r\n    "));
-            xmlNode.Children.Add(new HtmlElementNode("zone", null, new HtmlNodeCollection { new HtmlTextNode("4") }));
+            xmlNode.Children.Add(new HtmlElementNode("zone", null, [new HtmlTextNode("4")]));
             xmlNode.Children.Add(new HtmlTextNode("\r\n    "));
-            xmlNode.Children.Add(new HtmlElementNode("light", null, new HtmlNodeCollection { new HtmlTextNode("Mostly Shady") }));
+            xmlNode.Children.Add(new HtmlElementNode("light", null, [new HtmlTextNode("Mostly Shady")]));
             xmlNode.Children.Add(new HtmlTextNode("\r\n    "));
-            xmlNode.Children.Add(new HtmlElementNode("price", null, new HtmlNodeCollection { new HtmlTextNode("$2.44") }));
+            xmlNode.Children.Add(new HtmlElementNode("price", null, [new HtmlTextNode("$2.44")]));
             xmlNode.Children.Add(new HtmlTextNode("\r\n  "));
             catalogNode.Children.Add(xmlNode);
             catalogNode.Children.Add(new HtmlTextNode("\r\n  "));
@@ -270,15 +274,15 @@ namespace HtmlMonkeyTests
             // Item element
             xmlNode = new("plant");
             xmlNode.Children.Add(new HtmlTextNode("\r\n    "));
-            xmlNode.Children.Add(new HtmlElementNode("common", null, new HtmlNodeCollection { new HtmlTextNode("Columbine") }));
+            xmlNode.Children.Add(new HtmlElementNode("common", null, [new HtmlTextNode("Columbine")]));
             xmlNode.Children.Add(new HtmlTextNode("\r\n    "));
-            xmlNode.Children.Add(new HtmlElementNode("botanical", null, new HtmlNodeCollection { new HtmlTextNode("Aquilegia canadensis") }));
+            xmlNode.Children.Add(new HtmlElementNode("botanical", null, [new HtmlTextNode("Aquilegia canadensis")]));
             xmlNode.Children.Add(new HtmlTextNode("\r\n    "));
-            xmlNode.Children.Add(new HtmlElementNode("zone", null, new HtmlNodeCollection { new HtmlTextNode("3") }));
+            xmlNode.Children.Add(new HtmlElementNode("zone", null, [new HtmlTextNode("3")]));
             xmlNode.Children.Add(new HtmlTextNode("\r\n    "));
-            xmlNode.Children.Add(new HtmlElementNode("light", null, new HtmlNodeCollection { new HtmlTextNode("Mostly Shady") }));
+            xmlNode.Children.Add(new HtmlElementNode("light", null, [new HtmlTextNode("Mostly Shady")]));
             xmlNode.Children.Add(new HtmlTextNode("\r\n    "));
-            xmlNode.Children.Add(new HtmlElementNode("price", null, new HtmlNodeCollection { new HtmlTextNode("$9.37") }));
+            xmlNode.Children.Add(new HtmlElementNode("price", null, [new HtmlTextNode("$9.37")]));
             xmlNode.Children.Add(new HtmlTextNode("\r\n  "));
             catalogNode.Children.Add(xmlNode);
             catalogNode.Children.Add(new HtmlTextNode("\r\n  "));
@@ -286,15 +290,15 @@ namespace HtmlMonkeyTests
             // Item element
             xmlNode = new("plant");
             xmlNode.Children.Add(new HtmlTextNode("\r\n    "));
-            xmlNode.Children.Add(new HtmlElementNode("common", null, new HtmlNodeCollection { new HtmlTextNode("Marsh Marigold") }));
+            xmlNode.Children.Add(new HtmlElementNode("common", null, [new HtmlTextNode("Marsh Marigold")]));
             xmlNode.Children.Add(new HtmlTextNode("\r\n    "));
-            xmlNode.Children.Add(new HtmlElementNode("botanical", null, new HtmlNodeCollection { new HtmlTextNode("Caltha palustris") }));
+            xmlNode.Children.Add(new HtmlElementNode("botanical", null, [new HtmlTextNode("Caltha palustris")]));
             xmlNode.Children.Add(new HtmlTextNode("\r\n    "));
-            xmlNode.Children.Add(new HtmlElementNode("zone", null, new HtmlNodeCollection { new HtmlTextNode("4") }));
+            xmlNode.Children.Add(new HtmlElementNode("zone", null, [new HtmlTextNode("4")]));
             xmlNode.Children.Add(new HtmlTextNode("\r\n    "));
-            xmlNode.Children.Add(new HtmlElementNode("light", null, new HtmlNodeCollection { new HtmlTextNode("Mostly Sunny") }));
+            xmlNode.Children.Add(new HtmlElementNode("light", null, [new HtmlTextNode("Mostly Sunny")]));
             xmlNode.Children.Add(new HtmlTextNode("\r\n    "));
-            xmlNode.Children.Add(new HtmlElementNode("price", null, new HtmlNodeCollection { new HtmlTextNode("$6.81") }));
+            xmlNode.Children.Add(new HtmlElementNode("price", null, [new HtmlTextNode("$6.81")]));
             xmlNode.Children.Add(new HtmlTextNode("\r\n  "));
             catalogNode.Children.Add(xmlNode);
             catalogNode.Children.Add(new HtmlTextNode("\r\n  "));
@@ -302,15 +306,15 @@ namespace HtmlMonkeyTests
             // Item element
             xmlNode = new("plant");
             xmlNode.Children.Add(new HtmlTextNode("\r\n    "));
-            xmlNode.Children.Add(new HtmlElementNode("common", null, new HtmlNodeCollection { new HtmlTextNode("Dutchman's-Breeches") }));
+            xmlNode.Children.Add(new HtmlElementNode("common", null, [new HtmlTextNode("Dutchman's-Breeches")]));
             xmlNode.Children.Add(new HtmlTextNode("\r\n    "));
-            xmlNode.Children.Add(new HtmlElementNode("botanical", null, new HtmlNodeCollection { new HtmlTextNode("Dicentra cucullaria") }));
+            xmlNode.Children.Add(new HtmlElementNode("botanical", null, [new HtmlTextNode("Dicentra cucullaria")]));
             xmlNode.Children.Add(new HtmlTextNode("\r\n    "));
-            xmlNode.Children.Add(new HtmlElementNode("zone", null, new HtmlNodeCollection { new HtmlTextNode("3") }));
+            xmlNode.Children.Add(new HtmlElementNode("zone", null, [new HtmlTextNode("3")]));
             xmlNode.Children.Add(new HtmlTextNode("\r\n    "));
-            xmlNode.Children.Add(new HtmlElementNode("light", null, new HtmlNodeCollection { new HtmlTextNode("Mostly Shady") }));
+            xmlNode.Children.Add(new HtmlElementNode("light", null, [new HtmlTextNode("Mostly Shady")]));
             xmlNode.Children.Add(new HtmlTextNode("\r\n    "));
-            xmlNode.Children.Add(new HtmlElementNode("price", null, new HtmlNodeCollection { new HtmlTextNode("$6.44") }));
+            xmlNode.Children.Add(new HtmlElementNode("price", null, [new HtmlTextNode("$6.44")]));
             xmlNode.Children.Add(new HtmlTextNode("\r\n  "));
             catalogNode.Children.Add(xmlNode);
             catalogNode.Children.Add(new HtmlTextNode("\r\n  "));
@@ -318,15 +322,15 @@ namespace HtmlMonkeyTests
             // Item element
             xmlNode = new("plant");
             xmlNode.Children.Add(new HtmlTextNode("\r\n    "));
-            xmlNode.Children.Add(new HtmlElementNode("common", null, new HtmlNodeCollection { new HtmlTextNode("Ginger, Wild") }));
+            xmlNode.Children.Add(new HtmlElementNode("common", null, [new HtmlTextNode("Ginger, Wild")]));
             xmlNode.Children.Add(new HtmlTextNode("\r\n    "));
-            xmlNode.Children.Add(new HtmlElementNode("botanical", null, new HtmlNodeCollection { new HtmlTextNode("Asarum canadense") }));
+            xmlNode.Children.Add(new HtmlElementNode("botanical", null, [new HtmlTextNode("Asarum canadense")]));
             xmlNode.Children.Add(new HtmlTextNode("\r\n    "));
-            xmlNode.Children.Add(new HtmlElementNode("zone", null, new HtmlNodeCollection { new HtmlTextNode("3") }));
+            xmlNode.Children.Add(new HtmlElementNode("zone", null, [new HtmlTextNode("3")]));
             xmlNode.Children.Add(new HtmlTextNode("\r\n    "));
-            xmlNode.Children.Add(new HtmlElementNode("light", null, new HtmlNodeCollection { new HtmlTextNode("Mostly Shady") }));
+            xmlNode.Children.Add(new HtmlElementNode("light", null, [new HtmlTextNode("Mostly Shady")]));
             xmlNode.Children.Add(new HtmlTextNode("\r\n    "));
-            xmlNode.Children.Add(new HtmlElementNode("price", null, new HtmlNodeCollection { new HtmlTextNode("$9.03") }));
+            xmlNode.Children.Add(new HtmlElementNode("price", null, [new HtmlTextNode("$9.03")]));
             xmlNode.Children.Add(new HtmlTextNode("\r\n  "));
             catalogNode.Children.Add(xmlNode);
             catalogNode.Children.Add(new HtmlTextNode("\r\n"));
@@ -378,6 +382,45 @@ namespace HtmlMonkeyTests
                 }
                 else Assert.Fail("Unknown HtmlNode type!");
             }
+        }
+
+        [TestMethod]
+        public void SimpleChildTest()
+        {
+            var document = HtmlDocument.FromHtml(
+                """
+                <pre>
+                    Some direct text
+                </pre>
+                """);
+
+            var elements = document.Find("pre").ToList();
+            Assert.AreEqual(1, elements.Count);
+
+            Assert.IsNull(elements[0].NextNode);
+
+            Assert.AreEqual(1, elements[0].Children.Count);
+        }
+
+        [TestMethod]
+        public void NestedChildTest()
+        {
+            HtmlDocument document = HtmlDocument.FromHtml(
+                """
+                <pre>
+                    <div>
+                        Some nested text
+                    </div>
+                    Some direct text
+                </pre>
+                """);
+
+            var elements = document.Find("pre").ToList();
+            Assert.AreEqual(1, elements.Count);
+
+            Assert.IsNull(elements[0].NextNode);
+
+            Assert.AreEqual(3, elements[0].Children.Count);
         }
     }
 }
