@@ -10,7 +10,7 @@ namespace SoftCircuits.HtmlMonkey
     /// but does not parse the contents. Examples include comments, CDATA blocks and
     /// the content of tags with CData attribute.
     /// </summary>
-    internal class CDataDefinition
+    public class CDataDefinition
     {
         /// <summary>
         /// Text that marks the start of the CData block. Must start with <see cref="HtmlRules.TagStart"/>

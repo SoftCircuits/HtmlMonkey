@@ -37,9 +37,7 @@ namespace SoftCircuits.HtmlMonkey
         /// children.
         /// </summary>
         /// <param name="html">The HTML text to parse.</param>
-        /// <param name="ignoreHtmlRules">Set to true to parse the given HTML without
-        /// regard to any HTML rules.</param>
-        public IEnumerable<HtmlNode> ParseChildren(string? html, bool ignoreHtmlRules = false)
+        public IEnumerable<HtmlNode> ParseChildren(string? html)
         {
             HtmlElementNode rootNode = new(string.Empty);
             HtmlElementNode parentNode = rootNode;
@@ -94,12 +92,12 @@ namespace SoftCircuits.HtmlMonkey
                     // Open tag
                     if (ParseTag(out tag))
                     {
-                        HtmlTagFlag tagFlags = ignoreHtmlRules ? HtmlTagFlag.None : HtmlRules.GetTagFlags(tag);
-                        if (tagFlags.HasFlag(HtmlTagFlag.HtmlHeader))
+                        HtmlTagAttributes tagFlags = HtmlRules.GetTagAttributes(tag);
+                        if (tagFlags.HasFlag(HtmlTagAttributes.HtmlHeader))
                         {
                             parentNode.Children.Add(ParseHtmlHeader());
                         }
-                        else if (tagFlags.HasFlag(HtmlTagFlag.XmlHeader))
+                        else if (tagFlags.HasFlag(HtmlTagAttributes.XmlHeader))
                         {
                             parentNode.Children.Add(ParseXmlHeader());
                         }
@@ -128,7 +126,7 @@ namespace SoftCircuits.HtmlMonkey
                                 parentNode = parentNode.ParentNode;
                             parentNode.Children.Add(node);
 
-                            if (tagFlags.HasFlag(HtmlTagFlag.CData))
+                            if (tagFlags.HasFlag(HtmlTagAttributes.CData))
                             {
                                 // CDATA tags are treated as elements but we store and do not parse the inner content
                                 if (!selfClosing)
@@ -139,9 +137,9 @@ namespace SoftCircuits.HtmlMonkey
                             }
                             else
                             {
-                                if (selfClosing && tagFlags.HasFlag(HtmlTagFlag.NoSelfClosing))
+                                if (selfClosing && tagFlags.HasFlag(HtmlTagAttributes.NoSelfClosing))
                                     selfClosing = false;
-                                if (!selfClosing && !tagFlags.HasFlag(HtmlTagFlag.NoChildren))
+                                if (!selfClosing && !tagFlags.HasFlag(HtmlTagAttributes.NoChildren))
                                     parentNode = node;  // Node becomes new parent
                             }
                         }

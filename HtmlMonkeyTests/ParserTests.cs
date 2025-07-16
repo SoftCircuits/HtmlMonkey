@@ -3,6 +3,8 @@
 //
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SoftCircuits.HtmlMonkey;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -394,12 +396,12 @@ namespace HtmlMonkeyTests
                 </pre>
                 """);
 
-            var elements = document.Find("pre").ToList();
-            Assert.AreEqual(1, elements.Count);
-
-            Assert.IsNull(elements[0].NextNode);
-
-            Assert.AreEqual(1, elements[0].Children.Count);
+            TestNode.Test(
+                [
+                    new TestTagNode("pre",
+                        new TestTextNode("\r\n    Some direct text\r\n")),
+                ],
+                document.RootNodes);
         }
 
         [TestMethod]
@@ -415,12 +417,42 @@ namespace HtmlMonkeyTests
                 </pre>
                 """);
 
-            var elements = document.Find("pre").ToList();
-            Assert.AreEqual(1, elements.Count);
+            TestNode.Test(
+                [
+                    new TestTagNode("pre",
+                        new TestTextNode("\r\n    "),
+                        new TestTagNode("div",
+                            new TestTextNode("\r\n        Some nested text\r\n    ")),
+                        new TestTextNode("\r\n    Some direct text\r\n")),
+                ],
+                document.RootNodes);
+        }
 
-            Assert.IsNull(elements[0].NextNode);
+        [TestMethod]
+        public void DivTable()
+        {
+            HtmlDocument document = HtmlDocument.FromHtml(
+                """
+                <div>
+                    <div>
+                        <table>
+                        </table>
+                    </div>
+                </div>
+                """);
 
-            Assert.AreEqual(3, elements[0].Children.Count);
+            TestNode.Test(
+                [
+                    new TestTagNode("div",
+                        new TestTextNode("\r\n    "),
+                        new TestTagNode("div",
+                            new TestTextNode("\r\n        "),
+                            new TestTagNode("table",
+                                new TestTextNode("\r\n        ")),
+                            new TestTextNode("\r\n    ")),
+                        new TestTextNode("\r\n")),
+                ],
+                document.RootNodes);
         }
     }
 }

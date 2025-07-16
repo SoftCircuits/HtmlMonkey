@@ -7,46 +7,10 @@ using System.Collections.Generic;
 namespace SoftCircuits.HtmlMonkey
 {
     /// <summary>
-    /// Defines element tag attributes.
-    /// </summary>
-    [Flags]
-    internal enum HtmlTagFlag
-    {
-        /// <summary>
-        /// Specifies no flags.
-        /// </summary>
-        None = 0x0000,
-        /// <summary>
-        /// Is an HTML DOCTYPE document header tag
-        /// </summary>
-        HtmlHeader = 0x0001,
-        /// <summary>
-        /// Is an XML document header tag
-        /// </summary>
-        XmlHeader = 0x0002,
-        /// <summary>
-        /// Element cannot contain child nodes.
-        /// </summary>
-        NoChildren = 0x0004,
-        /// <summary>
-        /// Element cannot contain element of same type
-        /// </summary>
-        NoNested = 0x0008,
-        /// <summary>
-        /// Element cannot be self-closing.
-        /// </summary>
-        NoSelfClosing = 0x0010,
-        /// <summary>
-        /// Element content is saved but not parsed, and may contain anything.
-        /// </summary>
-        CData = 0x0020,
-    }
-
-    /// <summary>
     /// Defines constants and rules that are used to parse and interpret
     /// HTML and XML.
     /// </summary>
-    internal class HtmlRules
+    public class HtmlRules
     {
 
         #region Constant values
@@ -143,110 +107,28 @@ namespace SoftCircuits.HtmlMonkey
 
         #endregion
 
-        #region Tag classification
+        #region HTML tag rules
 
         /// <summary>
-        /// Specifies whether or not HTML rules are enforced. When true, <see cref="GetTagFlags(string)"/>
-        /// always returns <see cref="HtmlTagFlag.None"/>.
+        /// Defines the current tag rules for HTML parsing.
         /// </summary>
-        public static bool IgnoreHtmlRules = false;
+        public static readonly HtmlTagRules TagRules = new();
 
         /// <summary>
-        /// Defines tag attributes for element tags.
+        /// Returns the attributes of the specified HTML tag. If there are no attributes defined for the tag,
+        /// <see cref="HtmlTagAttributes.None"/> is returned.
         /// </summary>
-        private static readonly Dictionary<string, HtmlTagFlag> TagRules = new(StringComparer.CurrentCultureIgnoreCase)
-        {
-            ["!doctype"] = HtmlTagFlag.HtmlHeader,
-            ["?xml"] = HtmlTagFlag.XmlHeader,
-            ["a"] = HtmlTagFlag.NoNested,
-            ["area"] = HtmlTagFlag.NoChildren,
-            ["base"] = HtmlTagFlag.NoChildren,
-            ["basefont"] = HtmlTagFlag.NoChildren,
-            ["bgsound"] = HtmlTagFlag.NoChildren,
-            ["br"] = HtmlTagFlag.NoChildren,
-            ["col"] = HtmlTagFlag.NoChildren,
-            ["dd"] = HtmlTagFlag.NoNested,
-            ["dt"] = HtmlTagFlag.NoNested,
-            ["embed"] = HtmlTagFlag.NoChildren,
-            ["frame"] = HtmlTagFlag.NoChildren,
-            ["hr"] = HtmlTagFlag.NoChildren,
-            ["img"] = HtmlTagFlag.NoChildren,
-            ["input"] = HtmlTagFlag.NoChildren,
-            ["isindex"] = HtmlTagFlag.NoChildren,
-            ["keygen"] = HtmlTagFlag.NoChildren,
-            ["li"] = HtmlTagFlag.NoNested,
-            ["link"] = HtmlTagFlag.NoChildren,
-            ["menuitem"] = HtmlTagFlag.NoChildren,
-            ["meta"] = HtmlTagFlag.NoChildren,
-            ["noxhtml"] = HtmlTagFlag.CData,
-            ["p"] = HtmlTagFlag.NoNested,
-            ["param"] = HtmlTagFlag.NoChildren,
-            ["script"] = HtmlTagFlag.CData,
-            ["select"] = HtmlTagFlag.NoSelfClosing,
-            ["source"] = HtmlTagFlag.NoChildren,
-            ["spacer"] = HtmlTagFlag.NoChildren,
-            ["style"] = HtmlTagFlag.CData,
-            ["table"] = HtmlTagFlag.NoNested,
-            ["td"] = HtmlTagFlag.NoNested,
-            ["th"] = HtmlTagFlag.NoNested,
-            ["textarea"] = HtmlTagFlag.NoSelfClosing,
-            ["track"] = HtmlTagFlag.NoChildren,
-            ["wbr"] = HtmlTagFlag.NoChildren,
-        };
+        /// <param name="tag">The name of the HTML tag.</param>
+        public static HtmlTagAttributes GetTagAttributes(string tag) => TagRules.GetAttributes(tag);
 
         /// <summary>
-        /// Returns the attribute flags for the given tag.
+        /// Determines whether the specified child tag is valid within the specified parent tag.
         /// </summary>
-        public static HtmlTagFlag GetTagFlags(string tag)
-        {
-            if (IgnoreHtmlRules == false && TagRules.TryGetValue(tag, out HtmlTagFlag flags))
-                return flags;
-            return HtmlTagFlag.None;
-        }
-
-        /// <summary>
-        /// Defines element tag nesting values. Tags cannot appear within tags with a lower value. Used when parsing to detected
-        /// mismatches open/close tags.
-        /// </summary>
-        /// <remarks>
-        /// This needs to be reworked. Something more sophisticated is needed.
-        /// </remarks>
-        private static readonly Dictionary<string, int> NestLevelLookup = new(StringComparer.CurrentCultureIgnoreCase)
-        {
-            ["p"] = 140,
-            ["div"] = 150,
-            ["td"] = 160,
-            ["th"] = 160,
-            ["tr"] = 170,
-            ["thead"] = 180,
-            ["tbody"] = 180,
-            ["tfoot"] = 180,
-            ["table"] = 190,
-            ["head"] = 200,
-            ["body"] = 200,
-            ["html"] = 220,
-        };
-
-        /// <summary>
-        /// Returns true if it is considered valid for the given parent tag to contain the
-        /// given child tag.
-        /// </summary>
-        public static bool TagMayContain(string parentTag, string childTag)
-        {
-            HtmlTagFlag parentFlags = GetTagFlags(parentTag);
-
-            if (parentFlags.HasFlag(HtmlTagFlag.NoChildren))
-                return false;
-            if (parentFlags.HasFlag(HtmlTagFlag.NoNested) && parentTag.Equals(childTag, TagStringComparison))
-                return false;
-
-            if (!NestLevelLookup.TryGetValue(parentTag, out int parentLevel))
-                return true;
-            if (!NestLevelLookup.TryGetValue(childTag, out int childLevel))
-                return true;
-
-            return parentLevel >= childLevel;
-        }
+        /// <param name="parentTag">The parent HTML tag.</param>
+        /// <param name="childTag">The child HTML tag.</param>
+        /// <returns><see langword="true"/> if it is valid for <paramref name="parentTag"/> to contain <paramref name="childTag"/>;
+        /// otherwise, <see langword="false"/>.</returns>
+        public static bool TagMayContain(string parentTag, string childTag) => TagRules.TagMayContain(parentTag, childTag);
 
         #endregion
 

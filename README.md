@@ -151,3 +151,40 @@ IEnumerable<HtmlElementNode> containerNodes = containerSelectors.Find(document.R
 // Finally, search container nodes for item nodes
 IEnumerable<HtmlElementNode> itemNodes = itemSelectors.Find(containerNodes);
 ```
+
+#### HTML Rules
+
+There are a lot of rules that can apply to HTML and XML documents. These rules can determine how the markup is parsed. For example,
+`<a>` tags cannot be nested. And `<li>` tags must be a child of either an `<ol>` or `<ul>` tag. If these rules are set, HTMLMonkey
+will terminate the previous tag before starting the new tag when that new tag is not valid as a child of the previous tag.
+
+These rules can be accessed and modified using the `TagRules` property of the `HtmlRules` class. `TagRules` tracks two kinds of rules:
+It defines attributes of HTML tags, and it defines nesting rules for HTML tags. The attributes include whether the tag is a self-closing
+tag, whether it can have children, whether it can be nested, etc. The nesting rules define which tags can be nested within other tags.
+You can specify all the tags that a particular HTML tag can be a child of.
+
+Tags with no attributes set, default to `HtmlTagAttributes.None`. Tags with no nesting rules set, default to no restrictions on which
+tags those tags can be a child of. (Note that this is different from having an empty list of nesting rules, which means that the tag
+cannot be a child of any other tag.)
+
+By default, attributes are set for common HTML tags, and no nesting rules are set. This means that, by default, all HTML tags can be
+nested within any other HTML tag. You can modify these rules to suit your needs. For example, the following code clears any existing
+nesting rules and then sets some common HTML nesting rules.
+
+```cs
+HtmlRules.TagRules.ClearNestingRules();
+HtmlRules.TagRules.SetNestingRule("html", []);
+HtmlRules.TagRules.SetNestingRule("head", ["html"]);
+HtmlRules.TagRules.SetNestingRule("body", ["html"]);
+HtmlRules.TagRules.SetNestingRule("thead", ["table"]);
+HtmlRules.TagRules.SetNestingRule("tbody", ["table"]);
+HtmlRules.TagRules.SetNestingRule("tfoot", ["table"]);
+HtmlRules.TagRules.SetNestingRule("tr", ["table", "thead", "tbody"]);
+HtmlRules.TagRules.SetNestingRule("td", ["tr"]);
+HtmlRules.TagRules.SetNestingRule("th", ["tr"]);
+HtmlRules.TagRules.SetNestingRule("li", ["ol", "ul"]);
+HtmlRules.TagRules.SetNestingRule("option", ["select", "optgroup"]);
+HtmlRules.TagRules.SetNestingRule("optgroup", ["select"]);
+HtmlRules.TagRules.SetNestingRule("dt", ["dl"]);
+HtmlRules.TagRules.SetNestingRule("dd", ["dl"]);
+```

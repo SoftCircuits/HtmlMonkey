@@ -23,13 +23,13 @@ namespace SoftCircuits.HtmlMonkey
 
         /// <summary>
         /// Gets this node's next sibling, or <c>null</c> if this node
-        /// is the last of its siblings.
+        /// is the last sibling.
         /// </summary>
         public HtmlNode? NextNode { get; internal set; }
 
         /// <summary>
         /// Gets this node's previous sibling, or <c>null</c> if this
-        /// node is the first of its siblings.
+        /// node is the first sibling.
         /// </summary>
         public HtmlNode? PrevNode { get; internal set; }
 
@@ -59,7 +59,7 @@ namespace SoftCircuits.HtmlMonkey
         }
 
         /// <summary>
-        /// Gets this node's text. No markup is included.
+        /// Gets this node's text without markup.
         /// </summary>
         public virtual string Text
         {
@@ -145,9 +145,7 @@ namespace SoftCircuits.HtmlMonkey
             Attributes = attributes;
         }
 
-        /// <summary>
-        /// Gets the outer markup.
-        /// </summary>
+        /// <inheritdoc/>
         public override string OuterHtml => string.Concat(HtmlRules.TagStart,
             HtmlRules.HtmlHeaderTag,
             Attributes.ToString(),
@@ -186,9 +184,7 @@ namespace SoftCircuits.HtmlMonkey
             Attributes = attributes;
         }
 
-        /// <summary>
-        /// Gets the outer markup.
-        /// </summary>
+        /// <inheritdoc/>
         public override string OuterHtml => string.Concat(HtmlRules.TagStart,
             HtmlRules.XmlHeaderTag,
             Attributes.ToString(),
@@ -249,7 +245,7 @@ namespace SoftCircuits.HtmlMonkey
         /// <summary>
         /// Returns true if this element is self-closing and has no children.
         /// </summary>
-        public bool IsSelfClosing => !Children.Any() && !HtmlRules.GetTagFlags(TagName).HasFlag(HtmlTagFlag.NoSelfClosing);
+        public bool IsSelfClosing => !Children.Any() && !HtmlRules.GetTagAttributes(TagName).HasFlag(HtmlTagAttributes.NoSelfClosing);
 
         /// <summary>
         /// Gets or sets the inner markup. When setting the markup, it is parsed on
