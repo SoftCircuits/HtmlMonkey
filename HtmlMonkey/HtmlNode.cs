@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2025 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2026 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System;
@@ -226,7 +226,7 @@ namespace SoftCircuits.HtmlMonkey
         {
             TagName = tagName ?? string.Empty;
             Attributes = attributes ?? [];
-            Children = new HtmlNodeCollection(this);
+            Children = new(this);
         }
 
         /// <summary>

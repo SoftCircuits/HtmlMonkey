@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2025 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2026 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System;
@@ -79,7 +79,7 @@ namespace SoftCircuits.HtmlMonkey
         #region Matching routines
 
         /// <summary>
-        /// Implements <see cref="SelectorAttributeMode.Match"></see> comparer.
+        /// Implements <see cref="AttributeSelectorMode.Match"></see> comparer.
         /// </summary>
         private bool MatchComparer(HtmlElementNode node)
         {
@@ -92,7 +92,7 @@ namespace SoftCircuits.HtmlMonkey
         }
 
         /// <summary>
-        /// Implements <see cref="SelectorAttributeMode.RegEx"></see> comparer.
+        /// Implements <see cref="AttributeSelectorMode.RegEx"></see> comparer.
         /// </summary>
         private bool RegExComparer(HtmlElementNode node)
         {
@@ -105,7 +105,7 @@ namespace SoftCircuits.HtmlMonkey
         }
 
         /// <summary>
-        /// Implements <see cref="SelectorAttributeMode.Contains"></see> comparer.
+        /// Implements <see cref="AttributeSelectorMode.Contains"></see> comparer.
         /// </summary>
         private bool ContainsComparer(HtmlElementNode node)
         {
@@ -118,7 +118,7 @@ namespace SoftCircuits.HtmlMonkey
         }
 
         /// <summary>
-        /// Implements <see cref="SelectorAttributeMode.ExistsOnly"></see> comparer.
+        /// Implements <see cref="AttributeSelectorMode.ExistsOnly"></see> comparer.
         /// </summary>
         private bool ExistsOnlyComparer(HtmlElementNode node) => node.Attributes.Contains(Name);
 

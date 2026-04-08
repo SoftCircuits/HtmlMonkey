@@ -110,7 +110,7 @@
             this.Name = "frmDetails";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Node Details";
-            this.Load += new System.EventHandler(this.frmDetails_Load);
+            this.Load += new System.EventHandler(this.FrmDetails_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);

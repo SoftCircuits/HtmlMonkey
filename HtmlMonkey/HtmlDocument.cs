@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2025 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2026 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System;
@@ -12,7 +12,7 @@ namespace SoftCircuits.HtmlMonkey
     /// <summary>
     /// Holds the nodes of a parsed HTML or XML document. Use the <see cref="RootNodes"/>
     /// property to access these nodes. Use the <see cref="ToHtml"/> method to convert the
-    /// nodes back to markup.
+    /// collection back to markup.
     /// </summary>
     public class HtmlDocument
     {
@@ -33,7 +33,7 @@ namespace SoftCircuits.HtmlMonkey
         public HtmlDocument()
         {
             Path = null;
-            RootNodes = new HtmlNodeCollection(null);
+            RootNodes = new(null);
         }
 
         /// <summary>
@@ -193,7 +193,7 @@ namespace SoftCircuits.HtmlMonkey
         [Obsolete("This method is deprecated and will be removed in a future version. Use IEnumerable<HtmlNode>.FindOfType() extension methods instead.")]
         public static IEnumerable<T> FindOfType<T>(IEnumerable<HtmlNode> nodes, Func<T, bool> predicate) where T : HtmlNode => nodes.FindOfType<T>(predicate);
 
-#endregion
+        #endregion
 
     }
 }

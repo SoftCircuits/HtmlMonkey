@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2025 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2026 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System;
@@ -46,5 +46,4 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         CData = 0x0020,
     }
-
 }

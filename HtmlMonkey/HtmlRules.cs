@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2025 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2026 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System;
@@ -25,7 +25,7 @@ namespace SoftCircuits.HtmlMonkey
         public static readonly char DoubleQuote = '"';
         public static readonly char SingleQuote = '\'';
 
-        public static List<CDataDefinition> CDataDefinitions =
+        public static readonly List<CDataDefinition> CDataDefinitions =
         [
             new CDataDefinition
             {

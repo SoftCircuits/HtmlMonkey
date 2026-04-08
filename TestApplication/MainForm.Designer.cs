@@ -106,7 +106,7 @@
             parseHTMLToolStripMenuItem.Text = "Parse HTML!";
             parseHTMLToolStripMenuItem.Click += parseHTMLToolStripMenuItem_Click;
             // 
-            // Form1
+            // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -114,7 +114,7 @@
             Controls.Add(txtHtml);
             Controls.Add(menuStrip1);
             Margin = new Padding(5, 4, 5, 4);
-            Name = "Form1";
+            Name = "MainForm";
             Text = "HtmlMonkey Test Application";
             Load += Form1_Load;
             menuStrip1.ResumeLayout(false);

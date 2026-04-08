@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2025 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2026 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using System;
@@ -25,7 +25,7 @@ namespace SoftCircuits.HtmlMonkey
         public HtmlAttributeCollection()
         {
             Attributes = [];
-            IndexLookup = new Dictionary<string, int>(HtmlRules.TagStringComparer);
+            IndexLookup = new(HtmlRules.TagStringComparer);
         }
 
         /// <summary>
@@ -35,8 +35,8 @@ namespace SoftCircuits.HtmlMonkey
         /// collection.</param>
         public HtmlAttributeCollection(HtmlAttributeCollection attributes)
         {
-            Attributes = new List<HtmlAttribute>(attributes);
-            IndexLookup = new Dictionary<string, int>(attributes.IndexLookup, HtmlRules.TagStringComparer);
+            Attributes = [.. attributes];
+            IndexLookup = new(attributes.IndexLookup, HtmlRules.TagStringComparer);
         }
 
         /// <summary>

@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFrameworks>net9.0;net8.0;net7.0;net6.0;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net10.0;net9.0;net8.0;net7.0;net6.0;netstandard2.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Nullable>annotations</Nullable>
     <Nullable Condition="'$(TargetFramework)' != 'netstandard2.0'">enable</Nullable>
@@ -15,7 +15,7 @@
     <StartupObject />
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>HtmlMonkey is a lightweight HTML/XML parser written in C#. It allows you to parse an HTML or XML string into a hierarchy of node objects, which can then be traversed or queried using jQuery-like selectors. The library also supports creating node objects from code and producing HTML or XML from those objects.</Description>
-    <Copyright>Copyright © 2019-2025 SoftCircuits</Copyright>
+    <Copyright>Copyright © 2019-2026 SoftCircuits</Copyright>
     <NeutralLanguage>en-US</NeutralLanguage>
     <PackageTags>html-parser xml-parser html xml parse parser crawler spider</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -28,8 +28,8 @@
     <PackageLicenseFile>License.txt</PackageLicenseFile>
     <AssemblyVersion></AssemblyVersion>
     <FileVersion></FileVersion>
-    <Version>3.1.0</Version>
-    <PackageReleaseNotes>Now exposing the HtmlTagRules used when parsing markup. And these rules can now be edited. By default, no nesting rules are implemented, allowing the parsing of invalid markup. IgnoreHtmlRules property has been removed.</PackageReleaseNotes>
+    <Version>3.2.0</Version>
+    <PackageReleaseNotes>Added support for .NET 10; Code cleanup.</PackageReleaseNotes>
     <PackageId>SoftCircuits.HtmlMonkey</PackageId>
     <PackageIcon>Logo_64x64.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
