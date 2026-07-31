@@ -113,12 +113,8 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="tag">The name of the tag to find.</param>
         public static HtmlElementNode? FindClosest(this HtmlNode node, string tag)
         {
-            // Return this node if match
-            if (node is HtmlElementNode thisNode && thisNode.TagName.Equals(tag, HtmlRules.TagStringComparison))
-                return thisNode;
-
-            // Else traverse parent nodes
-            HtmlElementNode? elementNode = node.ParentNode;
+            // Start with this node if it's an HtmlElementNode; otherwise, start with this node's parent
+            HtmlElementNode? elementNode = (node is HtmlElementNode thisElement) ? thisElement : node.ParentNode;
             while (elementNode != null)
             {
                 if (elementNode.TagName.Equals(tag, HtmlRules.TagStringComparison))

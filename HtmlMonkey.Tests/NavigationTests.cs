@@ -1,15 +1,10 @@
 ﻿// Copyright (c) 2019-2026 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SoftCircuits.HtmlMonkey;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace HtmlMonkeyTests
+namespace HtmlMonkey.Tests
 {
-    [TestClass]
     public class NavigationTests
     {
         private class NodeInfo
@@ -86,7 +81,7 @@ namespace HtmlMonkeyTests
             """;
 
 
-        [TestMethod]
+        [Fact]
         public void Test()
         {
             HtmlDocument document = HtmlDocument.FromHtml(html);
@@ -105,7 +100,7 @@ namespace HtmlMonkeyTests
 
         void CompareResults(List<HtmlNode> nodes)
         {
-            Assert.AreEqual(ExpectedNodes.Count, nodes.Count);
+            Assert.Equal(ExpectedNodes.Count, nodes.Count);
 
             for (int i = 0; i < ExpectedNodes.Count; i++)
             {
@@ -114,16 +109,17 @@ namespace HtmlMonkeyTests
 
                 if (node is HtmlElementNode elementNode)
                 {
-                    Assert.AreEqual(expected.Type, typeof(HtmlElementNode));
-                    Assert.AreEqual(expected.Content, elementNode.TagName);
+                    Assert.Equal(typeof(HtmlElementNode), expected.Type);
+                    Assert.Equal(expected.Content, elementNode.TagName);
                 }
                 else if (node is HtmlTextNode textNode)
                 {
-                    Assert.AreEqual(expected.Type, typeof(HtmlTextNode));
-                    Assert.AreEqual(expected.Content, textNode.Text);
+                    Assert.Equal(typeof(HtmlTextNode), expected.Type);
+                    Assert.Equal(expected.Content, textNode.Text);
                 }
                 else Assert.Fail("Unsupported node type");
             }
         }
+
     }
 }

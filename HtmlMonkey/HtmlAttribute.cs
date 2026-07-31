@@ -57,10 +57,6 @@ namespace SoftCircuits.HtmlMonkey
         /// <summary>
         /// Converts this <see cref="HtmlAttribute"></see> to a string.
         /// </summary>
-        public override string ToString()
-        {
-            string name = Name ?? "(null)";
-            return (Value != null) ? $"{name ?? "(null)"}=\"{Value}\"" : name;
-        }
+        public override string ToString() => (Value != null) ? $"{Name ?? "(null)"}=\"{Value}\"" : Name;
     }
 }

@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace SoftCircuits.HtmlMonkey
 {
-    [Obsolete("This class is deprecated and will be removed from a future version. Please use AttributeSelector instead.")]
+    [Obsolete("This class is deprecated and will be removed in a future version. Please use AttributeSelector instead.")]
     public class SelectorAttribute(string name, string? value = null, bool ignoreCase = true)
         : AttributeSelector(name, value, ignoreCase)
     {
@@ -122,6 +122,9 @@ namespace SoftCircuits.HtmlMonkey
         /// </summary>
         private bool ExistsOnlyComparer(HtmlElementNode node) => node.Attributes.Contains(Name);
 
+        /// <summary>
+        /// Parse words for <see cref="ContainsComparer(HtmlElementNode)"/>.
+        /// </summary>
         private static IEnumerable<string> ParseWords(string s)
         {
             bool inWord = false;

@@ -1,16 +1,13 @@
 ﻿// Copyright (c) 2019-2026 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SoftCircuits.HtmlMonkey;
 
-namespace HtmlMonkeyTests
+namespace HtmlMonkey.Tests
 {
-    [TestClass]
     public class HandleBadMarkupTests
     {
-        [TestInitialize]
-        public void Initialize()
+        public HandleBadMarkupTests()
         {
             // Set HTML tag rules for testing
             HtmlRules.TagRules.ClearNestingRules();
@@ -30,14 +27,14 @@ namespace HtmlMonkeyTests
             HtmlRules.TagRules.SetNestingRule("dd", ["dl"]);
         }
 
-        [TestCleanup]
+        [Fact]
         public void Cleanup()
         {
             // Reset HTML rules
             HtmlRules.TagRules.ClearNestingRules();
         }
 
-        [TestMethod]
+        [Fact]
         public void MismatchedTagsTests()
         {
             // <div><p>Test</div></p> -> <div><p>Test</p></div>
@@ -74,7 +71,7 @@ namespace HtmlMonkeyTests
                 document.RootNodes);
         }
 
-        [TestMethod]
+        [Fact]
         public void InvalidNestingTests()
         {
             // <div><html>Test</html></div> -> <div></div><html>Test</html>
@@ -89,7 +86,7 @@ namespace HtmlMonkeyTests
                 document.RootNodes);
         }
 
-        [TestMethod]
+        [Fact]
         public void NoChildrenTests()
         {
             // <br><p>Test</p></br> -> <br /><p>Test</p>
@@ -104,7 +101,7 @@ namespace HtmlMonkeyTests
                 document.RootNodes);
         }
 
-        [TestMethod]
+        [Fact]
         public void NoNestingTests()
         {
             // <a><a>Test</a></a> -> <a></a><a>Test</a>
@@ -119,7 +116,7 @@ namespace HtmlMonkeyTests
                 document.RootNodes);
         }
 
-        [TestMethod]
+        [Fact]
         public void NoSelfClosingTests()
         {
             // <div><textarea />Test</div> -> <div><textarea>Test</textarea></div>

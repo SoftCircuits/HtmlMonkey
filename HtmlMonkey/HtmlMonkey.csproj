@@ -28,11 +28,12 @@
     <PackageLicenseFile>License.txt</PackageLicenseFile>
     <AssemblyVersion></AssemblyVersion>
     <FileVersion></FileVersion>
-    <Version>3.2.0</Version>
-    <PackageReleaseNotes>Added support for .NET 10; Code cleanup.</PackageReleaseNotes>
+    <Version>3.2.1</Version>
+    <PackageReleaseNotes>Code review and clean up; Move tests to xUnit.</PackageReleaseNotes>
     <PackageId>SoftCircuits.HtmlMonkey</PackageId>
     <PackageIcon>Logo_64x64.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Title>SoftCircuits.HtmlMonkey</Title>
   </PropertyGroup>
 
   <ItemGroup>

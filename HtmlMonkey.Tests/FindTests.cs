@@ -1,14 +1,10 @@
 ﻿// Copyright (c) 2019-2026 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SoftCircuits.HtmlMonkey;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace HtmlMonkeyTests
+namespace HtmlMonkey.Tests
 {
-    [TestClass]
     public class FindTests
     {
         private readonly string html =
@@ -69,121 +65,121 @@ namespace HtmlMonkeyTests
             </html>
             """;
 
-        [TestMethod]
+        [Fact]
         public void Test()
         {
             HtmlDocument document = HtmlDocument.FromHtml(html);
 
             IEnumerable<HtmlElementNode> elements = document.Find("p");
-            Assert.AreEqual(5, elements.Count());
+            Assert.Equal(5, elements.Count());
 
             elements = document.Find("#one-of-many");
-            Assert.AreEqual(1, elements.Count());
+            Assert.Single(elements);
 
             elements = document.Find("p#one-of-many");
-            Assert.AreEqual(1, elements.Count());
+            Assert.Single(elements);
 
             elements = document.Find(".last-para");
-            Assert.AreEqual(1, elements.Count());
+            Assert.Single(elements);
 
             elements = document.Find("p.last-para");
-            Assert.AreEqual(1, elements.Count());
+            Assert.Single(elements);
 
             elements = document.Find(":text");
-            Assert.AreEqual(1, elements.Count());
+            Assert.Single(elements);
 
             elements = document.Find("input:text");
-            Assert.AreEqual(1, elements.Count());
+            Assert.Single(elements);
 
             elements = document.Find("p[data-id=123]");
-            Assert.AreEqual(3, elements.Count());
+            Assert.Equal(3, elements.Count());
 
             elements = document.Find("p[data-id:=\"123\"]");
-            Assert.AreEqual(3, elements.Count());
+            Assert.Equal(3, elements.Count());
 
             elements = document.Find("p[data-id:=\"[0-9]{3}\"]");
-            Assert.AreEqual(3, elements.Count());
+            Assert.Equal(3, elements.Count());
 
             elements = document.Find("body > h1");
-            Assert.AreEqual(1, elements.Count());
-            Assert.AreEqual("h1", elements.First().TagName);
-            Assert.AreEqual("Test Document", elements.First().Text);
+            Assert.Single(elements);
+            Assert.Equal("h1", elements.First().TagName);
+            Assert.Equal("Test Document", elements.First().Text);
 
             elements = document.Find("body>h1");
-            Assert.AreEqual(1, elements.Count());
-            Assert.AreEqual("h1", elements.First().TagName);
-            Assert.AreEqual("Test Document", elements.First().Text);
+            Assert.Single(elements);
+            Assert.Equal("h1", elements.First().TagName);
+            Assert.Equal("Test Document", elements.First().Text);
 
             elements = document.Find("#div3");
-            Assert.AreEqual(1, elements.Count());
+            Assert.Single(elements);
 
             elements = document.Find("#div1   >   p#test-paragraph");
-            Assert.AreEqual(0, elements.Count());
+            Assert.Empty(elements);
 
             elements = document.Find("#div1   p#test-paragraph");
-            Assert.AreEqual(1, elements.Count());
+            Assert.Single(elements);
 
             IEnumerable<HtmlCDataNode> cDataNodes = document.FindOfType<HtmlCDataNode>();
-            Assert.AreEqual(4, cDataNodes.Count());
+            Assert.Equal(4, cDataNodes.Count());
         }
 
-        [TestMethod]
+        [Fact]
         public void TestExtensionMethods()
         {
             HtmlDocument document = HtmlDocument.FromHtml(html);
-            IEnumerable<HtmlNode> nodes = new List<HtmlNode>(document.RootNodes);
+            IEnumerable<HtmlNode> nodes = [.. document.RootNodes];
 
             IEnumerable<HtmlElementNode> elements = nodes.Find("p");
-            Assert.AreEqual(5, elements.Count());
+            Assert.Equal(5, elements.Count());
 
             elements = nodes.Find("#one-of-many");
-            Assert.AreEqual(1, elements.Count());
+            Assert.Single(elements);
 
             elements = nodes.Find("p#one-of-many");
-            Assert.AreEqual(1, elements.Count());
+            Assert.Single(elements);
 
             elements = nodes.Find(".last-para");
-            Assert.AreEqual(1, elements.Count());
+            Assert.Single(elements);
 
             elements = nodes.Find("p.last-para");
-            Assert.AreEqual(1, elements.Count());
+            Assert.Single(elements);
 
             elements = nodes.Find(":text");
-            Assert.AreEqual(1, elements.Count());
+            Assert.Single(elements);
 
             elements = nodes.Find("input:text");
-            Assert.AreEqual(1, elements.Count());
+            Assert.Single(elements);
 
             elements = nodes.Find("p[data-id=123]");
-            Assert.AreEqual(3, elements.Count());
+            Assert.Equal(3, elements.Count());
 
             elements = nodes.Find("p[data-id:=\"123\"]");
-            Assert.AreEqual(3, elements.Count());
+            Assert.Equal(3, elements.Count());
 
             elements = nodes.Find("p[data-id:=\"[0-9]{3}\"]");
-            Assert.AreEqual(3, elements.Count());
+            Assert.Equal(3, elements.Count());
 
             elements = nodes.Find("body > h1");
-            Assert.AreEqual(1, elements.Count());
-            Assert.AreEqual("h1", elements.First().TagName);
-            Assert.AreEqual("Test Document", elements.First().Text);
+            Assert.Single(elements);
+            Assert.Equal("h1", elements.First().TagName);
+            Assert.Equal("Test Document", elements.First().Text);
 
             elements = nodes.Find("body>h1");
-            Assert.AreEqual(1, elements.Count());
-            Assert.AreEqual("h1", elements.First().TagName);
-            Assert.AreEqual("Test Document", elements.First().Text);
+            Assert.Single(elements);
+            Assert.Equal("h1", elements.First().TagName);
+            Assert.Equal("Test Document", elements.First().Text);
 
             elements = nodes.Find("#div3");
-            Assert.AreEqual(1, elements.Count());
+            Assert.Single(elements);
 
             elements = nodes.Find("#div1   >   p#test-paragraph");
-            Assert.AreEqual(0, elements.Count());
+            Assert.Empty(elements);
 
             elements = document.Find("#div1   p#test-paragraph");
-            Assert.AreEqual(1, elements.Count());
+            Assert.Single(elements);
 
             IEnumerable<HtmlCDataNode> cDataNodes = nodes.FindOfType<HtmlCDataNode>();
-            Assert.AreEqual(4, cDataNodes.Count());
+            Assert.Equal(4, cDataNodes.Count());
         }
     }
 }

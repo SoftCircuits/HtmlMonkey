@@ -1,16 +1,10 @@
 ﻿// Copyright (c) 2019-2026 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SoftCircuits.HtmlMonkey;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace HtmlMonkeyTests
+namespace HtmlMonkey.Tests
 {
-    [TestClass]
     public class ParserTests
     {
         private readonly static string Html =
@@ -135,35 +129,35 @@ namespace HtmlMonkeyTests
             </breakfast_menu>
             """;
 
-        [TestMethod]
+        [Fact]
         public void ConvertFromMarkupTests()
         {
             // Convert from HTML and back to HTML
             HtmlDocument htmlDoc = HtmlDocument.FromHtml(Html);
             string html = htmlDoc.ToHtml();
-            Assert.AreEqual(Html, html);
+            Assert.Equal(Html, html);
 
             // Convert from XML and back to XML
             HtmlDocument xmlDoc = HtmlDocument.FromHtml(Xml);
             string xml = xmlDoc.ToHtml();
-            Assert.AreEqual(Xml, xml);
+            Assert.Equal(Xml, xml);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ConvertFromMarkupTestsAsync()
         {
             // Convert from HTML and back to HTML
             HtmlDocument htmlDoc = await HtmlDocument.FromHtmlAsync(Html);
             string html = htmlDoc.ToHtml();
-            Assert.AreEqual(Html, html);
+            Assert.Equal(Html, html);
 
             // Convert from XML and back to XML
             HtmlDocument xmlDoc = await HtmlDocument.FromHtmlAsync(Xml);
             string xml = xmlDoc.ToHtml();
-            Assert.AreEqual(Xml, xml);
+            Assert.Equal(Xml, xml);
         }
 
-        [TestMethod]
+        [Fact]
         public void ConvertToMarkupTests()
         {
             // Convert from nodes and back to nodes
@@ -342,51 +336,51 @@ namespace HtmlMonkeyTests
             return document;
         }
 
-        public static void AssertNodesAreEqual(HtmlNodeCollection nodes, HtmlNodeCollection nodes2)
+        private static void AssertNodesAreEqual(HtmlNodeCollection nodes, HtmlNodeCollection nodes2)
         {
-            Assert.AreEqual(nodes.Count, nodes2.Count);
+            Assert.Equal(nodes.Count, nodes2.Count);
 
             for (int i = 0; i < nodes.Count; i++)
             {
                 HtmlNode currNode = nodes[i];
                 HtmlNode currNode2 = nodes2[i];
 
-                Assert.AreEqual(currNode.GetType(), currNode2.GetType());
+                Assert.Equal(currNode.GetType(), currNode2.GetType());
 
                 if (currNode is HtmlHeaderNode headerNode)
                 {
                     if (currNode2 is HtmlHeaderNode headerNode2)
-                        CollectionAssert.AreEqual(headerNode.Attributes.ToList(), headerNode2.Attributes.ToList(), new AttributeComparer());
+                        Assert.Equal(headerNode.Attributes.ToList(), headerNode2.Attributes.ToList(), new AttributeComparer());
                 }
                 else if (currNode is XmlHeaderNode xmlNode)
                 {
                     if (currNode2 is XmlHeaderNode xmlNode2)
-                        CollectionAssert.AreEqual(xmlNode.Attributes.ToList(), xmlNode2.Attributes.ToList(), new AttributeComparer());
+                        Assert.Equal(xmlNode.Attributes.ToList(), xmlNode2.Attributes.ToList(), new AttributeComparer());
                 }
                 else if (currNode is HtmlElementNode elementNode)
                 {
                     if (currNode2 is HtmlElementNode elementNode2)
                     {
-                        Assert.AreEqual(elementNode.TagName, elementNode2.TagName);
-                        CollectionAssert.AreEqual(elementNode.Attributes.ToList(), elementNode2.Attributes.ToList(), new AttributeComparer());
+                        Assert.Equal(elementNode.TagName, elementNode2.TagName);
+                        Assert.Equal(elementNode.Attributes.ToList(), elementNode2.Attributes.ToList(), new AttributeComparer());
                         AssertNodesAreEqual(elementNode.Children, elementNode2.Children);
                     }
                 }
                 else if (currNode is HtmlCDataNode cDataNode)
                 {
                     if (currNode2 is HtmlCDataNode cDataNode2)
-                        Assert.AreEqual(cDataNode.InnerHtml, cDataNode2.InnerHtml);
+                        Assert.Equal(cDataNode.InnerHtml, cDataNode2.InnerHtml);
                 }
                 else if (currNode is HtmlTextNode textNode)
                 {
                     if (currNode2 is HtmlCDataNode textNode2)
-                        Assert.AreEqual(textNode.Text, textNode2.Text);
+                        Assert.Equal(textNode.Text, textNode2.Text);
                 }
                 else Assert.Fail("Unknown HtmlNode type!");
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void SimpleChildTest()
         {
             var document = HtmlDocument.FromHtml(
@@ -404,7 +398,7 @@ namespace HtmlMonkeyTests
                 document.RootNodes);
         }
 
-        [TestMethod]
+        [Fact]
         public void NestedChildTest()
         {
             HtmlDocument document = HtmlDocument.FromHtml(
@@ -428,7 +422,7 @@ namespace HtmlMonkeyTests
                 document.RootNodes);
         }
 
-        [TestMethod]
+        [Fact]
         public void DivTable()
         {
             HtmlDocument document = HtmlDocument.FromHtml(

@@ -1,10 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿// Copyright (c) 2019-2026 Jonathan Wood (www.softcircuits.com)
+// Licensed under the MIT license.
+//
 using SoftCircuits.HtmlMonkey;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace HtmlMonkeyTests
+namespace HtmlMonkey.Tests
 {
     public class TestTagNode(string tagName, params IEnumerable<TestNode> nodes) : TestNode(typeof(HtmlElementNode), nodes)
     {
@@ -60,17 +59,20 @@ namespace HtmlMonkeyTests
             if (ignoreTextNodes)
                 actualNodes = [.. actualNodes.Where(n => n is not HtmlTextNode)];
 
-            Assert.AreEqual(expectedNodes.Count, actualNodes.Count, "Node count mismatch");
+            if (expectedNodes.Count != actualNodes.Count)
+                throw new Exception("Node count mismatch");
+
             for (int i = 0; i < expectedNodes.Count; i++)
             {
-                Assert.IsTrue(expectedNodes[i].Equals(actualNodes[i]));
+                Assert.True(expectedNodes[i].Equals(actualNodes[i]));
                 if (actualNodes[i] is HtmlElementNode elementNode)
                 {
                     TestRecursive(expectedNodes[i].Children, elementNode.Children, ignoreTextNodes);
                 }
                 else
                 {
-                    Assert.AreEqual(0, expectedNodes[i].Children.Count, "Non-element node should have no children");
+                    if (expectedNodes[i].Children.Count != 0)
+                        throw new Exception("Non-element node should have no children");
                 }
             }
         }

@@ -1,17 +1,13 @@
-// Copyright (c) 2019-2026 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2019-2026 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SoftCircuits.HtmlMonkey;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace HtmlMonkeyTests
+namespace HtmlMonkey.Tests
 {
-    [TestClass]
     public class HeaderTests
     {
-        [TestMethod]
+        [Fact]
         public void TestHtmlHeader()
         {
             List<HtmlAttribute>[] htmlHeaders =
@@ -67,15 +63,17 @@ namespace HtmlMonkeyTests
             {
                 string header = string.Format($"<!DOCTYPE {string.Join(" ", htmlAttributes)}>");
                 HtmlDocument document = HtmlDocument.FromHtml(header);
-                Assert.AreEqual(1, document.RootNodes.Count);
+                Assert.Single(document.RootNodes);
                 if (document.RootNodes[0] is not HtmlHeaderNode node)
-                    Assert.Fail();
+                    Assert.Fail($"Parsed node is not of type {nameof(HtmlHeaderNode)}");
                 else
-                    CollectionAssert.AreEqual(htmlAttributes.ToList(), node.Attributes.ToList(), new AttributeComparer());
+#pragma warning disable IDE0305 // Simplify collection initialization
+                    Assert.Equal(htmlAttributes.ToList(), node.Attributes.ToList(), new AttributeComparer());
+#pragma warning restore IDE0305 // Simplify collection initialization
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void TestXmlHeader()
         {
             List<HtmlAttribute>[] xmlHeaders =
@@ -98,11 +96,13 @@ namespace HtmlMonkeyTests
             {
                 string header = string.Format($"<?XML {string.Join(" ", htmlAttributes)}?>");
                 HtmlDocument document = HtmlDocument.FromHtml(header);
-                Assert.AreEqual(1, document.RootNodes.Count);
+                Assert.Single(document.RootNodes);
                 if (document.RootNodes[0] is not XmlHeaderNode node)
-                    Assert.Fail();
+                    Assert.Fail("Parsed header is not XmlHeaderNode");
                 else
-                    CollectionAssert.AreEqual(htmlAttributes.ToList(), node.Attributes.ToList(), new AttributeComparer());
+#pragma warning disable IDE0305 // Simplify collection initialization
+                    Assert.Equal(htmlAttributes.ToList(), node.Attributes.ToList(), new AttributeComparer());
+#pragma warning restore IDE0305 // Simplify collection initialization
             }
         }
     }

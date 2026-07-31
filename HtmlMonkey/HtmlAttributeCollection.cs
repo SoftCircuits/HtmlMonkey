@@ -54,11 +54,11 @@ namespace SoftCircuits.HtmlMonkey
         /// <param name="attribute">The attribute to add.</param>
         public void Add(HtmlAttribute attribute)
         {
-#if !NETSTANDARD2_0
-            ArgumentNullException.ThrowIfNull(attribute);
-#else
+#if NETSTANDARD
             if (attribute == null)
                 throw new ArgumentNullException(nameof(attribute));
+#else
+            ArgumentNullException.ThrowIfNull(attribute);
 #endif
             if (string.IsNullOrEmpty(attribute.Name))
                 throw new ArgumentException("An attribute name is required.");
